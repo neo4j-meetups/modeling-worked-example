@@ -1,0 +1,193 @@
+= Modeling a recommendation engine using Neo4j
+
+In this session we're going to build a meetup recommendation engine using data extracted from the link:http://www.meetup.com/api[meetup.com] API.
+
+The goal is to get to the point where we've designed an application which can provide a multi faceted recommendation.
+
+Some of the things we'll take into account will be the topics a meetup is about, the topics we're interested in, the events people similar to us are attending, the venues we enjoy going to and anything else we can think of.
+
+== Content based similarity
+
+We're going to start with a content based recommendation to find meetup groups that are similar to one that we like based on having similar topics.
+
+The meetup.com API allows us to extract this data from the `/groups` endpoint.
+link:download.py[download.py] contains a Python script which downloads a set of dev related meetup groups into link:data/groups.json[groups.json].
+Next we'll use link:https://stedolan.github.io/jq/[jq] to extract the data that we want into CSV files so that we can easily import into Neo4j using the link:http://neo4j.com/docs/stable/query-load-csv.html[LOAD CSV] command.
+link:csvify.sh[csvify.sh] contains the code to do this.
+
+Ok.
+Now we're ready to get the data into Neo4j.
+Let's start by creating nodes to represent each of the meetup groups:
+
+[source,cypher]
+----
+LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/groups.csv" AS row
+CREATE (:Group { id:row.id,
+                 name:row.name,
+                 urlname:row.urlname,
+                 rating:row.rating,
+                 link:row.link,
+                 created:toint(row.created) })
+----
+
+If that worked correctly we should now have 392 nodes in our database.
+We'll run the following query to check:
+
+[source, cypher]
+----
+MATCH (group:Group)
+RETURN COUNT(*) AS numberOfGroups
+----
+
+Great!
+The data is in but it's not much of a graph yet since the groups aren't related to each other in any way.
+
+We're going to connect them together based on the topics that they share, so we'll end up with the following paths in the graph:
+
+[source, text]
+----
+(group1)-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(group2)
+----
+
+[source, cypher]
+----
+LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/groups_topics.csv" AS row
+MERGE (topic:Topic {id: row.id})
+ON CREATE SET topic.name = row.name,
+              topic.urlkey = row.urlkey
+----
+
+We should really have created an index on `Topic(id)` before running that query otherwise Cypher has to do a `Label Scan` covering more and more nodes on each iteration.
+We'll create one on `Group(id)` while we're at it as well.
+
+=== Indexes
+
+Neo4j uses indexes to find the starting points for queries.
+They aren't used after those initial starting points are found.
+
+[source,cypher]
+----
+CREATE INDEX ON :Topic(id)
+----
+
+[source,cypher]
+----
+CREATE INDEX ON :Group(id)
+----
+
+We can check the indexes have been created by running the following command in the Neo4j browser:
+
+[source, cypher]
+----
+:schema
+----
+
+Now that we've got those setup let's create some relationships between our topics and groups:
+
+[source, cypher]
+----
+LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/groups_topics.csv" AS row
+MATCH (topic:Topic {id: row.id})
+MATCH (group:Group {id: row.groupId})
+MERGE (group)-[:HAS_TOPIC]->(topic)
+----
+
+What does the graph look like now?
+
+Since we're at the Neo4j meetup let's see which topics are associated with this meetup group.
+In an application we'd probably look up the group by `id` but it's much easier to remember the `name` so we're going to create an index on `Group(name)` to help us out:
+
+[source, cypher]
+----
+CREATE INDEX ON :Group(name)
+----
+
+[source,cypher]
+----
+MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)
+RETURN topic
+----
+
+Let's see which other groups have these topics:
+
+[source,cypher]
+----
+MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup)
+RETURN otherGroup, COUNT(topic) AS topicsInCommon, COLLECT(topic) AS topics
+ORDER BY topicsInCommon DESC
+LIMIT 10
+----
+
+Are there any organisers in common?
+Perhaps we really like how well one of the groups is organised and want to find out if that person organises other groups.
+
+[source,cypher]
+----
+LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/groups.csv" AS row
+WITH row WHERE NOT row.organiserMemberId is null
+MERGE (member:Member {id: row.organiserMemberId})
+ON CREATE SET member.name = row.organiserName
+----
+
+[source,cypher]
+----
+LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/groups.csv" AS row
+MATCH (member:Member {id: row.organiserMemberId})
+MATCH (group:Group {id: row.id})
+MERGE (member)-[:ORGANISES]->(group)
+----
+
+== Collaborative Filtering
+
+next we'll introduce some actual people and events into our graph so we can do do more fine grained recommendations of actual events to attend
+
+* How do I know what nodes to create?
+* How should I be naming relationships?
+* Are my relationships too specific? Are they too generic?
+* How can I tell if I've got hidden nodes in my model?
+* How do I deal with time?
+
+[source, cypher]
+----
+CREATE INDEX ON :Member(id)
+----
+
+[source, cypher]
+----
+LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/members.csv" AS row
+WITH DISTINCT row.id AS id, row.name AS name
+MERGE (member:Member {id: id})
+ON CREATE SET member.name = name
+----
+
+Now we'll connect the members to the topics and groups that they're interested in:
+
+[source, cypher]
+----
+LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/members.csv" AS row
+WITH DISTINCT row.id AS id, row.name AS name
+MERGE (member:Member {id: id})
+ON CREATE SET member.name = name
+----
+
+What does the graph look like now?
+
+What order do people join groups in?
+  ** could lead to us introducing a membership concept so we can order them
+  ** what groups do people most often join immediately after joining this one? Could be a similarity recommendation.
+
+
+
+what other data do we need to bring into the graph?
+
+* Run a LDA model over the meetups to extract topics for the individual events?
+* People + group memberships
+  ** good example of where we store two types of relationships
+  **  `HAS_MEMBERSHIP` + `MEMBER_OF` - can use count store on the latter
+* People + events they've attended
+* Events + venues
+
+
+Start with the simple model and evolve it
+Refactoring the model
+  migration using Cypher
