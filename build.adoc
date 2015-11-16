@@ -165,17 +165,137 @@ Now we'll connect the members to the topics and groups that they're interested i
 [source, cypher]
 ----
 LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/members.csv" AS row
-WITH DISTINCT row.id AS id, row.name AS name
-MERGE (member:Member {id: id})
-ON CREATE SET member.name = name
+WITH row WHERE NOT row.joined is null
+MATCH (member:Member {id: row.id})
+MATCH (group:Group {id: row.groupId})
+MERGE (member)-[:MEMBER_OF {joined: toint(row.joined)}]->(group)
+----
+
+[source, cypher]
+----
+USING PERIODIC COMMIT 10000
+LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/members.csv" AS row
+WITH split(row.topics, ";") AS topics, row.id AS memberId
+UNWIND topics AS topicId
+MATCH (member:Member {id: memberId})
+MATCH (topic:Topic {id: topicId})
+MERGE (member)-[:INTERESTED_IN]->(topic)
 ----
 
 What does the graph look like now?
+
+what meetup groups might be interesting to me?
+
+[source, cypher]
+----
+CREATE INDEX ON :Member(name)
+----
+
+[source, cypher]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:INTERESTED_IN]->(topic)<-[:HAS_TOPIC]-(group)
+RETURN group.name, COUNT(*) AS numberOfTopics, COLLECT(topic.name) AS topics
+ORDER BY numberOfTopics DESC
+----
+
+That's fine but maybe I'm already a member of most of those groups.
+The following query filters out any groups I'm already a member of:
+
+[source,cypher]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:INTERESTED_IN]->(topic)<-[:HAS_TOPIC]-(group)
+WHERE NOT (member)-[:MEMBER_OF]->(group)
+RETURN group.name, COUNT(*) AS numberOfTopics, COLLECT(topic.name) AS topics
+ORDER BY numberOfTopics DESC
+----
+
+Let's say this week I'm particularly interested in learning about `Machine Learning` so I want to weight in favour of groups that focus on that topic.
+
+[source, cypher]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:INTERESTED_IN]->(topic)<-[:HAS_TOPIC]-(group)
+WHERE NOT (member)-[:MEMBER_OF]->(group)
+WITH group, COUNT(*) AS numberOfTopics, COLLECT(topic.name) AS topics
+WITH group, topics, REDUCE(score = 0, topic in topics | CASE WHEN topic = "Machine Learning" THEN score+5 ELSE score+1 END) AS score
+RETURN group.name, score, topics
+ORDER BY score DESC
+----
+
+this doesn't help much as everyone uses the same topics...
+
+so the next thing we might want to do is bring events into the mix
+
+[source,cypher]
+----
+CREATE INDEX ON :Event(id)
+----
+
+[source, cypher]
+----
+LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/events.csv" AS row
+MERGE (event:Event {id: row.id})
+ON CREATE SET event.name = row.name,
+              event.time = toint(row.time),
+              event.utcOffset = toint(row.utc_offset)
+----
+
+[source, cypher]
+----
+LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/events.csv" AS row
+MATCH (group:Group {id: row.group_id})
+MATCH (event:Event {id: row.id})
+MERGE (group)-[:HOSTED_EVENT]->(event)
+----
+
+Once we've got events we can make recommendations for particular events that people might like to attend
+but how will we know which ones are interesting? We need RSVPs for that?
+
+[source, cypher]
+----
+LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/rsvps.csv" AS row
+MATCH (member:Member {id: row.member_id})
+MATCH (event:Event {id: row.event_id})
+MERGE (member)-[rsvp:RSVPD {id: row.rsvp_id}]->(event)
+ON CREATE SET rsvp.created = toint(row.created), rsvp.lastModified = toint(row.mtime), rsvp.response = row.response
+----
+
+facts and compositions that exist between entities become clear as we extend the model.
+why do we have RSVP as a relationship instead of a node?
+
+So we'd start out with RSVP as a relationship because we only want to use it to identify events to recommend.
+
+We can now make use of these RSVP relationships to find events to recommend to our user.
+
+[source,cypher]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:RSVPD {response: "yes"}]->(event)<-[:HOSTED_EVENT]-(group)
+WITH event, group
+ORDER BY (event.time + event.utcOffset)
+RETURN event.name, (event.time + event.utcOffset) AS time, group.name
+----
+
+[source, cypher]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:RSVPD {response: "yes"}]->(event)<-[:RSVPD {response: "yes"}]-(otherPerson)
+WITH otherPerson, COUNT(*) AS eventsInCommon
+ORDER BY eventsInCommon DESC
+RETURN otherPerson.name, eventsInCommon
+LIMIT 10
+----
+
+We can recommend at different levels of granularity.
+* Groups
+* Events
+* Other topics to follow?
+
+
 
 What order do people join groups in?
   ** could lead to us introducing a membership concept so we can order them
   ** what groups do people most often join immediately after joining this one? Could be a similarity recommendation.
 
+could we make people `FRIENDS` with others who attended the same meetup events as them?
+we could then wait that relationship based on whether they attended the same meetups recently, how many meetups they attended together, how likely they are to have met (look at total number of attendees)
 
 
 what other data do we need to bring into the graph?
@@ -191,3 +311,38 @@ what other data do we need to bring into the graph?
 Start with the simple model and evolve it
 Refactoring the model
   migration using Cypher
+
+What groups do people join after this one?
+
+[source,cypher]
+----
+MATCH (group:Group {name: ""})
+----
+
+Refactor to find adjacent memberships
+
+Find the next group that people joined after the Neo4j London group.
+
+[source,cypher]
+----
+PROFILE
+MATCH (group:Group {name: "Neo4j - London User Group"})<-[membership:MEMBER_OF]-(member),
+      (member)-[otherMembership:MEMBER_OF]->(otherGroup)
+WITH member, membership, otherMembership, otherGroup
+WHERE membership.joined < otherMembership.joined
+WITH member, membership, COLLECT(otherGroup)[0] AS nextGroup
+RETURN nextGroup, COUNT(*) AS times
+ORDER BY times DESC
+----
+
+Refactoring to membership
+
+* we want to connect memberships to each other
+  - can store the amount of time between
+
+But keeping the original model is great for getting the members of the group
+
+[source,cypher]
+----
+MATCH (group:Group)-[membership:MEMBERSHIP]->(member)
+----

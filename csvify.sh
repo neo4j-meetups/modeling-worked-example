@@ -19,6 +19,24 @@ do
   echo $group_id " is done"
 done
 
+echo "id,name,city,address_1,address_2,lat,lon" > data/venues.csv
+for file in `find data/events -type f`
+do
+  jq -r ".[] | select(.venue != null) | .venue | [.id, .name, .city, .address_1, .address_2, .lat, .lon] | @csv" $file | sort | uniq >> data/venues.csv
+done
+
+echo "id,name,time,utc_offset,group_id,venue_id,status" > data/events.csv
+for file in `find data/events -type f`
+do
+  jq -r ".[] | [.id, .name, .time, .utc_offset, .group.id, .venue.id, .status] | @csv" $file >> data/events.csv
+done
+
+echo "rsvp_id,event_id,member_id,guests,response,created,mtime" > data/rsvps.csv
+for file in `find data/rsvps -type f`
+do
+  echo $file
+  jq -r '.[] | [.rsvp_id, .event.id, .member.member_id, .guests, .response, .created, .mtime] | @csv' $file >> data/rsvps.csv
+done
 
 #bad
 # jq -r '.[] | [.id, .name, .joined, ([.topics[].id] | join(";"))] | @csv' data/members/18313232.json
