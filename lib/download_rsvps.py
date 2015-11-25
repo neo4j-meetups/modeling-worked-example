@@ -17,10 +17,15 @@ for event_file_path in glob.glob("data/events/*.json"):
         events_json = json.load(event_file)
         event_ids += [str(event['id']) for event in events_json]
 
-for idx, chunk in enumerate(chunks(event_ids, 200)):
-    print idx, chunk
+for event in event_ids:
+    event_file = "data/rsvps/{0}.json".format(event)
+    if os.path.isfile(event_file):
+        print "Event {0}: Already processed [{1}]".format(event, os.stat(event_file).st_size)
+        continue
+    else:
+        print "Event {0}: Processing".format(event)
+
     results = []
-    event = ",".join(chunk)
     uri = "https://api.meetup.com/2/rsvps?&event_id={0}&key={1}".format(event, key)
 
     while True:
@@ -30,5 +35,21 @@ for idx, chunk in enumerate(chunks(event_ids, 200)):
         for result in response["results"]:
             results.append(result)
         uri = response["meta"]["next"] if response["meta"]["next"] else None
-    with(open("data/rsvps/{0}.json".format(idx), 'w')) as rsvps_file:
+    with(open(event_file, 'w')) as rsvps_file:
         json.dump(results, rsvps_file)
+
+# for idx, chunk in enumerate(chunks(event_ids, 200)):
+#     print idx, chunk
+#     results = []
+#     event = ",".join(chunk)
+#     uri = "https://api.meetup.com/2/rsvps?&event_id={0}&key={1}".format(event, key)
+#
+#     while True:
+#         if uri is None:
+#             break
+#         response = requests.get(uri).json()
+#         for result in response["results"]:
+#             results.append(result)
+#         uri = response["meta"]["next"] if response["meta"]["next"] else None
+#     with(open("data/rsvps/{0}.json".format(idx), 'w')) as rsvps_file:
+#         json.dump(results, rsvps_file)
