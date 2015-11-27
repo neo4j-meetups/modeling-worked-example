@@ -1,3 +1,5 @@
+return "Importing groups";
+
 CREATE INDEX ON :Group(id);
 CREATE INDEX ON :Group(name);
 
@@ -15,9 +17,7 @@ CREATE INDEX ON :Group(name);
 
 // LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/groups.csv" AS row
 
-export base=${PWD}
-
-LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/groups.csv" AS row
+LOAD CSV WITH HEADERS FROM "file:///groups.csv" AS row
 MERGE (group:Group { id:row.id})
 SET group.name = row.name,
     group.urlname = row.urlname,

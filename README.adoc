@@ -4,8 +4,40 @@ This is the repository behind a Neo4j meetup talk demonstrating how to increment
 
 If you're in London feel free to come along, you can link:http://www.meetup.com/graphdb-london/events/226721630/[register on meetup.com]
 
+== Downloading & configuring Neo4j
+
+The following instructions assume that you're using Neo4j 2.3.1 so go and link:http://neo4j.com/download/[download that now] if you haven't already
+
+Once you've done that you'll need to add the following config properties in `neo4j.properties`
+
+[source, text]
+----
+dbms.security.load_csv_file_url_root=data/import
+----
+
+If you're using the Desktop installer set that to an absolute path rather than a relative one e.g.
+
+[source, text]
+----
+dbms.security.load_csv_file_url_root=/Users/markneedham/projects/meetups/modeling-worked-example/data/
+----
+
+After you've done that copy the CSV files from the `data` folder to that location e.g.
+
+[source, text]
+----
+cp data/*.csv neo4j-community-2.3.1/data/import/
+----
+
 == Importing the data
 
+The Cypher `LOAD CSV` scripts are in the `cypher` folder of the repository.
+You can execute them individually or use the `import.sh` script.
+
+[source, bash]
+----
+./import.sh
+----
 
 == Queries
 

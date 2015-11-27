@@ -1,4 +1,4 @@
-LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/rsvps.csv" AS row
+LOAD CSV WITH HEADERS FROM "file:///rsvps.csv" AS row
 MATCH (member:Member {id: row.member_id})
 MATCH (event:Event {id: row.event_id})
 MERGE (member)-[rsvp:RSVPD {id: row.rsvp_id}]->(event)

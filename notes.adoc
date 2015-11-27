@@ -1,0 +1,29 @@
+
+* where not seems to need labels
+
+= Slow
+
+[source, cypher]
+----
+PROFILE
+MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup)
+WHERE NOT (:Member {name: "Mark Needham"})-[:MEMBER_OF]->(otherGroup)
+RETURN otherGroup.name,
+       COUNT(topic) AS topicsInCommon,
+       COLLECT(topic.name) AS topics
+ORDER BY topicsInCommon DESC
+LIMIT 10
+----
+
+= Fast
+
+[source, cypher]
+----
+MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup)
+WHERE NOT (:Member {name: "Mark Needham"})-[:MEMBER_OF]->(otherGroup:Group)
+RETURN otherGroup.name,
+       COUNT(topic) AS topicsInCommon,
+       COLLECT(topic.name) AS topics
+ORDER BY topicsInCommon DESC
+LIMIT 10
+----
