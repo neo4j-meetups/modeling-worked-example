@@ -13,6 +13,10 @@ CREATE INDEX ON :Group(name);
 
 // idempotent version
 
+// LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/groups.csv" AS row
+
+export base=${PWD}
+
 LOAD CSV WITH HEADERS FROM "file:///Users/markneedham/projects/meetups/modeling-worked-example/data/groups.csv" AS row
 MERGE (group:Group { id:row.id})
 SET group.name = row.name,

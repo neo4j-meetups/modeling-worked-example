@@ -1,0 +1,5 @@
+= Modelling a recommendation engine: A worked example
+
+This is the repository behind a Neo4j meetup talk demonstrating how to incrementally model a real time recommendation system.
+
+If you're in London feel free to come along, you can link:http://www.meetup.com/graphdb-london/events/226721630/[register on meetup.com]
