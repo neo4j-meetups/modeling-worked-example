@@ -8,8 +8,7 @@ CREATE INDEX ON :Group(name);
 // CREATE (:Group { id:row.id,
 //                  name:row.name,
 //                  urlname:row.urlname,
-//                  rating:row.rating,
-//                  link:row.link,
+//                  rating:toint(row.rating),
 //                  created:toint(row.created) });
 
 
@@ -21,6 +20,5 @@ LOAD CSV WITH HEADERS FROM "file:///groups.csv" AS row
 MERGE (group:Group { id:row.id})
 SET group.name = row.name,
     group.urlname = row.urlname,
-    group.rating =row.rating,
-    group.link = row.link,
+    group.rating = toint(row.rating),
     group.created = toint(row.created);

@@ -8,7 +8,7 @@ If you're in London feel free to come along, you can link:http://www.meetup.com/
 
 The following instructions assume that you're using Neo4j 2.3.1 so go and link:http://neo4j.com/download/[download that now] if you haven't already
 
-Once you've done that you'll need to add the following config properties in `neo4j.properties`
+Once you've done that you'll need to add the following in `neo4j.properties`
 
 [source, text]
 ----
@@ -39,6 +39,10 @@ You can execute them individually or use the `import.sh` script.
 ./import.sh
 ----
 
+Now you're all set to follow along with the session.
+
 == Queries
+
+The following are the queries that we will write during the session:
 
 include::docs/queries.adoc[]
