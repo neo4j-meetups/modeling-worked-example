@@ -21,5 +21,5 @@ for topic in topics:
     for group in r.json()["results"]:
         groups[group["id"]] = group
 
-with open('groups.json', 'w') as groups_file:
+with open('data/groups.json', 'w') as groups_file:
     json.dump(groups.values(), groups_file)

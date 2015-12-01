@@ -134,6 +134,64 @@ ORDER BY times DESC
 Layered event recommendation
 
 * Events for groups I'm a member of
+
+[source, cypher]
+----
+WITH 24.0*60*60*1000 AS oneDay
+MATCH (member:Member {name: "Mark Needham"})-[:RSVPD {response: "yes"}]->(event:Event)<-[:HOSTED_EVENT]-(group)
+WHERE event.time < timestamp()
+
+WITH  member, oneDay, group, COUNT(*) AS times
+MATCH (group)-[:HOSTED_EVENT]->(event)
+WHERE event.time >= timestamp()
+
+WITH event,
+     group,
+     SUM(times) AS previousEvents,
+     round((event.time - timestamp()) / oneDay) AS days,
+     EXISTS((member)-[:RSVPD {response: "yes"}]->(event)) AS attending
+RETURN event.name,
+       group.name,
+       previousEvents,
+       50 * (1 - exp((-1.0 * (log(5.0) / 40)) * previousEvents)) AS eventScore,
+       days, attending
+ORDER BY eventScore DESC
+----
+
+
 * Events for topics I'm interested in
 * Events for indirect topics that I'm interested in
 * Events that my peers go to
+
+Cosine similarity between people based on liking the same movies
+
+[source, cypher]
+----
+MATCH (p1:Person) -[x:RATED]-> (m:Movie) <-[y:RATED]- (p2:Person)
+WITH  SUM(x.rating * y.rating) AS xyDotProduct,
+      SQRT(REDUCE(xDot = 0.0, a IN COLLECT(x.rating) | xDot + a^2)) AS xLength,
+      SQRT(REDUCE(yDot = 0.0, b IN COLLECT(y.rating) | yDot + b^2)) AS yLength,
+      p1, p2
+MERGE (p1)-[s:SIMILARITY]-(p2)
+SET   s.similarity = xyDotProduct / (xLength * yLength)
+----
+
+* Use this for people similarity based on attending the same events
+* Also use for similarity between topics based on how many times they co-occur in groups/members
+
+[source, cypher]
+----
+MATCH (m:Member)-[:RSVPD {response: "yes"}]->()
+WITH m, COUNT(*) AS times
+RETURN round(log(times)) AS log, COUNT(*)
+ORDER BY log
+----
+
+[source, cypher]
+----
+// checking which topics we're missing that I'm probably interested in
+MATCH (m:Member {name:"Mark Needham"})-[:RSVPD {response:"yes"}]->(event)<-[:HOSTED_EVENT]->()-[:HAS_TOPIC]->(topic)
+WITH m, topic, COUNT(*) AS times, COLLECT(event.name) AS events WHERE times > 5
+RETURN topic.name, EXISTS( (m)-[:INTERESTED_IN]->(topic)  ) AS alreadyInterested, times
+ORDER BY times DESC
+----

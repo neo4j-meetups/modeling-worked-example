@@ -32,3 +32,80 @@ Members + Groups
     <span class="type">NEXT</span>
   </li>
 </ul>
+
+Events + RSVPs
+
+
+<ul class="graph-diagram-markup" data-internal-scale="1" data-external-scale="1">
+  <li class="node" data-node-id="0" data-x="-547" data-y="-201.33003997802734">
+    <span class="caption">Event</span><dl class="properties"><dt>time</dt><dd>1127898000000</dd></dl></li>
+  <li class="node" data-node-id="1" data-x="-547" data-y="302.6319885253906">
+    <span class="caption">Member</span>
+  </li>
+  <li class="node" data-node-id="2" data-x="49.669931411743164" data-y="-201.33003997802734">
+    <span class="caption">Member</span>
+  </li>
+  <li class="node" data-node-id="3" data-x="668.7973327636719" data-y="-201.33003997802734">
+    <span class="caption">Event</span><dl class="properties"><dt>time</dt><dd>1102618800000</dd></dl></li>
+  <li class="relationship" data-from="1" data-to="0">
+    <span class="type">RSVPD</span><dl class="properties"><dt>response</dt><dd>yes</dd></dl></li>
+  <li class="relationship" data-from="2" data-to="0">
+    <span class="type">RSVPD</span><dl class="properties"><dt>response</dt><dd>yes</dd></dl></li>
+  <li class="relationship" data-from="2" data-to="3">
+    <span class="type">RSVPD</span><dl class="properties"><dt>response</dt><dd>yes</dd></dl></li>
+</ul>
+
+Event triangle
+<ul class="graph-diagram-markup" data-internal-scale="1" data-external-scale="1">
+  <li class="node" data-node-id="0" data-x="-4479.440856933594" data-y="-528.1501846313477">
+    <span class="caption">Event</span><dl class="properties"><dt>time</dt><dd>1102618800000</dd></dl></li>
+  <li class="node" data-node-id="1" data-x="-4479.440856933594" data-y="55.33642530441284">
+    <span class="caption">Member</span>
+  </li>
+  <li class="node" data-node-id="2" data-x="-2926.294189453125" data-y="-528.1501846313477">
+    <span class="caption">Event</span><dl class="properties"><dt>time</dt><dd>1127898000000</dd></dl></li>
+  <li class="node" data-node-id="6" data-x="-3619.4033203125" data-y="55.33642530441284">
+    <span class="caption">Membership</span>
+  </li>
+  <li class="node" data-node-id="9" data-x="-3619.4033203125" data-y="-528.1501846313477">
+    <span class="caption">Group</span>
+  </li>
+  <li class="relationship" data-from="6" data-to="9">
+    <span class="type">OF_GROUP</span>
+  </li>
+  <li class="relationship" data-from="1" data-to="6">
+    <span class="type">HAS_MEMBERSHIP</span>
+  </li>
+  <li class="relationship" data-from="9" data-to="0">
+    <span class="type">HOSTED_EVENT</span>
+  </li>
+  <li class="relationship" data-from="1" data-to="0">
+    <span class="type">RSVPD</span><dl class="properties"><dt>response</dt><dd>yes</dd></dl></li>
+  <li class="relationship" data-from="9" data-to="2">
+    <span class="type">HOSTED_EVENT</span>
+  </li>
+</ul>
+
+<ul class="graph-diagram-markup" data-internal-scale="1" data-external-scale="1">
+  <li class="node" data-node-id="0" data-x="-547" data-y="-201.33003997802734">
+    <span class="caption">Event</span><dl class="properties"><dt>time</dt><dd>1127898000000</dd></dl></li>
+  <li class="node" data-node-id="1" data-x="-547" data-y="302.6319885253906">
+    <span class="caption">Member</span>
+  </li>
+  <li class="node" data-node-id="2" data-x="413.1918201446533" data-y="-201.33003997802734">
+    <span class="caption">Group</span>
+  </li>
+  <li class="node" data-node-id="3" data-x="1139.5507507324219" data-y="-201.33003997802734">
+    <span class="caption">Event</span><dl class="properties"><dt>time</dt><dd>1102618800000</dd></dl></li>
+  <li class="relationship" data-from="1" data-to="0">
+    <span class="type">RSVPD</span><dl class="properties"><dt>response</dt><dd>yes</dd></dl></li>
+  <li class="relationship" data-from="2" data-to="0">
+    <span class="type">HOSTED_EVENT</span>
+  </li>
+  <li class="relationship" data-from="2" data-to="3">
+    <span class="type">HOSTED_EVENT</span>
+  </li>
+  <li class="relationship" data-from="1" data-to="2">
+    <span class="type">MEMBER_OF</span>
+  </li>
+</ul>
