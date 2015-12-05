@@ -25,10 +25,10 @@ do
   jq -r ".[] | select(.venue != null) | .venue | [.id, .name, .city, .address_1, .address_2, .lat, .lon] | @csv" $file | sort | uniq >> data/venues.csv
 done
 
-echo "id,name,time,utc_offset,group_id,venue_id,status" > data/events.csv
+echo "id,name,time,utc_offset,group_id,venue_id,status,description" > data/events.csv
 for file in `find data/events -type f`
 do
-  jq -r ".[] | [.id, .name, .time, .utc_offset, .group.id, .venue.id, .status] | @csv" $file >> data/events.csv
+  jq -r ".[] | [.id, .name, .time, .utc_offset, .group.id, .venue.id, .status, .description] | @csv" $file >> data/events.csv
 done
 
 echo "rsvp_id,event_id,member_id,guests,response,created,mtime" > data/rsvps.csv

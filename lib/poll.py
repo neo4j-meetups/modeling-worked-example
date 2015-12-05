@@ -24,7 +24,7 @@ for raw_rsvp in stream_meetup():
         continue
 
     group_id = rsvp["group"]["group_id"]
-    print "{0}:{1}".format(group_id, group_id in group_ids)
+    # print "{0}:{1}".format(group_id, group_id in group_ids)
 
     if group_id in group_ids:
         params = {
