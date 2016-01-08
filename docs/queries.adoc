@@ -195,3 +195,23 @@ WITH m, topic, COUNT(*) AS times, COLLECT(event.name) AS events WHERE times > 5
 RETURN topic.name, EXISTS( (m)-[:INTERESTED_IN]->(topic)  ) AS alreadyInterested, times
 ORDER BY times DESC
 ----
+
+[source, cypher]
+----
+// A ∩ B / √(A ∪ B)
+
+match (topic:Topic)<-[:HAS_TOPIC]-()-[:HAS_TOPIC]->(otherTopic:Topic)
+WHERE ID(topic) < ID(otherTopic)
+WITH topic, otherTopic, COUNT(*) AS times
+
+MATCH (topic)<-[:HAS_TOPIC]-(group1)
+WITH topic, otherTopic, times, COLLECT(group1) AS topic1Groups
+
+MATCH (otherTopic)<-[:HAS_TOPIC]-(group2)
+WITH topic, otherTopic, times, COLLECT(group2) AS topic2Groups, topic1Groups
+UNWIND topic1Groups + topic2Groups AS group
+WITH topic, otherTopic, times, COUNT(DISTINCT group) AS groups WHERE times > 1
+RETURN topic.name, otherTopic.name, times, groups, (times * 1.0) / groups AS similarity
+ORDER BY similarity DESC
+LIMIT 1000
+----

@@ -46,3 +46,10 @@ Now you're all set to follow along with the session.
 The following are the queries that we will write during the session:
 
 include::docs/queries.adoc[]
+
+== Downloading the raw data
+
+[source, bash]
+----
+python lib/download_groups.py
+----
