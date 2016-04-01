@@ -1,0 +1,427 @@
+= Recommendations by Interest
+:csv-url: file:///
+:icons: font
+
+== Find similar groups to Neo4j
+
+image::{img}/group_has_topic.png[float=right]
+
+[verse]
+____
+As a member of the Neo4j London group
+I want to find other similar meetup groups
+So that I can join those groups
+____
+
+== What makes groups similar?
+
+One thing that makes groups similar is the topics that they’re about.
+
+[verse]
+____
+As a member of the Neo4j London group
+I want to find other similar meetup groups
+So that I can join those groups
+____
+
+ifndef::env-guide[]
+
+== Groups
+
+----
+|-----------+------------------------------+----------------------------+--------+----------------|
+|  id       | name                         | urlname                    | rating | created        |
+|-----------+------------------------------+----------------------------+--------+----------------|
+|  841735   | LJC - London Java Community  | Londonjavacommunity        | 4.54   | 1196081014000  |
+|  18313232 | Kubernetes London            | Kubernetes-London          | 5      | 1420729836000  |
+|  18581527 | data+visual London           | data-visual-London         | 4.67   | 1431021679000  |
+|  163876   | London Web                   | londonweb                  | 4.11   | 1034097743000  |
+|  15734842 | Ansible London               | Ansible-London             | 4.42   | 1405439359000  |
+|  12963902 | Scalability London           | Scalability-London         | 4.95   | 1392824462000  |
+|  4062902  | Ember London                 | London-Emberjs-User-Group  | 4.66   | 1339522219000  |
+|  14354522 | London PaaS & Bluemix Meetup | London-PaaS-Bluemix-Meetup | 5      | 1399643167000  |
+|-----------+------------------------------+----------------------------+--------+----------------|
+----
+
+endif::[]
+
+== Import Groups
+
+[source,cypher,subs=attributes]
+----
+LOAD CSV WITH HEADERS FROM "{csv-url}groups.csv"  AS row
+CREATE (:Group { id:row.id,
+                 name:row.name,
+                 urlname:row.urlname,
+                 rating:toint(row.rating),
+                 created:toint(row.created) })
+----
+
+We use CREATE because we know the database is empty when we start.
+
+[source,cypher,subs=attributes]
+----
+MATCH (g:Group) 
+RETURN g.id, g.name, g.urlname 
+----
+
+Topics express areas of interest for both groups and members.
+
+ifndef::env-guide[]
+
+----
+|----------+---------------------------+--------------------------|
+|  id      | name                      | urlkey                   |
+|----------+---------------------------|--------------------------| 
+|  827     | .NET                      | dotnet                   |
+|  2109    | System Administration     | sysadmin                 |
+|  2260    | C#                        | csharp                   |
+|  10105   | Microsoft Windows         | mswindows                |
+|  15167   | Cloud Computing           | cloud-computing          |
+|  46810   | Configuration Management  | configuration-management |
+|  52210   | PowerShell                | powershell               |
+|  66339   | Windows Azure Platform    | windows-azure-platform   |
+|  84706   | Scripting                 | scripting                |
+|  87614   | DevOps                    | devops                   |
+|  99537   | Microsoft Technology      | microsoft-technology     |
+|  160268  | Windows                   | windows                  |
+|  189     | Java                      | java                     |
+|  563     | Open Source               | opensource               |
+|----------+---------------------------+--------------------------|
+----
+
+endif::[]
+
+== Detour: MERGE & Constraints
+
+We want to use `MERGE` because we want to avoid creating duplicate topics
+Make sure to have a unique constraint on `:Topic(id)` so we don’t create the same topic twice.
+
+We create unique constraints to: 
+
+* ensure uniqueness 
+* allow fast lookup of nodes which match these (label,property) pairs.
+* it does the latter by creating an index on the (label, property) pair
+
+[source,cypher,subs=attributes]
+----
+CREATE CONSTRAINT ON (t:Topic) ASSERT t.id IS UNIQUE
+----
+
+[source,cypher,subs=attributes]
+----
+CREATE CONSTRAINT ON (g:Group) ASSERT g.id IS UNIQUE
+----
+
+== Import Topics
+
+[source,cypher,subs=attributes]
+----
+LOAD CSV WITH HEADERS FROM "{csv-url}groups_topics.csv"  AS row
+MERGE (topic:Topic {id: row.id})
+ON CREATE SET topic.name = row.name,
+              topic.urlkey = row.urlkey
+----
+
+=== Find Topics
+
+[source,cypher,subs=attributes]
+----
+MATCH (t:Topic)
+RETURN t.id, t.name
+----
+
+ifndef::env-guide[]
+== Group Topics
+
+----
+|----------+-----------|
+|  id      | groupId   |
+|----------+-----------|
+|  827     | 18780165  |
+|  2109    | 18780165  |
+|  2260    | 18780165  |
+|  10105   | 18780165  |
+|  15167   | 18780165  |
+|  46810   | 18780165  |
+|  46831   | 18780165  |
+|  52210   | 18780165  |
+|----------+-----------|
+----
+endif::[]
+
+== Connect groups and topics
+
+[source,cypher,subs=attributes]
+----
+LOAD CSV WITH HEADERS FROM "{csv-url}groups_topics.csv"  AS row
+MATCH (topic:Topic {id: row.id})
+MATCH (group:Group {id: row.groupId})
+MERGE (group)-[:HAS_TOPIC]->(topic)
+----
+
+The use of `MERGE` here ensures that we end up with a single unique link between a group and a topic.
+
+If we run the query a second time nothing will happen. 
+If we run another `MERGE` query that tries to create a `:HAS_TOPIC` relationship when one already exists it won’t do anything.
+
+
+== Additional Indexes
+
+We create an index on `:Group(name)` so that we can quickly look up groups by name.
+
+[source,cypher,subs=attributes]
+----
+CREATE INDEX ON :Group(name)
+----
+
+Same for topics.
+
+[source,cypher,subs=attributes]
+----
+CREATE INDEX ON :Topic(name)
+----
+
+==  Find similar groups to Neo4j
+
+[source,cypher,subs=attributes]
+----
+MATCH (group:Group {name: "Neo4j - London User Group"})
+      -[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup)
+RETURN otherGroup.name,         COUNT(topic) AS topicsInCommon, 
+       COLLECT(topic.name) AS topics
+ORDER BY topicsInCommon DESC, otherGroup.name
+LIMIT 10
+----
+
+Now that we’ve got the data in let’s see if our model is any good.
+
+This query 
+
+* starts from the Neo4j group, 
+* finds its topics, 
+* then looks for other groups that have that topic 
+* and aggregates the groups with the most common topics. 
+
+
+////
+Find similar groups to Neo4j
+The suggestions are for other database groups, NOSQL groups, data groups.
+So far so good but we’ve only taken into account a small slice of the data available to us.
+The recommendation that we’ve made here is a content based recommendation.
+
+I’m already a member of these!
+From visually inspecting the list I know there are some groups I’m already a member of.
+This would be great for someone who had just joined meetup.com and came across the Neo4j page and wanted to find some similar groups.
+For me it’s not so good since I’ve been using meetup for a few years now and am member of a few groups.
+
+What other data can we get?
+We can also extract people’s group memberships and the topics they’re interested in if they haven’t hidden them!
+We can now write a recommendation that combines collaborative filtering with the content based filtering that we were doing before.
+
+
+Exclude groups I’m a member of
+As a member of the Neo4j London group
+I want to find other similar meetup groups that I’m not already a member of
+So that I can join those groups
+
+A classic case of closing the triangle. 
+We have two sides, let’s close the third side. 
+If I join groups which have a specific topic more frequently then we can weight in that ones favour.
+
+|------------+--------------------+---------------|
+|  id        | name               | joined        |
+|------------+--------------------+---------------|
+|  103929052 | A                  | 1378461129000 |
+|  11337881  | Abhishek Shivkumar | 1421419313000 |
+|  39676622  | Ali Syed           | 1395723669000 |
+|  2773509   | Amit               | 1407935487000 |
+|  30225872  | Attila Sztupak     | 1378812292000 |
+|  12882650  | Cathy White        | 1423566263000 |
+|  109548702 | Danny Bickson      | 1378196635000 |
+|------------+--------------------+---------------|
+
+////
+
+== Exclude groups I’m a member of
+
+image::{img}/group_has_topic_member_of.png[float=right]
+
+[verse]
+____
+As a member of the Neo4j London group
+I want to find other similar meetup groups that I’m not already a member of
+So that I can join those groups
+We’re going to do a bit of filtering based on groups that we’re already a member of
+____
+
+== Add Members
+
+[source,cypher,subs=attributes]
+----
+LOAD CSV WITH HEADERS FROM "{csv-url}path/to/members.csv" AS row
+WITH DISTINCT row.id AS id, row.name AS name
+MERGE (member:Member {id: id})
+ON CREATE SET member.name = name
+----
+
+=== And Membership
+
+
+ifndef::env-guide[]
+
+=== Members and groups
+
+|------------+-----------|
+|  id        | groupId   |
+|------------+-----------|
+|  103929052 | 10087112  |
+|  11337881  | 10087112  |
+|  39676622  | 10087112  |
+|  2773509   | 10087112  |
+|  30225872  | 10087112  |
+|  12882650  | 10087112  |
+|  109548702 | 10087112  |
+|------------+-----------|
+endif::[]
+
+[source,cypher,subs=attributes]
+----
+LOAD CSV WITH HEADERS FROM "{csv-url}path/to/members.csv" AS row
+WITH row WHERE NOT row.joined is null
+MATCH (member:Member {id: row.id})
+MATCH (group:Group {id: row.groupId})
+MERGE (member)-[:MEMBER_OF {joined: toint(row.joined)}]->(group)
+----
+
+
+== Exclude groups I’m a member of
+
+[source,cypher,subs=attributes]
+----
+MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
+RETURN otherGroup.name, 
+       COUNT(topic) AS topicsInCommon, 
+       EXISTS((:Member {name: "Mark Needham"})-[:MEMBER_OF]->(otherGroup)) AS alreadyMember,
+       COLLECT(topic.name) AS topics
+ORDER BY topicsInCommon DESC
+LIMIT 10
+----
+
+So now we identify them as being ones we’re already a member of so there’s no point in recommending them again.
+
+Interesting thing to notice is that we now get back groups which we didn’t before. 
+
+That’s because we didn’t force any ordering other than `topicsInCommon` so we can’t expect a repeatable order on other columns.
+
+== Exclude groups I’m a member of
+
+[source,cypher,subs=attributes]
+----
+MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group) 
+WHERE NOT( (:Member {name: "Mark Needham"})-[:MEMBER_OF]->(otherGroup) )
+RETURN otherGroup.name, 
+       COUNT(topic) AS topicsInCommon, 
+       COLLECT(topic.name) AS topics
+ORDER BY topicsInCommon DESC
+LIMIT 10
+----
+
+
+== Find my similar groups
+
+image::{img}/group_has_topic_member_of_interested_in.png[float=right]
+
+[verse]
+____
+As a member of several meetup groups
+I want to find other similar meetup groups       
+that I’m not already a member of
+So that I can join those groups
+____
+
+Now we’re going to make our recommendation on an individual basis.
+
+We can use collaborative filtering to see what other groups people in our groups join.
+
+A classic case of *closing the triangle.*
+We have two sides, let’s close the third side. 
+
+If I join groups which have a specific topic more frequently then we can weight in that ones favour.
+
+ifndef::env-guide[]
+
+== Member Interests (Topics)
+
+|------------+----------------------------------------------|
+|  id        | topics                                       |
+|------------+----------------------------------------------|
+|  103929052 | 18062;563;16575;20923;3833;108403;1307;10099 |
+|  11337881  | 1372;1512;49585;24553;417;24778;25584;23005  |
+|  39676622  |                                              |
+|  2773509   |                                              |
+|  30225872  | 48471;22792;58162;1762                       |
+|  12882650  | 563;3833;9696;659;1621,48471;22792           |
+|  109548702 | 21681;30928;18062;5532,55324;15167;108403    |
+|------------+----------------------------------------------|
+endif::[]
+
+== Member Interests (Topics)
+
+[source,cypher,subs=attributes]
+----
+USING PERIODIC COMMIT 10000
+LOAD CSV WITH HEADERS FROM "{csv-url}path/to/members.csv" AS row
+WITH split(row.topics, ";") AS topics, row.id AS memberId
+UNWIND topics AS topicId
+MATCH (member:Member {id: memberId})
+MATCH (topic:Topic {id: topicId})
+MERGE (member)-[:INTERESTED_IN]->(topic)
+----
+
+== Find my similar groups
+
+[source,cypher,subs=attributes]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:INTERESTED_IN]->(topic),        
+      (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
+ WITH member, topic, COUNT(*) AS score
+MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)  
+WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
+RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
+ORDER BY score DESC
+----
+
+*So we’ve changed the centre of the query to a person rather than a group. 
+
+In this case this recommendation might be used when TODO???
+
+This shows up a lot of data related meetups which makes sense for me. 
+
+== What am I actually interested in?
+
+image::{img}/group_has_topic_member_of.png[float=right]
+
+[verse]
+____
+As a member of several meetup groups
+I want to find other similar meetup groups       
+that I’m not already a member of
+So that I can join those groups
+____
+
+
+We could also choose to ignore that middle link or perhaps make it optional for extra points.  
+This will introduce some groups which cover topics that we aren’t explicitly interested in but have a transient interest in via groups we’re a member of.
+
+== What am I actually interested in?
+
+[source,cypher,subs=attributes]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
+WITH member, topic, COUNT(*) AS score
+MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)  
+WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
+RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
+ORDER BY score DESC
+----
