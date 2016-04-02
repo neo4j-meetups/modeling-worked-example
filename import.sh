@@ -1,6 +1,7 @@
 #!/bin/sh
 
-NEO="neo4j-community-2.3.1"
+NEO="neo4j-community-2.3.2"
+# NEO="neo4j-community-3.0.0-M03"
 
 ./${NEO}/bin/neo4j-shell --file cypher/groups.cql
 ./${NEO}/bin/neo4j-shell --file cypher/topics.cql

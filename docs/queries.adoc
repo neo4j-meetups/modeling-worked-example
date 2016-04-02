@@ -215,3 +215,30 @@ RETURN topic.name, otherTopic.name, times, groups, (times * 1.0) / groups AS sim
 ORDER BY similarity DESC
 LIMIT 1000
 ----
+
+Similar topics
+
+[source, cypher]
+----
+MATCH (t1:Topic)<-[:HAS_TOPIC]-(:Group)-[:HAS_TOPIC]-(t2:Topic)
+WHERE ID(t1) < ID(t2)
+WITH t1, t2, COUNT(*) AS score
+MERGE (t1)-[:SIMILAR {score: score}]-(t2)
+----
+
+[source, cypher]
+----
+match (topic:Topic)<-[:HAS_TOPIC]-()-[:HAS_TOPIC]->(otherTopic:Topic)
+WHERE ID(topic) < ID(otherTopic)
+WITH topic, otherTopic, COUNT(*) AS times
+
+MATCH (topic)<-[:HAS_TOPIC]-(group1)
+WITH topic, otherTopic, times, COLLECT(group1) AS topic1Groups
+
+MATCH (otherTopic)<-[:HAS_TOPIC]-(group2)
+WITH topic, otherTopic, times, COLLECT(group2) AS topic2Groups, topic1Groups
+UNWIND topic1Groups + topic2Groups AS group
+WITH topic, otherTopic, times, COUNT(DISTINCT group) AS groups WHERE times > 1
+WITH topic, otherTopic, times, groups, (times * 1.0) / groups AS similarity
+MERGE (topic)-[:SIMILAR_TO {score: similarity}]-(otherTopic)
+----

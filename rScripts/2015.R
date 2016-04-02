@@ -51,7 +51,7 @@ ggplot(aes(x = year, y = rsvps),
        data = eventsDF %>% mutate(year = format(timestamp, "%Y")) %>% group_by(year) %>% summarise(rsvps= sum(rsvps)) ) + 
   geom_bar(stat = "identity", fill = "Dark Blue") + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  ggtitle("Number of events")
+  ggtitle("Number of attendees")
 
 
 eventsByYearMon = eventsDF %>% 
