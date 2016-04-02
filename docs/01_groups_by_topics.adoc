@@ -1,5 +1,5 @@
 = Recommendations by Interest
-:csv-url: file:///
+:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
 :icons: font
 
 == Find similar groups to Neo4j
@@ -188,7 +188,7 @@ CREATE INDEX ON :Topic(name)
 ----
 MATCH (group:Group {name: "Neo4j - London User Group"})
       -[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup)
-RETURN otherGroup.name,         COUNT(topic) AS topicsInCommon, 
+RETURN otherGroup.name, COUNT(topic) AS topicsInCommon, 
        COLLECT(topic.name) AS topics
 ORDER BY topicsInCommon DESC, otherGroup.name
 LIMIT 10
@@ -259,7 +259,13 @@ ____
 
 [source,cypher,subs=attributes]
 ----
-LOAD CSV WITH HEADERS FROM "{csv-url}path/to/members.csv" AS row
+CREATE CONSTRAINT ON (m:Member) ASSERT m.id IS UNIQUE
+----
+
+[source,cypher,subs=attributes]
+----
+USING PERIODIC COMMIT 10000
+LOAD CSV WITH HEADERS FROM "{csv-url}members.csv" AS row
 WITH DISTINCT row.id AS id, row.name AS name
 MERGE (member:Member {id: id})
 ON CREATE SET member.name = name
@@ -287,11 +293,13 @@ endif::[]
 
 [source,cypher,subs=attributes]
 ----
-LOAD CSV WITH HEADERS FROM "{csv-url}path/to/members.csv" AS row
+USING PERIODIC COMMIT 10000
+LOAD CSV WITH HEADERS FROM "{csv-url}members.csv" AS row
 WITH row WHERE NOT row.joined is null
 MATCH (member:Member {id: row.id})
 MATCH (group:Group {id: row.groupId})
-MERGE (member)-[:MEMBER_OF {joined: toint(row.joined)}]->(group)
+MERGE (member)-[membership:MEMBER_OF]->(group)
+ON CREATE SET membership.joined=toInt(row.joined);
 ----
 
 
@@ -371,9 +379,10 @@ endif::[]
 [source,cypher,subs=attributes]
 ----
 USING PERIODIC COMMIT 10000
-LOAD CSV WITH HEADERS FROM "{csv-url}path/to/members.csv" AS row
+LOAD CSV WITH HEADERS FROM "{csv-url}members.csv" AS row
 WITH split(row.topics, ";") AS topics, row.id AS memberId
 UNWIND topics AS topicId
+WITH DISTINCT memberId, topicId
 MATCH (member:Member {id: memberId})
 MATCH (topic:Topic {id: topicId})
 MERGE (member)-[:INTERESTED_IN]->(topic)
