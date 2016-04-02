@@ -45,11 +45,22 @@ ifndef::env-guide[]
 
 endif::[]
 
+[source,cypher,subs=attributes]
+----
+LOAD CSV WITH HEADERS
+FROM "{csv-url}groups.csv"
+AS row
+RETURN row
+LIMIT 10
+----
+
 == Import Groups
 
 [source,cypher,subs=attributes]
 ----
-LOAD CSV WITH HEADERS FROM "{csv-url}groups.csv"  AS row
+LOAD CSV WITH HEADERS
+FROM "{csv-url}groups.csv"
+AS row
 CREATE (:Group { id:row.id,
                  name:row.name,
                  urlname:row.urlname,
@@ -61,8 +72,8 @@ We use CREATE because we know the database is empty when we start.
 
 [source,cypher,subs=attributes]
 ----
-MATCH (g:Group) 
-RETURN g.id, g.name, g.urlname 
+MATCH (g:Group)
+RETURN g.id, g.name, g.urlname
 ----
 
 Topics express areas of interest for both groups and members.
@@ -72,7 +83,7 @@ ifndef::env-guide[]
 ----
 |----------+---------------------------+--------------------------|
 |  id      | name                      | urlkey                   |
-|----------+---------------------------|--------------------------| 
+|----------+---------------------------|--------------------------|
 |  827     | .NET                      | dotnet                   |
 |  2109    | System Administration     | sysadmin                 |
 |  2260    | C#                        | csharp                   |
@@ -97,9 +108,9 @@ endif::[]
 We want to use `MERGE` because we want to avoid creating duplicate topics
 Make sure to have a unique constraint on `:Topic(id)` so we don’t create the same topic twice.
 
-We create unique constraints to: 
+We create unique constraints to:
 
-* ensure uniqueness 
+* ensure uniqueness
 * allow fast lookup of nodes which match these (label,property) pairs.
 * it does the latter by creating an index on the (label, property) pair
 
@@ -162,7 +173,7 @@ MERGE (group)-[:HAS_TOPIC]->(topic)
 
 The use of `MERGE` here ensures that we end up with a single unique link between a group and a topic.
 
-If we run the query a second time nothing will happen. 
+If we run the query a second time nothing will happen.
 If we run another `MERGE` query that tries to create a `:HAS_TOPIC` relationship when one already exists it won’t do anything.
 
 
@@ -188,7 +199,7 @@ CREATE INDEX ON :Topic(name)
 ----
 MATCH (group:Group {name: "Neo4j - London User Group"})
       -[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup)
-RETURN otherGroup.name, COUNT(topic) AS topicsInCommon, 
+RETURN otherGroup.name, COUNT(topic) AS topicsInCommon,
        COLLECT(topic.name) AS topics
 ORDER BY topicsInCommon DESC, otherGroup.name
 LIMIT 10
@@ -196,12 +207,12 @@ LIMIT 10
 
 Now that we’ve got the data in let’s see if our model is any good.
 
-This query 
+This query
 
-* starts from the Neo4j group, 
-* finds its topics, 
-* then looks for other groups that have that topic 
-* and aggregates the groups with the most common topics. 
+* starts from the Neo4j group,
+* finds its topics,
+* then looks for other groups that have that topic
+* and aggregates the groups with the most common topics.
 
 
 ////
@@ -225,8 +236,8 @@ As a member of the Neo4j London group
 I want to find other similar meetup groups that I’m not already a member of
 So that I can join those groups
 
-A classic case of closing the triangle. 
-We have two sides, let’s close the third side. 
+A classic case of closing the triangle.
+We have two sides, let’s close the third side.
 If I join groups which have a specific topic more frequently then we can weight in that ones favour.
 
 |------------+--------------------+---------------|
@@ -278,6 +289,7 @@ ifndef::env-guide[]
 
 === Members and groups
 
+----
 |------------+-----------|
 |  id        | groupId   |
 |------------+-----------|
@@ -289,6 +301,8 @@ ifndef::env-guide[]
 |  12882650  | 10087112  |
 |  109548702 | 10087112  |
 |------------+-----------|
+----
+
 endif::[]
 
 [source,cypher,subs=attributes]
@@ -308,8 +322,8 @@ ON CREATE SET membership.joined=toInt(row.joined);
 [source,cypher,subs=attributes]
 ----
 MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
-RETURN otherGroup.name, 
-       COUNT(topic) AS topicsInCommon, 
+RETURN otherGroup.name,
+       COUNT(topic) AS topicsInCommon,
        EXISTS((:Member {name: "Mark Needham"})-[:MEMBER_OF]->(otherGroup)) AS alreadyMember,
        COLLECT(topic.name) AS topics
 ORDER BY topicsInCommon DESC
@@ -318,7 +332,7 @@ LIMIT 10
 
 So now we identify them as being ones we’re already a member of so there’s no point in recommending them again.
 
-Interesting thing to notice is that we now get back groups which we didn’t before. 
+Interesting thing to notice is that we now get back groups which we didn’t before.
 
 That’s because we didn’t force any ordering other than `topicsInCommon` so we can’t expect a repeatable order on other columns.
 
@@ -326,10 +340,10 @@ That’s because we didn’t force any ordering other than `topicsInCommon` so w
 
 [source,cypher,subs=attributes]
 ----
-MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group) 
+MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
 WHERE NOT( (:Member {name: "Mark Needham"})-[:MEMBER_OF]->(otherGroup) )
-RETURN otherGroup.name, 
-       COUNT(topic) AS topicsInCommon, 
+RETURN otherGroup.name,
+       COUNT(topic) AS topicsInCommon,
        COLLECT(topic.name) AS topics
 ORDER BY topicsInCommon DESC
 LIMIT 10
@@ -343,7 +357,7 @@ image::{img}/group_has_topic_member_of_interested_in.png[float=right]
 [verse]
 ____
 As a member of several meetup groups
-I want to find other similar meetup groups       
+I want to find other similar meetup groups
 that I’m not already a member of
 So that I can join those groups
 ____
@@ -353,7 +367,7 @@ Now we’re going to make our recommendation on an individual basis.
 We can use collaborative filtering to see what other groups people in our groups join.
 
 A classic case of *closing the triangle.*
-We have two sides, let’s close the third side. 
+We have two sides, let’s close the third side.
 
 If I join groups which have a specific topic more frequently then we can weight in that ones favour.
 
@@ -392,20 +406,20 @@ MERGE (member)-[:INTERESTED_IN]->(topic)
 
 [source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})-[:INTERESTED_IN]->(topic),        
+MATCH (member:Member {name: "Mark Needham"})-[:INTERESTED_IN]->(topic),
       (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
  WITH member, topic, COUNT(*) AS score
-MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)  
+MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)
 WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
 RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
 ORDER BY score DESC
 ----
 
-*So we’ve changed the centre of the query to a person rather than a group. 
+*So we’ve changed the centre of the query to a person rather than a group.
 
 In this case this recommendation might be used when TODO???
 
-This shows up a lot of data related meetups which makes sense for me. 
+This shows up a lot of data related meetups which makes sense for me.
 
 == What am I actually interested in?
 
@@ -414,13 +428,13 @@ image::{img}/group_has_topic_member_of.png[float=right]
 [verse]
 ____
 As a member of several meetup groups
-I want to find other similar meetup groups       
+I want to find other similar meetup groups
 that I’m not already a member of
 So that I can join those groups
 ____
 
 
-We could also choose to ignore that middle link or perhaps make it optional for extra points.  
+We could also choose to ignore that middle link or perhaps make it optional for extra points.
 This will introduce some groups which cover topics that we aren’t explicitly interested in but have a transient interest in via groups we’re a member of.
 
 == What am I actually interested in?
@@ -429,7 +443,7 @@ This will introduce some groups which cover topics that we aren’t explicitly i
 ----
 MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
 WITH member, topic, COUNT(*) AS score
-MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)  
+MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)
 WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
 RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
 ORDER BY score DESC
