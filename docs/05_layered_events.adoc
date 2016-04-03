@@ -48,6 +48,7 @@ ORDER BY days, previousEvents DESC
 
 == My topics
 
+[source,cypher,subs=attributes]
 ----
 WITH 24.0*60*60*1000 AS oneDay
 
@@ -64,4 +65,46 @@ WITH oneDay, group, futureEvent, member, isMember, COUNT(rsvp) AS previousEvents
 
 RETURN group.name, futureEvent.name, isMember, previousEvents, COUNT(topic) AS topics, round((futureEvent.time - timestamp()) / oneDay) AS days
 ORDER BY days,previousEvents DESC, topics DESC
+----
+
+== Find the social graph lurking within
+
+I have no idea how long this takes to run - had it using a Python script in the talk
+Perhaps this is another candidate for procedures?
+
+[source,cypher,subs=attributes]
+----
+MATCH (m1:Member)
+MATCH (m1)-[:RSVP {response: 'yes'}]->(event:Event)<-[:RSVP {response: 'yes'}]-(m2:Member)
+WITH m1, m2, COLLECT(event) AS events, COUNT(*) AS times
+WHERE times >= 5
+WITH m1, m2, times, [event IN events | SIZE((event)<-[:RSVP_YES]-())] AS attendances
+WITH m1, m2, REDUCE(score = 0.0, a IN attendances | score + (1.0 / a)) AS score
+
+MERGE (m1)-[friendsRel:FRIENDS]-(m2)
+SET friendsRel.score = row.score
+----
+
+== Events my friends are attending
+
+[source,cypher,subs=attributes]
+----
+WITH 24.0*60*60*1000 AS oneDay
+MATCH (member:Member {name: "Mark Needham"})
+MATCH (futureEvent:Event) WHERE futureEvent.time >= timestamp()
+MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
+
+WITH oneDay, group, futureEvent, member, EXISTS((group)<-[:MEMBER_OF]-(member)) AS isMember
+OPTIONAL MATCH (member)-[rsvp:RSVPD {response: "yes"}]->(pastEvent)<-[:HOSTED_EVENT]-(group)
+WHERE pastEvent.time < timestamp()
+
+WITH oneDay, group, futureEvent, member, isMember, COUNT(rsvp) AS previousEvents
+OPTIONAL MATCH (futureEvent)<-[:HOSTED_EVENT]-()-[:HAS_TOPIC]->(topic)<-[:INTERESTED_IN]-(member)
+
+WITH oneDay, group, futureEvent, member, isMember, previousEvents, COUNT(topic) AS topics
+OPTIONAL MATCH (member)-[:FRIENDS]-(:Member)-[rsvpYes:RSVP_YES]->(futureEvent)
+
+RETURN group.name, futureEvent.name, isMember, round((futureEvent.time - timestamp()) / oneDay) AS days,        previousEvents, topics, COUNT(rsvpYes) AS friendsGoing
+ORDER BY days, friendsGoing DESC, previousEvents DESC
+LIMIT 15
 ----
