@@ -1,0 +1,12 @@
+= Free for all
+:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
+:icons: font
+
+What else can we add to the model to come up with more interesting recommendations?
+Here you have some time to play around with the data and come up with something new
+
+== Ideas
+
+* Locations?
+* Add in another data set? Twitter?
+* Comments + sentiment analysis?

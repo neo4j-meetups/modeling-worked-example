@@ -1,0 +1,67 @@
+= Layered Events
+:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
+:icons: font
+
+Here we are going to build a hybrid recommendation engine that takes lots of factors into account.
+
+Let's create some scoring functions in APOC so we can use those inside queries.
+
+Anyway this is what we have to start with:
+
+* events in my groups
+* events I’ve previously attended
+* topics I’m interested in
+* events my peers attend
+
+As a member of several meetup groups who has previously attended events
+I want to find other events hosted by those groups
+So that I can attend those events
+
+[source,cypher,subs=attributes]
+----
+LOAD CSV WITH HEADERS FROM "{csv-url}rsvps.csv" AS row
+MATCH (member:Member {id: row.member_id})
+MATCH (event:Event {id: row.event_id})
+MERGE (member)-[rsvp:RSVPD {id: row.rsvp_id}]->(event)
+ON CREATE SET rsvp.created = toint(row.created), 
+              rsvp.lastModified = toint(row.mtime), 
+              rsvp.response = row.response;
+----
+
+== Previous events attended
+
+[source,cypher,subs=attributes]
+----
+WITH 24.0*60*60*1000 AS oneDay
+
+MATCH (member:Member {name: "Mark Needham"})
+MATCH (futureEvent:Event) WHERE futureEvent.time >= timestamp()
+MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
+
+WITH oneDay, group, futureEvent, member, EXISTS((group)<-[:MEMBER_OF]-(member)) AS isMember
+OPTIONAL MATCH (member)-[rsvp:RSVPD {response: "yes"}]->(pastEvent)<-[:HOSTED_EVENT]-(group)
+WHERE pastEvent.time < timestamp()
+
+RETURN group.name, futureEvent.name, isMember, COUNT(rsvp) AS previousEvents, round((futureEvent.time - timestamp()) / oneDay) AS days
+ORDER BY days, previousEvents DESC
+----
+
+== My topics
+
+----
+WITH 24.0*60*60*1000 AS oneDay
+
+MATCH (member:Member {name: "Mark Needham"})
+MATCH (futureEvent:Event) WHERE futureEvent.time >= timestamp()
+MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
+
+WITH oneDay, group, futureEvent, member, EXISTS((group)<-[:MEMBER_OF]-(member)) AS isMember
+OPTIONAL MATCH (member)-[rsvp:RSVPD {response: "yes"}]->(pastEvent)<-[:HOSTED_EVENT]-(group)
+WHERE pastEvent.time < timestamp()
+
+WITH oneDay, group, futureEvent, member, isMember, COUNT(rsvp) AS previousEvents
+OPTIONAL MATCH (futureEvent)<-[:HOSTED_EVENT]-()-[:HAS_TOPIC]->(topic)<-[:INTERESTED_IN]-(member)
+
+RETURN group.name, futureEvent.name, isMember, previousEvents, COUNT(topic) AS topics, round((futureEvent.time - timestamp()) / oneDay) AS days
+ORDER BY days,previousEvents DESC, topics DESC
+----

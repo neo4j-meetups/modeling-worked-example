@@ -6,3 +6,5 @@ ifndef::env-guide[]
 
 Here I want to put something showing how you can use one of the APOC procedures to have a job which keeps the graph updated?
 e.g. we could once a day run the inferred topics query maybe
+
+Maybe we can also put in some stuff showing how to wire in an event handler that could keep inferred relationships up to date?

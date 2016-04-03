@@ -1,0 +1,43 @@
+= Events
+:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
+:icons: font
+
+Now it’s time to bring events into the graph.
+
+[source,cypher,subs=attributes]
+----
+CREATE INDEX ON :Event(id)
+----
+
+[source,cypher,subs=attributes]
+----
+CREATE INDEX ON :Event(time)
+----
+
+[source,cypher,subs=attributes]
+----
+LOAD CSV WITH HEADERS FROM "{csv-url}events.csv" AS row
+MERGE (event:Event {id: row.id})
+ON CREATE SET event.name = row.name,
+              event.time = toint(row.time),
+              event.utcOffset = toint(row.utc_offset)
+----
+
+== Find future events in my groups
+
+Once we start looking to make event recommendations the simplest thing we can do is find the groups we’re a member of and then find its future events
+
+[source,cypher,subs=attributes]
+----
+WITH 24.0*60*60*1000 AS oneDay
+
+MATCH (member:Member {name: "Mark Needham"})
+MATCH (futureEvent:Event) WHERE futureEvent.time >= timestamp()
+MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
+
+RETURN group.name,
+       futureEvent.name,
+       EXISTS((group)<-[:MEMBER_OF]-(member)) AS isMember,
+       round((futureEvent.time - timestamp()) / oneDay) AS days
+ORDER BY isMember DESC, days
+----
