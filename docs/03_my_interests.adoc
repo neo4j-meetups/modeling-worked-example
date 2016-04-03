@@ -1,0 +1,110 @@
+= Recommendations by explicit interest
+:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
+:icons: font
+
+ifndef::env-guide[]
+
+== Member Interests (Topics)
+
+|------------+----------------------------------------------|
+|  id        | topics                                       |
+|------------+----------------------------------------------|
+|  103929052 | 18062;563;16575;20923;3833;108403;1307;10099 |
+|  11337881  | 1372;1512;49585;24553;417;24778;25584;23005  |
+|  39676622  |                                              |
+|  2773509   |                                              |
+|  30225872  | 48471;22792;58162;1762                       |
+|  12882650  | 563;3833;9696;659;1621,48471;22792           |
+|  109548702 | 21681;30928;18062;5532,55324;15167;108403    |
+|------------+----------------------------------------------|
+endif::[]
+
+== Member Interests (Topics)
+
+What data do we have?
+
+[source,cypher,subs=attributes]
+----
+USING PERIODIC COMMIT 10000
+LOAD CSV WITH HEADERS
+FROM "{csv-url}members.csv" AS row
+RETURN row.id, row.topics
+LIMIT 10
+----
+
+== Member Interests (Topics)
+
+[source,cypher,subs=attributes]
+----
+USING PERIODIC COMMIT 10000
+LOAD CSV WITH HEADERS FROM "{csv-url}members.csv" AS row
+WITH split(row.topics, ";") AS topics, row.id AS memberId
+UNWIND topics AS topicId
+WITH DISTINCT memberId, topicId
+MATCH (member:Member {id: memberId})
+MATCH (topic:Topic {id: topicId})
+MERGE (member)-[:INTERESTED_IN]->(topic)
+----
+
+Should we do something here with indicating this is an explicit interest?
+Later on we add some inferred interests
+
+== Find my similar groups
+
+[source,cypher,subs=attributes]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:INTERESTED_IN]->(topic),
+      (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
+ WITH member, topic, COUNT(*) AS score
+MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)
+WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
+RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
+ORDER BY score DESC
+----
+
+*So we’ve changed the centre of the query to a person rather than a group.
+
+In this case this recommendation might be used when TODO???
+
+This shows up a lot of data related meetups which makes sense for me.
+
+== What am I actually interested in?
+
+image::{img}/group_has_topic_member_of.png[float=right]
+
+[verse]
+____
+As a member of several meetup groups
+I want to find other similar meetup groups
+that I’m not already a member of
+So that I can join those groups
+____
+
+We could also choose to ignore that middle link or perhaps make it optional for extra points.
+This will introduce some groups which cover topics that we aren’t explicitly interested in but have a transient interest in via groups we’re a member of.
+
+== What am I actually interested in?
+
+I don't like these queries - I think we should change them to use the INTERESTED_IN relationship that we create a bit further on
+Can also show how you could run a procedure to keep those inferred interests up to date later on maybe?
+
+[source,cypher,subs=attributes]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
+WITH member, topic, COUNT(*) AS score
+MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)
+WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
+RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
+ORDER BY score DESC
+----
+
+== Collaborative filtering
+
+[source,cypher,subs=attributes]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->(group)<-[:MEMBER_OF]-()-[:MEMBER_OF]->(otherGroup)
+RETURN otherGroup.name, COUNT(*) AS score
+ORDER BY score DESC
+----
+
+== Hybrid

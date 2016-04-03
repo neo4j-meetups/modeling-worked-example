@@ -1,4 +1,4 @@
-= Recommendations by Interest
+= Similar groups
 :csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
 :icons: font
 

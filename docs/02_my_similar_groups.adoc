@@ -1,0 +1,137 @@
+= Recommendations by implicit interest
+:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
+:icons: font
+
+== Exclude groups I’m a member of
+
+image::{img}/group_has_topic_member_of.png[float=right]
+
+[verse]
+____
+As a member of the Neo4j London group
+I want to find other similar meetup groups that I’m not already a member of
+So that I can join those groups
+____
+
+We’re going to do a bit of filtering based on groups that we’re already a member of
+
+== Explore Members data
+
+Let's see what data we've got to play with.
+Run the following query to show the first ten rows of the members CSV file:
+
+[source,cypher,subs=attributes]
+----
+LOAD CSV WITH HEADERS
+FROM "{csv-url}members.csv" AS row
+RETURN row
+LIMIT 10
+----
+
+== Add Members
+
+Now we'll put some members into our database.
+We create a unique constriant on `Member(id)` to ensure we don't insert the same member twice.
+
+[source,cypher,subs=attributes]
+----
+CREATE CONSTRAINT ON (m:Member)
+ASSERT m.id IS UNIQUE
+----
+
+[source,cypher,subs=attributes]
+----
+USING PERIODIC COMMIT 10000
+LOAD CSV WITH HEADERS
+FROM "{csv-url}members.csv" AS row
+WITH DISTINCT row.id AS id, row.name AS name
+MERGE (member:Member {id: id})
+ON CREATE SET member.name = name
+----
+
+=== Add Membership
+
+ifndef::env-guide[]
+
+=== Members and groups
+
+----
+|------------+-----------|
+|  id        | groupId   |
+|------------+-----------|
+|  103929052 | 10087112  |
+|  11337881  | 10087112  |
+|  39676622  | 10087112  |
+|  2773509   | 10087112  |
+|  30225872  | 10087112  |
+|  12882650  | 10087112  |
+|  109548702 | 10087112  |
+|------------+-----------|
+----
+
+endif::[]
+
+[source,cypher,subs=attributes]
+----
+USING PERIODIC COMMIT 10000
+LOAD CSV WITH HEADERS
+FROM "{csv-url}members.csv" AS row
+WITH row WHERE NOT row.joined is null
+MATCH (member:Member {id: row.id})
+MATCH (group:Group {id: row.groupId})
+MERGE (member)-[membership:MEMBER_OF]->(group)
+ON CREATE SET membership.joined=toInt(row.joined);
+----
+
+== Exclude groups I’m a member of
+
+[source,cypher,subs=attributes]
+----
+MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
+RETURN otherGroup.name,
+       COUNT(topic) AS topicsInCommon,
+       EXISTS((:Member {name: "Mark Needham"})-[:MEMBER_OF]->(otherGroup)) AS alreadyMember,
+       COLLECT(topic.name) AS topics
+ORDER BY topicsInCommon DESC
+LIMIT 10
+----
+
+So now we identify them as being ones we’re already a member of so there’s no point in recommending them again.
+
+Interesting thing to notice is that we now get back groups which we didn’t before.
+
+That’s because we didn’t force any ordering other than `topicsInCommon` so we can’t expect a repeatable order on other columns.
+
+== Exclude groups I’m a member of
+
+[source,cypher,subs=attributes]
+----
+MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
+WHERE NOT( (:Member {name: "Mark Needham"})-[:MEMBER_OF]->(otherGroup) )
+RETURN otherGroup.name,
+       COUNT(topic) AS topicsInCommon,
+       COLLECT(topic.name) AS topics
+ORDER BY topicsInCommon DESC
+LIMIT 10
+----
+
+== Find my similar groups
+
+image::{img}/group_has_topic_member_of_interested_in.png[float=right]
+
+[verse]
+____
+As a member of several meetup groups
+I want to find other similar meetup groups
+that I’m not already a member of
+So that I can join those groups
+____
+
+Now we’re going to make our recommendation on an individual basis.
+
+We can use collaborative filtering to see what other groups people in our groups join.
+
+A classic case of *closing the triangle.*
+We have two sides, let’s close the third side.
+
+If I join groups which have a specific topic more frequently then we can weight in that ones favour.
