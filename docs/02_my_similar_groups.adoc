@@ -4,6 +4,8 @@
 
 == Exclude groups I’m a member of
 
+Finding groups similar to the Neo4j group is a decent start but most good recommendation engines try to make recommendations customised for the user.
+
 image::{img}/group_has_topic_member_of.png[float=right]
 
 [verse]
@@ -31,7 +33,7 @@ LIMIT 10
 == Add Members
 
 Now we'll put some members into our database.
-We create a unique constriant on `Member(id)` to ensure we don't insert the same member twice.
+We create a unique constraint on `Member(id)` to ensure we don't insert the same member twice.
 
 [source,cypher,subs=attributes]
 ----
@@ -98,11 +100,13 @@ LIMIT 10
 
 So now we identify them as being ones we’re already a member of so there’s no point in recommending them again.
 
-Interesting thing to notice is that we now get back groups which we didn’t before.
+An interesting thing to notice is that we now get back groups which we didn’t before.
 
 That’s because we didn’t force any ordering other than `topicsInCommon` so we can’t expect a repeatable order on other columns.
 
 == Exclude groups I’m a member of
+
+In the following query we move the exclusion pattern up into a `WHERE` clause so groups we're already a member of won't be returned at all.
 
 [source,cypher,subs=attributes]
 ----

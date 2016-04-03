@@ -112,7 +112,8 @@ We create unique constraints to:
 
 * ensure uniqueness
 * allow fast lookup of nodes which match these (label,property) pairs.
-* it does the latter by creating an index on the (label, property) pair
+
+It does the latter by creating an index on the (label, property) pair
 
 [source,cypher,subs=attributes]
 ----
@@ -209,5 +210,5 @@ This query
 
 * starts from the Neo4j group,
 * finds its topics,
-* then looks for other groups that have that topic
-* and aggregates the groups with the most common topics.
+* then looks for other groups that have those topics
+* and aggregates the groups with the most topics in common.
