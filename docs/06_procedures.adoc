@@ -1,0 +1,8 @@
+= Procedures
+:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
+:icons: font
+
+ifndef::env-guide[]
+
+Here I want to put something showing how you can use one of the APOC procedures to have a job which keeps the graph updated?
+e.g. we could once a day run the inferred topics query maybe

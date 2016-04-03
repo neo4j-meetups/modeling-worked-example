@@ -425,6 +425,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="content">
 <div class="sect2">
 <h3 id="_exclude_groups_i_m_a_member_of">Exclude groups I’m a member of</h3>
+<div class="paragraph">
+<p>Finding groups similar to the Neo4j group is a decent start but most good recommendation engines try to make recommendations customised for the user.</p>
+</div>
 <div class="imageblock" style="float: right">
 <div class="content">
 <img src="http://guides.neo4j.com/intro/img/group_has_topic_member_of.png" alt="group has topic member of">
@@ -458,7 +461,7 @@ LIMIT 10</code></pre>
 <h3 id="_add_members">Add Members</h3>
 <div class="paragraph">
 <p>Now we&#8217;ll put some members into our database.
-We create a unique constriant on <code>Member(id)</code> to ensure we don&#8217;t insert the same member twice.</p>
+We create a unique constraint on <code>Member(id)</code> to ensure we don&#8217;t insert the same member twice.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -528,7 +531,7 @@ LIMIT 10</code></pre>
 <p>So now we identify them as being ones we’re already a member of so there’s no point in recommending them again.</p>
 </div>
 <div class="paragraph">
-<p>Interesting thing to notice is that we now get back groups which we didn’t before.</p>
+<p>An interesting thing to notice is that we now get back groups which we didn’t before.</p>
 </div>
 <div class="paragraph">
 <p>That’s because we didn’t force any ordering other than <code>topicsInCommon</code> so we can’t expect a repeatable order on other columns.</p>
@@ -536,6 +539,9 @@ LIMIT 10</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_exclude_groups_i_m_a_member_of_3">Exclude groups I’m a member of</h3>
+<div class="paragraph">
+<p>In the following query we move the exclusion pattern up into a <code>WHERE</code> clause so groups we&#8217;re already a member of won&#8217;t be returned at all.</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
@@ -557,8 +563,7 @@ LIMIT 10</code></pre>
 </div>
 <div class="verseblock">
 <pre class="content">As a member of several meetup groups
-I want to find other similar meetup groups
-that I’m not already a member of
+I want to find other similar meetup groups that I’m not already a member of
 So that I can join those groups</pre>
 </div>
 <div class="paragraph">
@@ -578,7 +583,7 @@ We have two sides, let’s close the third side.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-04-02 23:26:03 BST
+Last updated 2016-04-03 15:51:03 BST
 </div>
 </div>
 </body>

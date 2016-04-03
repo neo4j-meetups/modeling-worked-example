@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.4">
-<title>Similar groups</title>
+<title>Recommendations by explicit interest</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -420,257 +420,135 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Similar groups</h1>
+<h1>Recommendations by explicit interest</h1>
 </div>
 <div id="content">
 <div class="sect2">
-<h3 id="_find_similar_groups_to_neo4j">Find similar groups to Neo4j</h3>
+<h3 id="_member_interests_topics">Member Interests (Topics)</h3>
+<div class="paragraph">
+<p>|----------------------------------------------------------|
+|  id        | topics                                       |
+|----------------------------------------------------------|
+|  103929052 | 18062;563;16575;20923;3833;108403;1307;10099 |
+|  11337881  | 1372;1512;49585;24553;417;24778;25584;23005  |
+|  39676622  |                                              |
+|  2773509   |                                              |
+|  30225872  | 48471;22792;58162;1762                       |
+|  12882650  | 563;3833;9696;659;1621,48471;22792           |
+|  109548702 | 21681;30928;18062;5532,55324;15167;108403    |
+|------------+----------------------------------------------|</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_member_interests_topics_2">Member Interests (Topics)</h3>
+<div class="paragraph">
+<p>What data do we have?</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">USING PERIODIC COMMIT 10000
+LOAD CSV WITH HEADERS
+FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/members.csv" AS row
+RETURN row.id, row.topics
+LIMIT 10</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_member_interests_topics_3">Member Interests (Topics)</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">USING PERIODIC COMMIT 10000
+LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/members.csv" AS row
+WITH split(row.topics, ";") AS topics, row.id AS memberId
+UNWIND topics AS topicId
+WITH DISTINCT memberId, topicId
+MATCH (member:Member {id: memberId})
+MATCH (topic:Topic {id: topicId})
+MERGE (member)-[:INTERESTED_IN]->(topic)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Should we do something here with indicating this is an explicit interest?
+Later on we add some inferred interests</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_find_my_similar_groups">Find my similar groups</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (member:Member {name: "Mark Needham"})-[:INTERESTED_IN]->(topic),
+      (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
+ WITH member, topic, COUNT(*) AS score
+MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)
+WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
+RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
+ORDER BY score DESC</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>*So we’ve changed the centre of the query to a person rather than a group.</p>
+</div>
+<div class="paragraph">
+<p>In this case this recommendation might be used when TODO???</p>
+</div>
+<div class="paragraph">
+<p>This shows up a lot of data related meetups which makes sense for me.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_what_am_i_actually_interested_in">What am I actually interested in?</h3>
 <div class="imageblock" style="float: right">
 <div class="content">
-<img src="http://guides.neo4j.com/intro/img/group_has_topic.png" alt="group has topic">
+<img src="http://guides.neo4j.com/intro/img/group_has_topic_member_of.png" alt="group has topic member of">
 </div>
 </div>
 <div class="verseblock">
-<pre class="content">As a member of the Neo4j London group
+<pre class="content">As a member of several meetup groups
 I want to find other similar meetup groups
+that I’m not already a member of
 So that I can join those groups</pre>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_what_makes_groups_similar">What makes groups similar?</h3>
 <div class="paragraph">
-<p>One thing that makes groups similar is the topics that they’re about.</p>
-</div>
-<div class="verseblock">
-<pre class="content">As a member of the Neo4j London group
-I want to find other similar meetup groups
-So that I can join those groups</pre>
+<p>We could also choose to ignore that middle link or perhaps make it optional for extra points.
+This will introduce some groups which cover topics that we aren’t explicitly interested in but have a transient interest in via groups we’re a member of.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_groups">Groups</h3>
-<div class="listingblock">
-<div class="content">
-<pre>|-----------+------------------------------+----------------------------+--------+----------------|
-|  id       | name                         | urlname                    | rating | created        |
-|-----------+------------------------------+----------------------------+--------+----------------|
-|  841735   | LJC - London Java Community  | Londonjavacommunity        | 4.54   | 1196081014000  |
-|  18313232 | Kubernetes London            | Kubernetes-London          | 5      | 1420729836000  |
-|  18581527 | data+visual London           | data-visual-London         | 4.67   | 1431021679000  |
-|  163876   | London Web                   | londonweb                  | 4.11   | 1034097743000  |
-|  15734842 | Ansible London               | Ansible-London             | 4.42   | 1405439359000  |
-|  12963902 | Scalability London           | Scalability-London         | 4.95   | 1392824462000  |
-|  4062902  | Ember London                 | London-Emberjs-User-Group  | 4.66   | 1339522219000  |
-|  14354522 | London PaaS &amp; Bluemix Meetup | London-PaaS-Bluemix-Meetup | 5      | 1399643167000  |
-|-----------+------------------------------+----------------------------+--------+----------------|</pre>
-</div>
+<h3 id="_what_am_i_actually_interested_in_2">What am I actually interested in?</h3>
+<div class="paragraph">
+<p>I don&#8217;t like these queries - I think we should change them to use the INTERESTED_IN relationship that we create a bit further on
+Can also show how you could run a procedure to keep those inferred interests up to date later on maybe?</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">LOAD CSV WITH HEADERS
-FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups.csv"
-AS row
-RETURN row
-LIMIT 10</code></pre>
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
+WITH member, topic, COUNT(*) AS score
+MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)
+WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
+RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
+ORDER BY score DESC</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_import_groups">Import Groups</h3>
+<h3 id="_collaborative_filtering">Collaborative filtering</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">LOAD CSV WITH HEADERS
-FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups.csv"
-AS row
-CREATE (:Group { id:row.id,
-                 name:row.name,
-                 urlname:row.urlname,
-                 rating:toint(row.rating),
-                 created:toint(row.created) })</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>We use CREATE because we know the database is empty when we start.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (g:Group)
-RETURN g.id, g.name, g.urlname</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Topics express areas of interest for both groups and members.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>|----------+---------------------------+--------------------------|
-|  id      | name                      | urlkey                   |
-|----------+---------------------------|--------------------------|
-|  827     | .NET                      | dotnet                   |
-|  2109    | System Administration     | sysadmin                 |
-|  2260    | C#                        | csharp                   |
-|  10105   | Microsoft Windows         | mswindows                |
-|  15167   | Cloud Computing           | cloud-computing          |
-|  46810   | Configuration Management  | configuration-management |
-|  52210   | PowerShell                | powershell               |
-|  66339   | Windows Azure Platform    | windows-azure-platform   |
-|  84706   | Scripting                 | scripting                |
-|  87614   | DevOps                    | devops                   |
-|  99537   | Microsoft Technology      | microsoft-technology     |
-|  160268  | Windows                   | windows                  |
-|  189     | Java                      | java                     |
-|  563     | Open Source               | opensource               |
-|----------+---------------------------+--------------------------|</pre>
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->(group)<-[:MEMBER_OF]-()-[:MEMBER_OF]->(otherGroup)
+RETURN otherGroup.name, COUNT(*) AS score
+ORDER BY score DESC</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_detour_merge_constraints">Detour: MERGE &amp; Constraints</h3>
-<div class="paragraph">
-<p>We want to use <code>MERGE</code> because we want to avoid creating duplicate topics
-Make sure to have a unique constraint on <code>:Topic(id)</code> so we don’t create the same topic twice.</p>
-</div>
-<div class="paragraph">
-<p>We create unique constraints to:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>ensure uniqueness</p>
-</li>
-<li>
-<p>allow fast lookup of nodes which match these (label,property) pairs.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>It does the latter by creating an index on the (label, property) pair</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">CREATE CONSTRAINT ON (t:Topic) ASSERT t.id IS UNIQUE</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">CREATE CONSTRAINT ON (g:Group) ASSERT g.id IS UNIQUE</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_import_topics">Import Topics</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups_topics.csv"  AS row
-MERGE (topic:Topic {id: row.id})
-ON CREATE SET topic.name = row.name,
-              topic.urlkey = row.urlkey</code></pre>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_find_topics">Find Topics</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (t:Topic)
-RETURN t.id, t.name</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_group_topics">Group Topics</h3>
-<div class="listingblock">
-<div class="content">
-<pre>|----------+-----------|
-|  id      | groupId   |
-|----------+-----------|
-|  827     | 18780165  |
-|  2109    | 18780165  |
-|  2260    | 18780165  |
-|  10105   | 18780165  |
-|  15167   | 18780165  |
-|  46810   | 18780165  |
-|  46831   | 18780165  |
-|  52210   | 18780165  |
-|----------+-----------|</pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_connect_groups_and_topics">Connect groups and topics</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups_topics.csv"  AS row
-MATCH (topic:Topic {id: row.id})
-MATCH (group:Group {id: row.groupId})
-MERGE (group)-[:HAS_TOPIC]->(topic)</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The use of <code>MERGE</code> here ensures that we end up with a single unique link between a group and a topic.</p>
-</div>
-<div class="paragraph">
-<p>If we run the query a second time nothing will happen.
-If we run another <code>MERGE</code> query that tries to create a <code>:HAS_TOPIC</code> relationship when one already exists it won’t do anything.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_additional_indexes">Additional Indexes</h3>
-<div class="paragraph">
-<p>We create an index on <code>:Group(name)</code> so that we can quickly look up groups by name.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">CREATE INDEX ON :Group(name)</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Same for topics.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">CREATE INDEX ON :Topic(name)</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_find_similar_groups_to_neo4j_2">Find similar groups to Neo4j</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup)
-RETURN otherGroup.name, COUNT(topic) AS topicsInCommon,
-       COLLECT(topic.name) AS topics
-ORDER BY topicsInCommon DESC, otherGroup.name
-LIMIT 10</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now that we’ve got the data in let’s see if our model is any good.</p>
-</div>
-<div class="paragraph">
-<p>This query</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>starts from the Neo4j group,</p>
-</li>
-<li>
-<p>finds its topics,</p>
-</li>
-<li>
-<p>then looks for other groups that have those topics</p>
-</li>
-<li>
-<p>and aggregates the groups with the most topics in common.</p>
-</li>
-</ul>
-</div>
+<h3 id="_hybrid">Hybrid</h3>
+
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-04-03 15:37:58 BST
+Last updated 2016-04-02 23:26:08 BST
 </div>
 </div>
 </body>

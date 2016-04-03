@@ -126,8 +126,7 @@ image::{img}/group_has_topic_member_of_interested_in.png[float=right]
 [verse]
 ____
 As a member of several meetup groups
-I want to find other similar meetup groups
-that I’m not already a member of
+I want to find other similar meetup groups that I’m not already a member of
 So that I can join those groups
 ____
 
