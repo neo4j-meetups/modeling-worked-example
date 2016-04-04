@@ -8,3 +8,7 @@ Here I want to put something showing how you can use one of the APOC procedures 
 e.g. we could once a day run the inferred topics query maybe
 
 Maybe we can also put in some stuff showing how to wire in an event handler that could keep inferred relationships up to date?
+
+
+I wonder if this section should go a bit earlier so can show how to use it in the layered recommendation section?
+How many of the attendeees will know Java?
