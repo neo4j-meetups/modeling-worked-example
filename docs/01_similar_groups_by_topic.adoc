@@ -106,14 +106,12 @@ endif::[]
 == Detour: MERGE & Constraints
 
 We want to use `MERGE` because we want to avoid creating duplicate topics
-Make sure to have a unique constraint on `:Topic(id)` so we don’t create the same topic twice.
+We'll put a unique constraint on `:Topic(id)` so that we don’t create the same topic twice.
 
-We create unique constraints to:
+Unique constraints:
 
-* ensure uniqueness
-* allow fast lookup of nodes which match these (label,property) pairs.
-
-It does the latter by creating an index on the (label, property) pair
+* ensure uniqueness of a (label, property) pair
+* allow fast lookup of nodes which match these (label,property) pairs by creating an index on the (label, property) pair.
 
 [source,cypher,subs=attributes]
 ----
@@ -193,7 +191,20 @@ Same for topics.
 CREATE INDEX ON :Topic(name)
 ----
 
+== Exercise: Explore the graph
+
+We've now loaded groups and topics but we don't know exactly what's in our graph so let's do some exploration.
+
+* What's the most popular topic?
+* Which group was created most recently?
+* How many groups have been running for 4 years or more?
+
+_Hint:_ The link:http://neo4j.com/docs/milestone/cypher-refcard/[Cypher refcard] will come in handy for syntax we haven't covered yet!
+
 ==  Find similar groups to Neo4j
+
+So you've hopefully now got an idea of what the data looks like.
+It's time to write our first recommendation query which will find groups that have the same topics as the Neo4j London group:
 
 [source,cypher,subs=attributes]
 ----
@@ -204,11 +215,11 @@ ORDER BY topicsInCommon DESC, otherGroup.name
 LIMIT 10
 ----
 
-Now that we’ve got the data in let’s see if our model is any good.
-
 This query
 
 * starts from the Neo4j group,
 * finds its topics,
 * then looks for other groups that have those topics
 * and aggregates the groups with the most topics in common.
+
+Try changing the group name e.g. `Big Data Debate` or `Docker London` and see how the results change.

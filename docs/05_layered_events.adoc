@@ -75,14 +75,14 @@ Perhaps this is another candidate for procedures?
 [source,cypher,subs=attributes]
 ----
 MATCH (m1:Member)
-MATCH (m1)-[:RSVP {response: 'yes'}]->(event:Event)<-[:RSVP {response: 'yes'}]-(m2:Member)
-WITH m1, m2, COLLECT(event) AS events, COUNT(*) AS times
+MATCH (m1)-[:RSVPD {response: 'yes'}]->(event:Event)<-[:RSVPD {response: 'yes'}]-(m2:Member)
+WITH m1, m2, COLLECT(event) AS events, COUNT(*) AS times
 WHERE times >= 5
-WITH m1, m2, times, [event IN events | SIZE((event)<-[:RSVP_YES]-())] AS attendances
-WITH m1, m2, REDUCE(score = 0.0, a IN attendances | score + (1.0 / a)) AS score
+WITH m1, m2, times, [event IN events | SIZE((event)<-[:RSVPD {response: 'yes'}]-())] AS attendances
+WITH m1, m2, REDUCE(score = 0.0, a IN attendances | score + (1.0 / a)) AS score
 
-MERGE (m1)-[friendsRel:FRIENDS]-(m2)
-SET friendsRel.score = row.score
+MERGE (m1)-[friendsRel:FRIENDS]-(m2)
+SET friendsRel.score = score
 ----
 
 == Events my friends are attending

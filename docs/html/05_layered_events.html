@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.4">
-<title>Untitled</title>
+<title>Layered Events</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -416,16 +416,148 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 .hide-for-print{display:none!important}
 .show-for-print{display:inherit!important}}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 </head>
 <body class="article">
 <div id="header">
+<h1>Layered Events</h1>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Here we are going to build a hybrid recommendation engine that takes lots of factors into account.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s create some scoring functions in APOC so we can use those inside queries.</p>
+</div>
+<div class="paragraph">
+<p>Anyway this is what we have to start with:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>events in my groups</p>
+</li>
+<li>
+<p>events I’ve previously attended</p>
+</li>
+<li>
+<p>topics I’m interested in</p>
+</li>
+<li>
+<p>events my peers attend</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>As a member of several meetup groups who has previously attended events
+I want to find other events hosted by those groups
+So that I can attend those events</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/rsvps.csv" AS row
+MATCH (member:Member {id: row.member_id})
+MATCH (event:Event {id: row.event_id})
+MERGE (member)-[rsvp:RSVPD {id: row.rsvp_id}]->(event)
+ON CREATE SET rsvp.created = toint(row.created),
+              rsvp.lastModified = toint(row.mtime),
+              rsvp.response = row.response;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_previous_events_attended">Previous events attended</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">WITH 24.0*60*60*1000 AS oneDay
 
+MATCH (member:Member {name: "Mark Needham"})
+MATCH (futureEvent:Event) WHERE futureEvent.time >= timestamp()
+MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
+
+WITH oneDay, group, futureEvent, member, EXISTS((group)<-[:MEMBER_OF]-(member)) AS isMember
+OPTIONAL MATCH (member)-[rsvp:RSVPD {response: "yes"}]->(pastEvent)<-[:HOSTED_EVENT]-(group)
+WHERE pastEvent.time < timestamp()
+
+RETURN group.name, futureEvent.name, isMember, COUNT(rsvp) AS previousEvents, round((futureEvent.time - timestamp()) / oneDay) AS days
+ORDER BY days, previousEvents DESC</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_my_topics">My topics</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">WITH 24.0*60*60*1000 AS oneDay
+
+MATCH (member:Member {name: "Mark Needham"})
+MATCH (futureEvent:Event) WHERE futureEvent.time >= timestamp()
+MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
+
+WITH oneDay, group, futureEvent, member, EXISTS((group)<-[:MEMBER_OF]-(member)) AS isMember
+OPTIONAL MATCH (member)-[rsvp:RSVPD {response: "yes"}]->(pastEvent)<-[:HOSTED_EVENT]-(group)
+WHERE pastEvent.time < timestamp()
+
+WITH oneDay, group, futureEvent, member, isMember, COUNT(rsvp) AS previousEvents
+OPTIONAL MATCH (futureEvent)<-[:HOSTED_EVENT]-()-[:HAS_TOPIC]->(topic)<-[:INTERESTED_IN]-(member)
+
+RETURN group.name, futureEvent.name, isMember, previousEvents, COUNT(topic) AS topics, round((futureEvent.time - timestamp()) / oneDay) AS days
+ORDER BY days,previousEvents DESC, topics DESC</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_find_the_social_graph_lurking_within">Find the social graph lurking within</h3>
+<div class="paragraph">
+<p>I have no idea how long this takes to run - had it using a Python script in the talk
+Perhaps this is another candidate for procedures?</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (m1:Member)
+MATCH (m1)-[:RSVP {response: 'yes'}]->(event:Event)<-[:RSVP {response: 'yes'}]-(m2:Member)
+WITH m1, m2, COLLECT(event) AS events, COUNT(*) AS times
+WHERE times >= 5
+WITH m1, m2, times, [event IN events | SIZE((event)<-[:RSVP_YES]-())] AS attendances
+WITH m1, m2, REDUCE(score = 0.0, a IN attendances | score + (1.0 / a)) AS score
+
+MERGE (m1)-[friendsRel:FRIENDS]-(m2)
+SET friendsRel.score = row.score</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_events_my_friends_are_attending">Events my friends are attending</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">WITH 24.0*60*60*1000 AS oneDay
+MATCH (member:Member {name: "Mark Needham"})
+MATCH (futureEvent:Event) WHERE futureEvent.time >= timestamp()
+MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
+
+WITH oneDay, group, futureEvent, member, EXISTS((group)<-[:MEMBER_OF]-(member)) AS isMember
+OPTIONAL MATCH (member)-[rsvp:RSVPD {response: "yes"}]->(pastEvent)<-[:HOSTED_EVENT]-(group)
+WHERE pastEvent.time < timestamp()
+
+WITH oneDay, group, futureEvent, member, isMember, COUNT(rsvp) AS previousEvents
+OPTIONAL MATCH (futureEvent)<-[:HOSTED_EVENT]-()-[:HAS_TOPIC]->(topic)<-[:INTERESTED_IN]-(member)
+
+WITH oneDay, group, futureEvent, member, isMember, previousEvents, COUNT(topic) AS topics
+OPTIONAL MATCH (member)-[:FRIENDS]-(:Member)-[rsvpYes:RSVP_YES]->(futureEvent)
+
+RETURN group.name, futureEvent.name, isMember, round((futureEvent.time - timestamp()) / oneDay) AS days,        previousEvents, topics, COUNT(rsvpYes) AS friendsGoing
+ORDER BY days, friendsGoing DESC, previousEvents DESC
+LIMIT 15</code></pre>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-04-03 16:21:34 BST
+Last updated 2016-04-03 16:55:27 BST
 </div>
 </div>
 </body>

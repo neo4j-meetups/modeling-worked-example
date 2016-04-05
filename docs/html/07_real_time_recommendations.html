@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.4">
-<title>Events</title>
+<title>Real Time Recommendations</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -420,60 +420,46 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Events</h1>
+<h1>Real Time Recommendations</h1>
 </div>
 <div id="content">
-<div id="preamble">
-<div class="sectionbody">
 <div class="paragraph">
-<p>Now it’s time to bring events into the graph.</p>
+<p>In the talk I&#8217;d wired up a python script which polled the meetup streaming API and pulled in RSVPs.
+Should we make a procedure to do the same thing and have people write the query to update the model appropriately?</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">CREATE INDEX ON :Event(id)</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">CREATE INDEX ON :Event(time)</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/events.csv" AS row
-MERGE (event:Event {id: row.id})
-ON CREATE SET event.name = row.name,
-              event.time = toint(row.time),
-              event.utcOffset = toint(row.utc_offset)</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_find_future_events_in_my_groups">Find future events in my groups</h3>
 <div class="paragraph">
-<p>Once we start looking to make event recommendations the simplest thing we can do is find the groups we’re a member of and then find its future events</p>
+<p>Can we wire something together that takes into account people joining or leaving groups as well or is that too difficult?</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">WITH 24.0*60*60*1000 AS oneDay
+<pre>from py2neo import authenticate, Graph
+authenticate("localhost:7474", "neo4j", "medium")
+graph = Graph()
 
-MATCH (member:Member {name: "Mark Needham"})
-MATCH (futureEvent:Event) WHERE futureEvent.time >= timestamp()
-MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
+group_ids = []group_query = "MATCH (g:Group) RETURN g.id AS groupId"
+for row in graph.cypher.execute(group_query):
+    group_ids.append(int(row["groupId"]))
 
-RETURN group.name,
-       futureEvent.name,
-       EXISTS((group)<-[:MEMBER_OF]-(member)) AS isMember,
-       round((futureEvent.time - timestamp()) / oneDay) AS days
-ORDER BY isMember DESC, days</code></pre>
-</div>
+for rsvp in stream_meetup():
+    if rsvp["group"]["group_id"] in group_ids:
+        params = { "rsvp_id": str(rsvp["rsvp_id"]),
+                   "event_id": str(rsvp["event"]["event_id"]),
+                   "member_id": str(rsvp["member"]["member_id"]),
+                   "response": rsvp["response"],
+                   "mtime": rsvp["mtime"] }
+        graph.cypher.execute("""
+          MATCH (event:Event {id: {event_id}})
+          MATCH (member:Member {id: {member_id}})
+          MERGE (member)-[rsvpRel:RSVPD {id: {rsvp_id}}]-&gt;(event)
+          ON CREATE SET rsvpRel.created = toint({mtime})
+          ON MATCH  SET rsvpRel.lastModified = toint({mtime})
+          SET rsvpRel.response = {response}""", params)</pre>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-04-03 16:45:37 BST
+Last updated 2016-04-03 16:58:06 BST
 </div>
 </div>
 </body>
