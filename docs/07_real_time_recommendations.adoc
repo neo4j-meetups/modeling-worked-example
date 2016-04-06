@@ -7,13 +7,13 @@ Should we make a procedure to do the same thing and have people write the query 
 
 Can we wire something together that takes into account people joining or leaving groups as well or is that too difficult?
 
-
+[source,python]
 ----
 from py2neo import authenticate, Graph
-authenticate("localhost:7474", "neo4j", "medium")
+ authenticate("localhost:7474", "neo4j", "medium")
 graph = Graph()
 
-group_ids = []group_query = "MATCH (g:Group) RETURN g.id AS groupId"
+group_ids = [] group_query = "MATCH (g:Group) RETURN g.id AS groupId"
 for row in graph.cypher.execute(group_query):
     group_ids.append(int(row["groupId"]))
 
@@ -28,8 +28,16 @@ for rsvp in stream_meetup():
           MATCH (event:Event {id: {event_id}})
           MATCH (member:Member {id: {member_id}})
           MERGE (member)-[rsvpRel:RSVPD {id: {rsvp_id}}]->(event)
-          ON CREATE SET rsvpRel.created = toint({mtime})
-          ON MATCH  SET rsvpRel.lastModified = toint({mtime})
+          ON CREATE SET rsvpRel.created = toInt({mtime})
+          ON MATCH  SET rsvpRel.lastModified = toInt({mtime})
           SET rsvpRel.response = {response}""", params)
 
 ----
+
+
+== Next Step
+
+What else can we achieve within our domain.
+Let's explore some more ideas.
+
+pass:a[<a play-topic='{guides}/08_free_for_all.html'>Free for all</a>]

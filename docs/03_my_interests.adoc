@@ -25,7 +25,6 @@ What data do we have?
 
 [source,cypher,subs=attributes]
 ----
-USING PERIODIC COMMIT 10000
 LOAD CSV WITH HEADERS
 FROM "{csv-url}members.csv" AS row
 RETURN row.id, row.topics
@@ -108,3 +107,9 @@ ORDER BY score DESC
 ----
 
 == Hybrid
+
+== Next Step
+
+Let's recommend look at events of our groups.
+
+pass:a[<a play-topic='{guides}/04_events.html'>Event Recommendations</a>]

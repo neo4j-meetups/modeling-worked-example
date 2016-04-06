@@ -1,0 +1,22 @@
+= Building a Recommendation Engine with Neo4j
+
+
+== List of Guides
+
+image::{img}/meetup.png[float=right]
+
+. pass:a[<a play-topic='{guides}/01_similar_groups_by_topic.html'>Recommend Groups by Topic</a>]
+. pass:a[<a play-topic='{guides}/02_my_similar_groups.html'>Groups similar to mine</a>]
+. pass:a[<a play-topic='{guides}/03_my_interests.html'>My Interests</a>]
+. pass:a[<a play-topic='{guides}/04_events.html'>Event Recommendations</a>]
+. pass:a[<a play-topic='{guides}/05_layered_events.html'>Layered Event Recommendations</a>]
+. pass:a[<a play-topic='{guides}/06_procedures.html'>Using Neo4j Procedures for Recommendations</a>]
+. pass:a[<a play-topic='{guides}/07_real_time_recommendations.html'>Real time Recommendations</a>]
+. pass:a[<a play-topic='{guides}/08_free_for_all.html'>Free for all</a>]
+
+== Further Resources
+
+* a
+* b
+* c
+* c

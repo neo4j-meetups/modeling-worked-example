@@ -9,6 +9,11 @@ e.g. we could once a day run the inferred topics query maybe
 
 Maybe we can also put in some stuff showing how to wire in an event handler that could keep inferred relationships up to date?
 
-
 I wonder if this section should go a bit earlier so can show how to use it in the layered recommendation section?
 How many of the attendeees will know Java?
+
+== Next Step
+
+How can we integrate real-time information, such as live-feeds to provide updated recommendations as the underlying data changes.
+
+pass:a[<a play-topic='{guides}/07_real_time_recommendations.html'>Real time Recommendations</a>]

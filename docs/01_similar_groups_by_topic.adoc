@@ -64,8 +64,8 @@ AS row
 CREATE (:Group { id:row.id,
                  name:row.name,
                  urlname:row.urlname,
-                 rating:toint(row.rating),
-                 created:toint(row.created) })
+                 rating:toInt(row.rating),
+                 created:toInt(row.created) })
 ----
 
 We use CREATE because we know the database is empty when we start.
@@ -223,3 +223,9 @@ This query
 * and aggregates the groups with the most topics in common.
 
 Try changing the group name e.g. `Big Data Debate` or `Docker London` and see how the results change.
+
+== Next Step
+
+Let's look at our groups and how we can use that related information to recommend new groups for ourselves.
+
+pass:a[<a play-topic='{guides}/02_my_similar_groups.html'>Groups similar to mine</a>]

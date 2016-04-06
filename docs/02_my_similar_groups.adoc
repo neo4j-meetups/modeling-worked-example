@@ -43,6 +43,10 @@ ASSERT m.id IS UNIQUE
 
 [source,cypher,subs=attributes]
 ----
+CREATE INDEX ON :Member(name)
+----
+[source,cypher,subs=attributes]
+----
 USING PERIODIC COMMIT 10000
 LOAD CSV WITH HEADERS
 FROM "{csv-url}members.csv" AS row
@@ -138,3 +142,9 @@ A classic case of *closing the triangle.*
 We have two sides, let’s close the third side.
 
 If I join groups which have a specific topic more frequently then we can weight in that ones favour.
+
+== Next Step
+
+Looking at our interests we can determine new interesting groups as well as infer new interests based on my membership and attendance.
+
+pass:a[<a play-topic='{guides}/03_my_interests.html'>My Interests</a>]
