@@ -4,6 +4,9 @@
 
 ifndef::env-guide[]
 
+Procedures are a new feature in Neo4j 3.0.0 which allow you to write Java (or any JVM language) code, deploy it alongside Neo4j server and call it from Cypher.
+
+
 Here I want to put something showing how you can use one of the APOC procedures to have a job which keeps the graph updated?
 e.g. we could once a day run the inferred topics query maybe
 
