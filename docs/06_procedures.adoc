@@ -4,7 +4,17 @@
 
 ifndef::env-guide[]
 
-Procedures are a new feature in Neo4j 3.0.0 which allow you to write Java (or any JVM language) code, deploy it alongside Neo4j server and call it from Cypher.
+Procedures are a new feature in Neo4j 3.0.0 which allow you to write custom code which can be invoked directly from Cypher.
+You can read more details in the link:http://neo4j.com/docs/developer-manual/3.0-RC1/#procedures[documentation].
+
+In this section we're not going to install the link:https://github.com/jexp/neo4j-apoc-procedures[apoc] library which contains lots of useful procedures that we can use in our recommendation queries.
+
+* Download the latest version of apoc from link:http://michael-insert-link-here.com
+* Copy `apoc-1.0.0-SNAPSHOT.jar` into your plugins folder `/path/to/neo4j/plugins`
+* Restart Neo4j
+* Run `CALL sys.db.procedures()` to see the set of procedures now available to you.
+
+
 
 
 Here I want to put something showing how you can use one of the APOC procedures to have a job which keeps the graph updated?
