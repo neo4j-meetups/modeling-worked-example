@@ -24,27 +24,6 @@ I want to find other similar meetup groups
 So that I can join those groups
 ____
 
-ifndef::env-guide[]
-
-== Groups
-
-----
-|-----------+------------------------------+----------------------------+--------+----------------|
-|  id       | name                         | urlname                    | rating | created        |
-|-----------+------------------------------+----------------------------+--------+----------------|
-|  841735   | LJC - London Java Community  | Londonjavacommunity        | 4.54   | 1196081014000  |
-|  18313232 | Kubernetes London            | Kubernetes-London          | 5      | 1420729836000  |
-|  18581527 | data+visual London           | data-visual-London         | 4.67   | 1431021679000  |
-|  163876   | London Web                   | londonweb                  | 4.11   | 1034097743000  |
-|  15734842 | Ansible London               | Ansible-London             | 4.42   | 1405439359000  |
-|  12963902 | Scalability London           | Scalability-London         | 4.95   | 1392824462000  |
-|  4062902  | Ember London                 | London-Emberjs-User-Group  | 4.66   | 1339522219000  |
-|  14354522 | London PaaS & Bluemix Meetup | London-PaaS-Bluemix-Meetup | 5      | 1399643167000  |
-|-----------+------------------------------+----------------------------+--------+----------------|
-----
-
-endif::[]
-
 [source,cypher,subs=attributes]
 ----
 LOAD CSV WITH HEADERS
@@ -77,31 +56,6 @@ RETURN g.id, g.name, g.urlname
 ----
 
 Topics express areas of interest for both groups and members.
-
-ifndef::env-guide[]
-
-----
-|----------+---------------------------+--------------------------|
-|  id      | name                      | urlkey                   |
-|----------+---------------------------|--------------------------|
-|  827     | .NET                      | dotnet                   |
-|  2109    | System Administration     | sysadmin                 |
-|  2260    | C#                        | csharp                   |
-|  10105   | Microsoft Windows         | mswindows                |
-|  15167   | Cloud Computing           | cloud-computing          |
-|  46810   | Configuration Management  | configuration-management |
-|  52210   | PowerShell                | powershell               |
-|  66339   | Windows Azure Platform    | windows-azure-platform   |
-|  84706   | Scripting                 | scripting                |
-|  87614   | DevOps                    | devops                   |
-|  99537   | Microsoft Technology      | microsoft-technology     |
-|  160268  | Windows                   | windows                  |
-|  189     | Java                      | java                     |
-|  563     | Open Source               | opensource               |
-|----------+---------------------------+--------------------------|
-----
-
-endif::[]
 
 == Detour: MERGE & Constraints
 
@@ -140,25 +94,6 @@ ON CREATE SET topic.name = row.name,
 MATCH (t:Topic)
 RETURN t.id, t.name
 ----
-
-ifndef::env-guide[]
-== Group Topics
-
-----
-|----------+-----------|
-|  id      | groupId   |
-|----------+-----------|
-|  827     | 18780165  |
-|  2109    | 18780165  |
-|  2260    | 18780165  |
-|  10105   | 18780165  |
-|  15167   | 18780165  |
-|  46810   | 18780165  |
-|  46831   | 18780165  |
-|  52210   | 18780165  |
-|----------+-----------|
-----
-endif::[]
 
 == Connect groups and topics
 

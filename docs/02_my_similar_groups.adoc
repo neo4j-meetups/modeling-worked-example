@@ -6,7 +6,12 @@
 
 Finding groups similar to the Neo4j group is a decent start but most good recommendation engines try to make recommendations customised for the user.
 
-image::{img}/group_has_topic_member_of.png[float=right]
+Although our first query was a good one to get us started, unfortunately it was suggesting that we join groups that we might already be a member of.
+The worst type of recommendation!
+
+In this section we're going to add membership data to our model to fix that.
+
+image::{img}/group_has_topic_member_of.png
 
 [verse]
 ____
@@ -14,8 +19,6 @@ As a member of the Neo4j London group
 I want to find other similar meetup groups that I’m not already a member of
 So that I can join those groups
 ____
-
-We’re going to do a bit of filtering based on groups that we’re already a member of
 
 == Explore Members data
 
@@ -30,10 +33,13 @@ RETURN row
 LIMIT 10
 ----
 
+This file contains members for all the groups that we imported in the previous section.
+
 == Add Members
 
-Now we'll put some members into our database.
-We create a unique constraint on `Member(id)` to ensure we don't insert the same member twice.
+Now we'll put those members into our database.
+
+We first create a unique constraint on `Member(id)` to ensure we don't insert the same member twice.
 
 [source,cypher,subs=attributes]
 ----
@@ -41,10 +47,18 @@ CREATE CONSTRAINT ON (m:Member)
 ASSERT m.id IS UNIQUE
 ----
 
+We'll also put an index on `Member(name)` so we can quickly look up a given member.
+
 [source,cypher,subs=attributes]
 ----
 CREATE INDEX ON :Member(name)
 ----
+
+And finally let's load the members.
+
+Note that we're using periodic commit here.
+In this example it means that we'll commit every 10,000 rows rather than processing the whole file in one large transaction.
+
 [source,cypher,subs=attributes]
 ----
 USING PERIODIC COMMIT 10000
@@ -57,25 +71,7 @@ ON CREATE SET member.name = name
 
 === Add Membership
 
-ifndef::env-guide[]
-
-=== Members and groups
-
-----
-|------------+-----------|
-|  id        | groupId   |
-|------------+-----------|
-|  103929052 | 10087112  |
-|  11337881  | 10087112  |
-|  39676622  | 10087112  |
-|  2773509   | 10087112  |
-|  30225872  | 10087112  |
-|  12882650  | 10087112  |
-|  109548702 | 10087112  |
-|------------+-----------|
-----
-
-endif::[]
+Now that we've got the members imported, the next step is to get them connected to the groups that we loaded in the first section.
 
 [source,cypher,subs=attributes]
 ----
@@ -89,7 +85,18 @@ MERGE (member)-[membership:MEMBER_OF]->(group)
 ON CREATE SET membership.joined=toInt(row.joined);
 ----
 
+== Exercise: Find yourself and your groups
+
+We've now got groups, topics and members loaded into our database so it's time for a bit more exploration.
+
+* If you're from London write a query to find yourself in the database. If not try and find your neighbour.
+* How many groups are you a member of?
+* Which topics do those groups have?
+* _(For bonus points)_ Which topic shows up the most?
+
 == Exclude groups I’m a member of
+
+For our next recommendation we're still going to be finding similar groups to the Neo4j one but we'll also check whether we're already a member of the other groups.
 
 [source,cypher,subs=attributes]
 ----
@@ -105,8 +112,11 @@ LIMIT 10
 So now we identify them as being ones we’re already a member of so there’s no point in recommending them again.
 
 An interesting thing to notice is that we now get back groups which we didn’t before.
+That’s because we didn’t force any ordering other than `topicsInCommon` so we won't get a repeatable order on other columns.
 
-That’s because we didn’t force any ordering other than `topicsInCommon` so we can’t expect a repeatable order on other columns.
+Try changing the member name to your name or your neighbours and see how the results change.
+
+* INSERT SOME OTHER NAMES THAT PEOPLE CAN TRY HERE * 
 
 == Exclude groups I’m a member of
 
@@ -123,9 +133,13 @@ ORDER BY topicsInCommon DESC
 LIMIT 10
 ----
 
+Try changing the names of the group and member to see how the results vary.
+
 == Find my similar groups
 
-image::{img}/group_has_topic_member_of_interested_in.png[float=right]
+Now we’re going to make our recommendation on an individual basis.
+
+image::{img}/group_has_topic_member_of_interested_in.png
 
 [verse]
 ____
@@ -133,8 +147,6 @@ As a member of several meetup groups
 I want to find other similar meetup groups that I’m not already a member of
 So that I can join those groups
 ____
-
-Now we’re going to make our recommendation on an individual basis.
 
 We can use collaborative filtering to see what other groups people in our groups join.
 

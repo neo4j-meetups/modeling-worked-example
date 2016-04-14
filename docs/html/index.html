@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.4">
-<title>Recommendations by implicit interest</title>
+<title>Building a Recommendation Engine with Neo4j</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -416,216 +416,71 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 .hide-for-print{display:none!important}
 .show-for-print{display:inherit!important}}
 </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 </head>
 <body class="article">
 <div id="header">
-<h1>Recommendations by implicit interest</h1>
+<h1>Building a Recommendation Engine with Neo4j</h1>
 </div>
 <div id="content">
 <div class="sect2">
-<h3 id="_exclude_groups_i_m_a_member_of">Exclude groups I’m a member of</h3>
-<div class="paragraph">
-<p>Finding groups similar to the Neo4j group is a decent start but most good recommendation engines try to make recommendations customised for the user.</p>
+<h3 id="_list_of_guides">List of Guides</h3>
+<div class="imageblock" style="float: right">
+<div class="content">
+<img src="http://guides.neo4j.com/intro/img/meetup.png" alt="meetup">
 </div>
-<div class="paragraph">
-<p>Although our first query was a good one to get us started, unfortunately it was suggesting that we join groups that we might already be a member of.
-The worst type of recommendation!</p>
 </div>
-<div class="paragraph">
-<p>In this section we&#8217;re going to add membership data to our model to fix that.</p>
-</div>
-<div class="paragraph">
-<p>image::http://guides.neo4j.com/intro/img/group_has_topic_member_of.png</p>
-</div>
-<div class="verseblock">
-<pre class="content">As a member of the Neo4j London group
-I want to find other similar meetup groups that I’m not already a member of
-So that I can join those groups</pre>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a play-topic='http://guides.neo4j.com/intro/01_similar_groups_by_topic.html'>Recommend Groups by Topic</a></p>
+</li>
+<li>
+<p><a play-topic='http://guides.neo4j.com/intro/02_my_similar_groups.html'>Groups similar to mine</a></p>
+</li>
+<li>
+<p><a play-topic='http://guides.neo4j.com/intro/03_my_interests.html'>My Interests</a></p>
+</li>
+<li>
+<p><a play-topic='http://guides.neo4j.com/intro/04_events.html'>Event Recommendations</a></p>
+</li>
+<li>
+<p><a play-topic='http://guides.neo4j.com/intro/05_layered_events.html'>Layered Event Recommendations</a></p>
+</li>
+<li>
+<p><a play-topic='http://guides.neo4j.com/intro/06_procedures.html'>Using Neo4j Procedures for Recommendations</a></p>
+</li>
+<li>
+<p><a play-topic='http://guides.neo4j.com/intro/07_real_time_recommendations.html'>Real time Recommendations</a></p>
+</li>
+<li>
+<p><a play-topic='http://guides.neo4j.com/intro/08_free_for_all.html'>Free for all</a></p>
+</li>
+</ol>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_explore_members_data">Explore Members data</h3>
-<div class="paragraph">
-<p>Let&#8217;s see what data we&#8217;ve got to play with.
-Run the following query to show the first ten rows of the members CSV file:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">LOAD CSV WITH HEADERS
-FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/members.csv" AS row
-RETURN row
-LIMIT 10</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This file contains members for all the groups that we imported in the previous section.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_add_members">Add Members</h3>
-<div class="paragraph">
-<p>Now we&#8217;ll put those members into our database.</p>
-</div>
-<div class="paragraph">
-<p>We first create a unique constraint on <code>Member(id)</code> to ensure we don&#8217;t insert the same member twice.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">CREATE CONSTRAINT ON (m:Member)
-ASSERT m.id IS UNIQUE</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>We&#8217;ll also put an index on <code>Member(name)</code> so we can quickly look up a given member.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">CREATE INDEX ON :Member(name)</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>And finally let&#8217;s load the members.</p>
-</div>
-<div class="paragraph">
-<p>Note that we&#8217;re using periodic commit here.
-In this example it means that we&#8217;ll commit every 10,000 rows rather than processing the whole file in one large transaction.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">USING PERIODIC COMMIT 10000
-LOAD CSV WITH HEADERS
-FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/members.csv" AS row
-WITH DISTINCT row.id AS id, row.name AS name
-MERGE (member:Member {id: id})
-ON CREATE SET member.name = name</code></pre>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_add_membership">Add Membership</h4>
-<div class="paragraph">
-<p>Now that we&#8217;ve got the members imported, the next step is to get them connected to the groups that we loaded in the first section.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">USING PERIODIC COMMIT 10000
-LOAD CSV WITH HEADERS
-FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/members.csv" AS row
-WITH row WHERE NOT row.joined is null
-MATCH (member:Member {id: row.id})
-MATCH (group:Group {id: row.groupId})
-MERGE (member)-[membership:MEMBER_OF]->(group)
-ON CREATE SET membership.joined=toInt(row.joined);</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_exercise_find_yourself">Exercise: Find yourself</h3>
-<div class="paragraph">
-<p>We&#8217;ve now got groups, topics and members loaded into our database so it&#8217;s time for a bit more exploration.</p>
-</div>
+<h3 id="_further_resources">Further Resources</h3>
 <div class="ulist">
 <ul>
 <li>
-<p>If you&#8217;re from London write a query to find yourself in the database. If not try and find your neighbour.</p>
+<p>a</p>
 </li>
 <li>
-<p>How many groups are you a member of?</p>
+<p>b</p>
 </li>
 <li>
-<p>Which topics do those groups have?</p>
+<p>c</p>
 </li>
 <li>
-<p><em>(For bonus points)</em> Which topic shows up the most?</p>
+<p>c</p>
 </li>
 </ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_exclude_groups_i_m_a_member_of_2">Exclude groups I’m a member of</h3>
-<div class="paragraph">
-<p>For our next recommendation we&#8217;re still going to be finding similar groups to the Neo4j one but we&#8217;ll also check whether we&#8217;re already a member of the other groups.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
-RETURN otherGroup.name,
-       COUNT(topic) AS topicsInCommon,
-       EXISTS((:Member {name: "Mark Needham"})-[:MEMBER_OF]->(otherGroup)) AS alreadyMember,
-       COLLECT(topic.name) AS topics
-ORDER BY topicsInCommon DESC
-LIMIT 10</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>So now we identify them as being ones we’re already a member of so there’s no point in recommending them again.</p>
-</div>
-<div class="paragraph">
-<p>An interesting thing to notice is that we now get back groups which we didn’t before.
-That’s because we didn’t force any ordering other than <code>topicsInCommon</code> so we can’t expect a repeatable order on other columns.</p>
-</div>
-<div class="paragraph">
-<p>Try changing the member name to your name or your neighbours and see how the results change.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_exclude_groups_i_m_a_member_of_3">Exclude groups I’m a member of</h3>
-<div class="paragraph">
-<p>In the following query we move the exclusion pattern up into a <code>WHERE</code> clause so groups we&#8217;re already a member of won&#8217;t be returned at all.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
-WHERE NOT( (:Member {name: "Mark Needham"})-[:MEMBER_OF]->(otherGroup) )
-RETURN otherGroup.name,
-       COUNT(topic) AS topicsInCommon,
-       COLLECT(topic.name) AS topics
-ORDER BY topicsInCommon DESC
-LIMIT 10</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Try changing the names of the group and member to see how the results vary.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_find_my_similar_groups">Find my similar groups</h3>
-<div class="paragraph">
-<p>Now we’re going to make our recommendation on an individual basis.</p>
-</div>
-<div class="paragraph">
-<p>image::http://guides.neo4j.com/intro/img/group_has_topic_member_of_interested_in.png</p>
-</div>
-<div class="verseblock">
-<pre class="content">As a member of several meetup groups
-I want to find other similar meetup groups that I’m not already a member of
-So that I can join those groups</pre>
-</div>
-<div class="paragraph">
-<p>We can use collaborative filtering to see what other groups people in our groups join.</p>
-</div>
-<div class="paragraph">
-<p>A classic case of <strong>closing the triangle.</strong>
-We have two sides, let’s close the third side.</p>
-</div>
-<div class="paragraph">
-<p>If I join groups which have a specific topic more frequently then we can weight in that ones favour.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_next_step">Next Step</h3>
-<div class="paragraph">
-<p>Looking at our interests we can determine new interesting groups as well as infer new interests based on my membership and attendance.</p>
-</div>
-<div class="paragraph">
-<p><a play-topic='http://guides.neo4j.com/intro/03_my_interests.html'>My Interests</a></p>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-04-14 07:47:04 BST
+Last updated 2016-04-13 09:14:58 BST
 </div>
 </div>
 </body>

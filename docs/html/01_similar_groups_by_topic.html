@@ -446,25 +446,6 @@ So that I can join those groups</pre>
 I want to find other similar meetup groups
 So that I can join those groups</pre>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_groups">Groups</h3>
-<div class="listingblock">
-<div class="content">
-<pre>|-----------+------------------------------+----------------------------+--------+----------------|
-|  id       | name                         | urlname                    | rating | created        |
-|-----------+------------------------------+----------------------------+--------+----------------|
-|  841735   | LJC - London Java Community  | Londonjavacommunity        | 4.54   | 1196081014000  |
-|  18313232 | Kubernetes London            | Kubernetes-London          | 5      | 1420729836000  |
-|  18581527 | data+visual London           | data-visual-London         | 4.67   | 1431021679000  |
-|  163876   | London Web                   | londonweb                  | 4.11   | 1034097743000  |
-|  15734842 | Ansible London               | Ansible-London             | 4.42   | 1405439359000  |
-|  12963902 | Scalability London           | Scalability-London         | 4.95   | 1392824462000  |
-|  4062902  | Ember London                 | London-Emberjs-User-Group  | 4.66   | 1339522219000  |
-|  14354522 | London PaaS &amp; Bluemix Meetup | London-PaaS-Bluemix-Meetup | 5      | 1399643167000  |
-|-----------+------------------------------+----------------------------+--------+----------------|</pre>
-</div>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-cypher" data-lang="cypher">LOAD CSV WITH HEADERS
@@ -485,8 +466,8 @@ AS row
 CREATE (:Group { id:row.id,
                  name:row.name,
                  urlname:row.urlname,
-                 rating:toint(row.rating),
-                 created:toint(row.created) })</code></pre>
+                 rating:toInt(row.rating),
+                 created:toInt(row.created) })</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -501,50 +482,25 @@ RETURN g.id, g.name, g.urlname</code></pre>
 <div class="paragraph">
 <p>Topics express areas of interest for both groups and members.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre>|----------+---------------------------+--------------------------|
-|  id      | name                      | urlkey                   |
-|----------+---------------------------|--------------------------|
-|  827     | .NET                      | dotnet                   |
-|  2109    | System Administration     | sysadmin                 |
-|  2260    | C#                        | csharp                   |
-|  10105   | Microsoft Windows         | mswindows                |
-|  15167   | Cloud Computing           | cloud-computing          |
-|  46810   | Configuration Management  | configuration-management |
-|  52210   | PowerShell                | powershell               |
-|  66339   | Windows Azure Platform    | windows-azure-platform   |
-|  84706   | Scripting                 | scripting                |
-|  87614   | DevOps                    | devops                   |
-|  99537   | Microsoft Technology      | microsoft-technology     |
-|  160268  | Windows                   | windows                  |
-|  189     | Java                      | java                     |
-|  563     | Open Source               | opensource               |
-|----------+---------------------------+--------------------------|</pre>
-</div>
-</div>
 </div>
 <div class="sect2">
 <h3 id="_detour_merge_constraints">Detour: MERGE &amp; Constraints</h3>
 <div class="paragraph">
 <p>We want to use <code>MERGE</code> because we want to avoid creating duplicate topics
-Make sure to have a unique constraint on <code>:Topic(id)</code> so we don’t create the same topic twice.</p>
+We&#8217;ll put a unique constraint on <code>:Topic(id)</code> so that we don’t create the same topic twice.</p>
 </div>
 <div class="paragraph">
-<p>We create unique constraints to:</p>
+<p>Unique constraints:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>ensure uniqueness</p>
+<p>ensure uniqueness of a (label, property) pair</p>
 </li>
 <li>
-<p>allow fast lookup of nodes which match these (label,property) pairs.</p>
+<p>allow fast lookup of nodes which match these (label,property) pairs by creating an index on the (label, property) pair.</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>It does the latter by creating an index on the (label, property) pair</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -574,25 +530,6 @@ ON CREATE SET topic.name = row.name,
 <pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (t:Topic)
 RETURN t.id, t.name</code></pre>
 </div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_group_topics">Group Topics</h3>
-<div class="listingblock">
-<div class="content">
-<pre>|----------+-----------|
-|  id      | groupId   |
-|----------+-----------|
-|  827     | 18780165  |
-|  2109    | 18780165  |
-|  2260    | 18780165  |
-|  10105   | 18780165  |
-|  15167   | 18780165  |
-|  46810   | 18780165  |
-|  46831   | 18780165  |
-|  52210   | 18780165  |
-|----------+-----------|</pre>
 </div>
 </div>
 </div>
@@ -634,7 +571,33 @@ If we run another <code>MERGE</code> query that tries to create a <code>:HAS_TOP
 </div>
 </div>
 <div class="sect2">
+<h3 id="_exercise_explore_the_graph">Exercise: Explore the graph</h3>
+<div class="paragraph">
+<p>We&#8217;ve now loaded groups and topics but we don&#8217;t know exactly what&#8217;s in our graph so let&#8217;s do some exploration.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>What&#8217;s the most popular topic?</p>
+</li>
+<li>
+<p>Which group was created most recently?</p>
+</li>
+<li>
+<p>How many groups have been running for 4 years or more?</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><em>Hint:</em> The <a href="http://neo4j.com/docs/milestone/cypher-refcard/">Cypher refcard</a> will come in handy for syntax we haven&#8217;t covered yet!</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_find_similar_groups_to_neo4j_2">Find similar groups to Neo4j</h3>
+<div class="paragraph">
+<p>So you&#8217;ve hopefully now got an idea of what the data looks like.
+It&#8217;s time to write our first recommendation query which will find groups that have the same topics as the Neo4j London group:</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup)
@@ -643,9 +606,6 @@ RETURN otherGroup.name, COUNT(topic) AS topicsInCommon,
 ORDER BY topicsInCommon DESC, otherGroup.name
 LIMIT 10</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>Now that we’ve got the data in let’s see if our model is any good.</p>
 </div>
 <div class="paragraph">
 <p>This query</p>
@@ -666,11 +626,23 @@ LIMIT 10</code></pre>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>Try changing the group name e.g. <code>Big Data Debate</code> or <code>Docker London</code> and see how the results change.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_next_step">Next Step</h3>
+<div class="paragraph">
+<p>Let&#8217;s look at our groups and how we can use that related information to recommend new groups for ourselves.</p>
+</div>
+<div class="paragraph">
+<p><a play-topic='http://guides.neo4j.com/intro/02_my_similar_groups.html'>Groups similar to mine</a></p>
+</div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-04-03 15:37:58 BST
+Last updated 2016-04-14 06:39:26 BST
 </div>
 </div>
 </body>

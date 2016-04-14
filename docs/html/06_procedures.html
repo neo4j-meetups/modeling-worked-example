@@ -423,6 +423,31 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h1>Procedures</h1>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Procedures are a new feature in Neo4j 3.0.0 which allow you to write custom code which can be invoked directly from Cypher.
+You can read more details in the <a href="http://neo4j.com/docs/developer-manual/3.0-RC1/#procedures">documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>In this section we&#8217;re not going to install the <a href="https://github.com/jexp/neo4j-apoc-procedures">apoc</a> library which contains lots of useful procedures that we can use in our recommendation queries.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Download the latest version of apoc from link:http://michael-insert-link-here.com</p>
+</li>
+<li>
+<p>Copy <code>apoc-1.0.0-SNAPSHOT.jar</code> into your plugins folder <code>/path/to/neo4j/plugins</code></p>
+</li>
+<li>
+<p>Restart Neo4j</p>
+</li>
+<li>
+<p>Run <code>CALL dbms.procedures()</code> to see the set of procedures now available to you.</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p>Here I want to put something showing how you can use one of the APOC procedures to have a job which keeps the graph updated?
 e.g. we could once a day run the inferred topics query maybe</p>
@@ -435,9 +460,20 @@ e.g. we could once a day run the inferred topics query maybe</p>
 How many of the attendeees will know Java?</p>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_next_step">Next Step</h3>
+<div class="paragraph">
+<p>How can we integrate real-time information, such as live-feeds to provide updated recommendations as the underlying data changes.</p>
+</div>
+<div class="paragraph">
+<p><a play-topic='http://guides.neo4j.com/intro/07_real_time_recommendations.html'>Real time Recommendations</a></p>
+</div>
+</div>
+</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-04-03 17:02:51 BST
+Last updated 2016-04-14 07:10:07 BST
 </div>
 </div>
 </body>
