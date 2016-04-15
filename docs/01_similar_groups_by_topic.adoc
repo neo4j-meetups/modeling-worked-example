@@ -4,7 +4,7 @@
 
 == Find similar groups to Neo4j
 
-image::{img}/group_has_topic.png
+image::{img}/group_has_topic.png[]
 
 [verse]
 ____

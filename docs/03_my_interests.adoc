@@ -76,7 +76,7 @@ People typically don't change those as their interests change but they do join n
 
 We can do this by inferring `INTERESTED_IN` relationships based on these groups.
 
-image::{img}/group_has_topic_member_of.png
+image::{img}/group_has_topic_member_of.png[]
 
 == Inferring interests
 

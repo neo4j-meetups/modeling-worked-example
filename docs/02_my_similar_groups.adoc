@@ -11,7 +11,7 @@ The worst type of recommendation!
 
 In this section we're going to add membership data to our model to fix that.
 
-image::{img}/group_has_topic_member_of.png
+image::{img}/group_has_topic_member_of.png[]
 
 [verse]
 ____
@@ -116,7 +116,7 @@ That’s because we didn’t force any ordering other than `topicsInCommon` so w
 
 Try changing the member name to your name or your neighbours and see how the results change.
 
-* INSERT SOME OTHER NAMES THAT PEOPLE CAN TRY HERE * 
+* INSERT SOME OTHER NAMES THAT PEOPLE CAN TRY HERE *
 
 == Exclude groups I’m a member of
 
@@ -139,7 +139,7 @@ Try changing the names of the group and member to see how the results vary.
 
 Now we’re going to make our recommendation on an individual basis.
 
-image::{img}/group_has_topic_member_of_interested_in.png
+image::{img}/group_has_topic_member_of_interested_in.png[]
 
 [verse]
 ____
