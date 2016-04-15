@@ -21,6 +21,8 @@ So we've got one column containing the member id and one with a `;` delimited se
 Our next task is to create a relationship between members and their topics.
 To do that we're going to need to split up the string containing topic ids so we can process them one at a time.
 
+We'll use link:http://neo4j.com/docs/new-manual/developer-manual/3.0-RC1/#functions-split[split] and link:http://neo4j.com/docs/new-manual/developer-manual/3.0-RC1/#query-plan-unwind[UNWIND] to help us do this.
+
 == Member Interests (Topics)
 
 Run the following query to create an `INTERESTED_IN` relationship between members and topics:
@@ -85,7 +87,7 @@ We can write the following query to add inferred `INTERESTED_IN` relationships t
 MATCH (m:Member)-[:MEMBER_OF]->()-[:HAS_TOPIC]->(topic)
 
 WITH m, topic, COUNT(*) AS times
-WHERE times >= 5 AND NOT (m)-[:INTERESTED_IN]->(topic)
+WHERE times >= 5
 
 MERGE (m)-[:INTERESTED_IN]->(topic)
 ----
@@ -95,11 +97,11 @@ The query:
 * goes over each member
 * finds the groups they're a member of and which topics those groups advertise
 * counts how many times each topic has showed up
-* removes any topics that show up less than 5 times or that the member is already interested in
+* removes any topics that show up less than 5 times
 * creates an `INTERESTED_IN` relationship between the member and the remaining topics
 
 On this dataset we have a sufficiently small number of members that we can process them all in one go.
-With a production sized dataset we'd need to process batches of members at a time.
+With a production sized dataset we'd need to process members in batches.
 
 == Find my similar groups (even if I don't know it yet)
 
@@ -127,10 +129,14 @@ RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
 ORDER BY score DESC
 ----
 
+== Exercise: Tweak the recommendation query
 
+*
+
+We could have a query for people to make our user join a new group and then see how the recommendations change.
 
 == Next Step
 
-Let's recommend look at events of our groups.
+In the next section we're going to explore the events hosted by our groups and then make event recommendations.
 
 pass:a[<a play-topic='{guides}/04_events.html'>Event Recommendations</a>]

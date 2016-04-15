@@ -14,8 +14,16 @@ In this section we're not going to install the link:https://github.com/jexp/neo4
 * Restart Neo4j
 * Run `CALL dbms.procedures()` to see the set of procedures now available to you.
 
+== `apoc.load.json`
 
+One of the procedures that we should have seen in our list is `apoc.load.json`.
+This procedure allows us to consume JSON documents directly into Neo4j and import data straight into Neo4j without the CSV transformation step.
 
+We're going to use this procedure to import some more data from meetup, this time in JSON format.
+
+== Importing JSON from the meetup.com API
+
+We need to import some data that's going to be useful for recommendations - I thought maybe comments but that doesn't seem very interesting.
 
 Here I want to put something showing how you can use one of the APOC procedures to have a job which keeps the graph updated?
 e.g. we could once a day run the inferred topics query maybe

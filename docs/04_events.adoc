@@ -2,9 +2,25 @@
 :csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
 :icons: font
 
+== Events
+
+So far we've only made recommendations for meetup groups that we might like to join.
+Now it’s time to bring events into the graph.
+
+We'll start with exploration of the events csv file:
+
+[source,cypher,subs=attributes]
+----
+LOAD CSV WITH HEADERS FROM "{csv-url}events.csv" AS row
+RETURN row
+LIMIT 5
+----
+
+As you can see we've got an event id, name, time, and description as well as some ids that reference other entities.
+
 == Import Events
 
-Now it’s time to bring events into the graph.
+First a bit of preparatory work before we import the events:
 
 [source,cypher,subs=attributes]
 ----
@@ -16,6 +32,8 @@ CREATE INDEX ON :Event(id)
 CREATE INDEX ON :Event(time)
 ----
 
+Now we're all set to import the events into the graph:
+
 [source,cypher,subs=attributes]
 ----
 USING PERIODIC COMMIT 10000
@@ -26,11 +44,16 @@ ON CREATE SET event.name = row.name,
               event.utcOffset = toInt(row.utc_offset)
 ----
 
+== Connect events and groups
+
+Our events are floating around not connected to anything so let's resolve that.
+We'll use the `group_id` field from the CSV file to lookup a group that we created earlier and create a relationship between the event and group:
 
 [source,cypher,subs=attributes]
 ----
 USING PERIODIC COMMIT 10000
 LOAD CSV WITH HEADERS FROM "{csv-url}events.csv" AS row
+
 WITH distinct row.group_id as groupId, row.id as eventId
 MATCH (group:Group {id: groupId})
 MATCH (event:Event {id: eventId})
@@ -39,22 +62,27 @@ MERGE (group)-[:HOSTED_EVENT]->(event)
 
 == Find future events in my groups
 
-Once we start looking to make event recommendations the simplest thing we can do is find the groups we’re a member of and then find its future events
+The simplest event recommendation we can make is to find the groups we’re a member of and then find its future events.
+We'll start with that and build from there:
 
 [source,cypher,subs=attributes]
 ----
-WITH 24.0*60*60*1000 AS oneDay
-
-MATCH (member:Member {name: "Mark Needham"})
-MATCH (futureEvent:Event) WHERE futureEvent.time >= timestamp()
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)
 MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
 
 RETURN group.name,
        futureEvent.name,
-       EXISTS((group)<-[:MEMBER_OF]-(member)) AS isMember,
-       round((futureEvent.time - timestamp()) / oneDay) AS days
-ORDER BY isMember DESC, days
+       round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days
+ORDER BY days
 ----
+
+That's a good start but it's a bit restrictive - I'm never going to learn about events in groups that I haven't joined yet.
+
+
+== Exercise: 
+
+
+Next we're going to introduce venues into the model.
 
 == Next Step
 

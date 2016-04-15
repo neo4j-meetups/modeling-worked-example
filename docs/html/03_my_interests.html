@@ -445,6 +445,9 @@ LIMIT 10</code></pre>
 Our next task is to create a relationship between members and their topics.
 To do that we&#8217;re going to need to split up the string containing topic ids so we can process them one at a time.</p>
 </div>
+<div class="paragraph">
+<p>We&#8217;ll use <a href="http://neo4j.com/docs/new-manual/developer-manual/3.0-RC1/#functions-split">split</a> and <a href="http://neo4j.com/docs/new-manual/developer-manual/3.0-RC1/#query-plan-unwind">UNWIND</a> to help us do this.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_member_interests_topics_2">Member Interests (Topics)</h3>
@@ -523,10 +526,8 @@ People typically don&#8217;t change those as their interests change but they do 
 <div class="paragraph">
 <p>We can do this by inferring <code>INTERESTED_IN</code> relationships based on these groups.</p>
 </div>
-<div class="imageblock" style="float: right">
-<div class="content">
-<img src="http://guides.neo4j.com/intro/img/group_has_topic_member_of.png" alt="group has topic member of">
-</div>
+<div class="paragraph">
+<p>image::http://guides.neo4j.com/intro/img/group_has_topic_member_of.png</p>
 </div>
 </div>
 <div class="sect2">
@@ -611,7 +612,7 @@ ORDER BY score DESC</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-04-14 08:53:52 BST
+Last updated 2016-04-15 05:46:02 BST
 </div>
 </div>
 </body>

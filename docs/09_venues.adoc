@@ -1,0 +1,8 @@
+= Venues
+:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
+:icons: font
+
+We can do recommendations for my favourite venues
+Venues within a certain distance of a particular part of London
+
+We could even merge together identical venues which have been given a separate id in the meetup data set?
