@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.4">
-<title>Events</title>
+<title>Venues Answers</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -420,114 +420,106 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Events</h1>
+<h1>Venues Answers</h1>
 </div>
 <div id="content">
 <div class="sect2">
-<h3 id="_events">Events</h3>
-<div class="paragraph">
-<p>So far we&#8217;ve only made recommendations for meetup groups that we might like to join.
-Now it’s time to bring events into the graph.</p>
+<h3 id="_exercise_importing_venues">Exercise: Importing venues</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Load the venues into the graph - make sure you store <code>latitude</code> and <code>longitude</code> as properties as we&#8217;ll be using those in the next section.</p>
+</li>
+<li>
+<p>Connect the events we loaded earlier to our newly loaded venues</p>
+</li>
+</ul>
 </div>
-<div class="paragraph">
-<p>We&#8217;ll start with exploration of the events csv file:</p>
 </div>
+<div class="sect2">
+<h3 id="_load_the_venues_into_the_graph">Load the venues into the graph</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/venues.csv" AS row
+MERGE (venue:Venue {id: row.id})
+ON CREATE SET venue.name = row.name,
+              venue.latitude = tofloat(row.lat),
+              venue.longitude = tofloat(row.lon),
+              venue.address = row.address_1</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_connect_events_to_venues">Connect events to venues</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-cypher" data-lang="cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/events.csv" AS row
-RETURN row
-LIMIT 5</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>As you can see we&#8217;ve got an event id, name, time, and description as well as some ids that reference other entities.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_import_events">Import Events</h3>
-<div class="paragraph">
-<p>First a bit of preparatory work before we import the events:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">CREATE INDEX ON :Event(id)</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">CREATE INDEX ON :Event(time)</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now we&#8217;re all set to import the events into the graph:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">USING PERIODIC COMMIT 10000
-LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/events.csv" AS row
-MERGE (event:Event {id: row.id})
-ON CREATE SET event.name = row.name,
-              event.time = toInt(row.time),
-              event.utcOffset = toInt(row.utc_offset)</code></pre>
+MATCH (venue:Venue {id: row.venue_id})
+MATCH (event:Event {id: row.id})
+MERGE (event)-[:VENUE]->(venue)</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_connect_events_and_groups">Connect events and groups</h3>
-<div class="paragraph">
-<p>Our events are floating around not connected to anything so let&#8217;s resolve that.
-We&#8217;ll use the <code>group_id</code> field from the CSV file to lookup a group that we created earlier and create a relationship between the event and group:</p>
+<h3 id="_exercise_using_venues_in_recommendations">Exercise: Using venues in recommendations</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Update the events recommendation query we wrote earlier to return the distance to here</p>
+</li>
+<li>
+<p>Filter out events which are more than 1km away</p>
+</li>
+</ul>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_return_distance_to_venue">Return distance to venue</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">USING PERIODIC COMMIT 10000
-LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/events.csv" AS row
+<pre class="highlight"><code class="language-cypher" data-lang="cypher">WITH {latitude: 51.518551, longitude: -0.086114} AS here
 
-WITH distinct row.group_id as groupId, row.id as eventId
-MATCH (group:Group {id: groupId})
-MATCH (event:Event {id: eventId})
-MERGE (group)-[:HOSTED_EVENT]->(event)</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_find_future_events_in_my_groups">Find future events in my groups</h3>
-<div class="paragraph">
-<p>The simplest event recommendation we can make is to find the groups we’re a member of and then find its future events.
-We&#8217;ll start with that and build from there:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent),
-      (futureEvent)<-[:HOSTED_EVENT]-(group)
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent),
+      (venue)<-[:VENUE]-(futureEvent)
 WHERE futureEvent.time > timestamp()
+
 RETURN group.name,
        futureEvent.name,
-       round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days
-ORDER BY days</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>That&#8217;s a good start but it&#8217;s a bit restrictive - I&#8217;m never going to learn about events in groups that I haven&#8217;t joined yet.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_exercise">Exercise:</h3>
+       round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days,
+       distance(venue, here) AS distance
+ORDER BY days
+---
 
+== Filter out events > 1km away
+
+[source,cypher,subs=attributes]</code></pre>
 </div>
-<div class="sect2">
-<h3 id="_next_step">Next Step</h3>
-<div class="paragraph">
-<p>Next we&#8217;re going to introduce venues into the model so we can make recommendations based on where events are being held.</p>
 </div>
 <div class="paragraph">
-<p><a play-topic='http://guides.neo4j.com/intro/05_venues.html'>Layered Event Recommendations</a></p>
+<p>WITH {latitude: 51.518551, longitude: -0.086114} AS here</p>
+</div>
+<div class="paragraph">
+<p>MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]&#8594;()-[:HOSTED_EVENT]&#8594;(futureEvent),
+      (venue)&#8592;[:VENUE]-(futureEvent)</p>
+</div>
+<div class="paragraph">
+<p>WITH group, futureEvent, distance(venue, here) AS distance
+WHERE distance &lt; 1000</p>
+</div>
+<div class="paragraph">
+<p>RETURN group.name,
+       futureEvent.name,
+       roundfutureEvent.time - timestamp(
+             / (24.0*60*60*1000)) AS days,
+       distance
+ORDER BY days
+---</p>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-04-15 19:26:57 BST
+Last updated 2016-04-15 19:18:20 BST
 </div>
 </div>
 </body>

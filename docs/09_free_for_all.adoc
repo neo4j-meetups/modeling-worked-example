@@ -1,6 +1,18 @@
-= Real Time Recommendations
+= Free for all
 :csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
 :icons: font
+
+What else can we add to the model to come up with more interesting recommendations?
+Here you have some time to play around with the data and come up with something new
+
+== Ideas
+
+* Comments sentiment analysis - do people actually like the events they go to?
+* Topic ontology - how are topics related? e.g. Neo4j, Cassandra, MongoDB are part of NoSQL
+* Event similarity based on descriptions - use Latent Dirichlet Allocation to derive categories
+* Social network - what events do our twitter/Facebook friends attend?
+* Location - do we favour events in a certain part of town?
+* Day of the week - do we only go to events on certain days of the week?  do we go to different events on weekdays vs weekend?
 
 In the talk I'd wired up a python script which polled the meetup streaming API and pulled in RSVPs.
 Should we make a procedure to do the same thing and have people write the query to update the model appropriately?
@@ -33,11 +45,3 @@ for rsvp in stream_meetup():
           SET rsvpRel.response = {response}""", params)
 
 ----
-
-
-== Next Step
-
-What else can we achieve within our domain.
-Let's explore some more ideas.
-
-pass:a[<a play-topic='{guides}/08_free_for_all.html'>Free for all</a>]

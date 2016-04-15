@@ -67,9 +67,9 @@ We'll start with that and build from there:
 
 [source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)
-MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
-
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent),
+      (futureEvent)<-[:HOSTED_EVENT]-(group)
+WHERE futureEvent.time > timestamp()
 RETURN group.name,
        futureEvent.name,
        round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days
@@ -78,15 +78,11 @@ ORDER BY days
 
 That's a good start but it's a bit restrictive - I'm never going to learn about events in groups that I haven't joined yet.
 
-
 == Exercise:
 
 
-Next we're going to introduce venues into the model.
-
 == Next Step
 
-A real world recommendation consists of several scores.
-Let us explore how we can build up a scoring query step by step to recommend future events to attend.
+Next we're going to introduce venues into the model so we can make recommendations based on where events are being held.
 
-pass:a[<a play-topic='{guides}/05_layered_events.html'>Layered Event Recommendations</a>]
+pass:a[<a play-topic='{guides}/05_venues.html'>Layered Event Recommendations</a>]

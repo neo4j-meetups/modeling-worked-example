@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.4">
-<title>Events</title>
+<title>Free for all</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -420,114 +420,79 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Events</h1>
+<h1>Free for all</h1>
 </div>
 <div id="content">
-<div class="sect2">
-<h3 id="_events">Events</h3>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
-<p>So far we&#8217;ve only made recommendations for meetup groups that we might like to join.
-Now it’s time to bring events into the graph.</p>
-</div>
-<div class="paragraph">
-<p>We&#8217;ll start with exploration of the events csv file:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/events.csv" AS row
-RETURN row
-LIMIT 5</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>As you can see we&#8217;ve got an event id, name, time, and description as well as some ids that reference other entities.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_import_events">Import Events</h3>
-<div class="paragraph">
-<p>First a bit of preparatory work before we import the events:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">CREATE INDEX ON :Event(id)</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">CREATE INDEX ON :Event(time)</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now we&#8217;re all set to import the events into the graph:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">USING PERIODIC COMMIT 10000
-LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/events.csv" AS row
-MERGE (event:Event {id: row.id})
-ON CREATE SET event.name = row.name,
-              event.time = toInt(row.time),
-              event.utcOffset = toInt(row.utc_offset)</code></pre>
+<p>What else can we add to the model to come up with more interesting recommendations?
+Here you have some time to play around with the data and come up with something new</p>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_connect_events_and_groups">Connect events and groups</h3>
+<h3 id="_ideas">Ideas</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Comments sentiment analysis - do people actually like the events they go to?</p>
+</li>
+<li>
+<p>Topic ontology - how are topics related? e.g. Neo4j, Cassandra, MongoDB are part of NoSQL</p>
+</li>
+<li>
+<p>Event similarity based on descriptions - use Latent Dirichlet Allocation to derive categories</p>
+</li>
+<li>
+<p>Social network - what events do our twitter/Facebook friends attend?</p>
+</li>
+<li>
+<p>Location - do we favour events in a certain part of town?</p>
+</li>
+<li>
+<p>Day of the week - do we only go to events on certain days of the week?  do we go to different events on weekdays vs weekend?</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
-<p>Our events are floating around not connected to anything so let&#8217;s resolve that.
-We&#8217;ll use the <code>group_id</code> field from the CSV file to lookup a group that we created earlier and create a relationship between the event and group:</p>
+<p>In the talk I&#8217;d wired up a python script which polled the meetup streaming API and pulled in RSVPs.
+Should we make a procedure to do the same thing and have people write the query to update the model appropriately?</p>
+</div>
+<div class="paragraph">
+<p>Can we wire something together that takes into account people joining or leaving groups as well or is that too difficult?</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">USING PERIODIC COMMIT 10000
-LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/events.csv" AS row
+<pre class="highlight"><code class="language-python" data-lang="python">from py2neo import authenticate, Graph
+ authenticate("localhost:7474", "neo4j", "medium")
+graph = Graph()
 
-WITH distinct row.group_id as groupId, row.id as eventId
-MATCH (group:Group {id: groupId})
-MATCH (event:Event {id: eventId})
-MERGE (group)-[:HOSTED_EVENT]->(event)</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_find_future_events_in_my_groups">Find future events in my groups</h3>
-<div class="paragraph">
-<p>The simplest event recommendation we can make is to find the groups we’re a member of and then find its future events.
-We&#8217;ll start with that and build from there:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent),
-      (futureEvent)<-[:HOSTED_EVENT]-(group)
-WHERE futureEvent.time > timestamp()
-RETURN group.name,
-       futureEvent.name,
-       round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days
-ORDER BY days</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>That&#8217;s a good start but it&#8217;s a bit restrictive - I&#8217;m never going to learn about events in groups that I haven&#8217;t joined yet.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_exercise">Exercise:</h3>
+group_ids = [] group_query = "MATCH (g:Group) RETURN g.id AS groupId"
+for row in graph.cypher.execute(group_query):
+    group_ids.append(int(row["groupId"]))
 
+for rsvp in stream_meetup():
+    if rsvp["group"]["group_id"] in group_ids:
+        params = { "rsvp_id": str(rsvp["rsvp_id"]),
+                   "event_id": str(rsvp["event"]["event_id"]),
+                   "member_id": str(rsvp["member"]["member_id"]),
+                   "response": rsvp["response"],
+                   "mtime": rsvp["mtime"] }
+        graph.cypher.execute("""
+          MATCH (event:Event {id: {event_id}})
+          MATCH (member:Member {id: {member_id}})
+          MERGE (member)-[rsvpRel:RSVPD {id: {rsvp_id}}]-&gt;(event)
+          ON CREATE SET rsvpRel.created = toInt({mtime})
+          ON MATCH  SET rsvpRel.lastModified = toInt({mtime})
+          SET rsvpRel.response = {response}""", params)</code></pre>
 </div>
-<div class="sect2">
-<h3 id="_next_step">Next Step</h3>
-<div class="paragraph">
-<p>Next we&#8217;re going to introduce venues into the model so we can make recommendations based on where events are being held.</p>
-</div>
-<div class="paragraph">
-<p><a play-topic='http://guides.neo4j.com/intro/05_venues.html'>Layered Event Recommendations</a></p>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-04-15 19:26:57 BST
+Last updated 2016-04-15 19:28:42 BST
 </div>
 </div>
 </body>

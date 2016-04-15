@@ -42,6 +42,7 @@ WITH {latitude: 51.518551, longitude: -0.086114} AS here
 
 MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent),
       (venue)<-[:VENUE]-(futureEvent)
+WHERE futureEvent.time > timestamp()      
 
 RETURN group.name,
        futureEvent.name,

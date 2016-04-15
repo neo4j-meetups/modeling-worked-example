@@ -75,7 +75,11 @@ e.g. the QE2 where Graph Connect will be tomorrow is at `51.5002221,-0.1290273`
 * Update the events recommendation query we wrote earlier to return the distance to here
 * Filter out events which are more than 1km away
 
-We can do recommendations for my favourite venues
-Venues within a certain distance of a particular part of London
+== Next Step
+Can we now make use of previous locations where people have attended events to help make better recommendations?
 
-We could even merge together identical venues which have been given a separate id in the meetup data set?
+To do that we'll need to import the events that people have previously attended.
+
+The meetup.com API gives us RSVPs which can serve as a proxy for attendance.
+
+pass:a[<a play-topic='{guides}/05_layered_events.html'>Layered Event Recommendations</a>]

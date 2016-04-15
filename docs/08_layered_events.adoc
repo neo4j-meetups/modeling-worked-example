@@ -2,6 +2,23 @@
 :csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
 :icons: font
 
+[source,cypher,subs=attributes]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:RSVPD]->(event)-[:VENUE]->(venue)
+WHERE event.time < timestamp()
+
+WITH DISTINCT member, venue
+MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
+WHERE futureEvent.time > timestamp()
+
+RETURN group.name,
+       futureEvent.name,
+       round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days,
+       distance(venue, here) AS distance
+ORDER BY days
+----
+
+
 == Combine Multiple Scores into a Layered Query
 
 Here we are going to build a hybrid recommendation engine that takes lots of factors into account.
@@ -44,8 +61,8 @@ WITH row WHERE row.response = "yes"
 MATCH (member:Member {id: row.member_id})
 MATCH (event:Event {id: row.event_id})
 MERGE (member)-[rsvp:RSVPD {id: row.rsvp_id}]->(event)
-ON CREATE SET rsvp.created = toInt(row.created),  
-              rsvp.lastModified = toInt(row.mtime),  
+ON CREATE SET rsvp.created = toInt(row.created),
+              rsvp.lastModified = toInt(row.mtime),
               rsvp.response = row.response;
 ----
 
@@ -55,17 +72,17 @@ ON CREATE SET rsvp.created = toInt(row.created),
 ----
 WITH 24.0*60*60*1000 AS oneDay
 
-MATCH (member:Member {name: "Mark Needham"}) 
-MATCH (futureEvent:Event) WHERE futureEvent.time >= timestamp() 
-MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)  
+MATCH (member:Member {name: "Mark Needham"})
+MATCH (futureEvent:Event) WHERE futureEvent.time >= timestamp()
+MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
 
 WITH oneDay, group, futureEvent, member, EXISTS((group)<-[:MEMBER_OF]-(member)) AS isMember
 
-OPTIONAL MATCH (member)-[rsvp:RSVPD]->(pastEvent)<-[:HOSTED_EVENT]-(group) 
+OPTIONAL MATCH (member)-[rsvp:RSVPD]->(pastEvent)<-[:HOSTED_EVENT]-(group)
 WHERE pastEvent.time < timestamp()
 
-RETURN group.name, futureEvent.name, isMember, 
-       COUNT(rsvp) AS previousEvents, 
+RETURN group.name, futureEvent.name, isMember,
+       COUNT(rsvp) AS previousEvents,
        round((futureEvent.time - timestamp()) / oneDay) AS days
 ORDER BY days, previousEvents DESC
 ----
@@ -74,25 +91,25 @@ ORDER BY days, previousEvents DESC
 
 [source,cypher,subs=attributes]
 ----
-WITH 24.0*60*60*1000 AS oneDay 
+WITH 24.0*60*60*1000 AS oneDay
 
-MATCH (member:Member {name: "Mark Needham"}) 
+MATCH (member:Member {name: "Mark Needham"})
 MATCH (futureEvent:Event) WHERE futureEvent.time >= timestamp()
 MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
 
 WITH oneDay, group, futureEvent, member, EXISTS((group)<-[:MEMBER_OF]-(member)) AS isMember
 
-OPTIONAL MATCH (member)-[rsvp:RSVPD]->(pastEvent)<-[:HOSTED_EVENT]-(group) 
-WHERE pastEvent.time < timestamp()  
+OPTIONAL MATCH (member)-[rsvp:RSVPD]->(pastEvent)<-[:HOSTED_EVENT]-(group)
+WHERE pastEvent.time < timestamp()
 
-WITH oneDay, group, futureEvent, member, isMember, 
+WITH oneDay, group, futureEvent, member, isMember,
      COUNT(rsvp) AS previousEvents
 
-OPTIONAL MATCH (futureEvent)<-[:HOSTED_EVENT]-()-[:HAS_TOPIC]->(topic)<-[:INTERESTED_IN]-(member)  
+OPTIONAL MATCH (futureEvent)<-[:HOSTED_EVENT]-()-[:HAS_TOPIC]->(topic)<-[:INTERESTED_IN]-(member)
 
-RETURN group.name, futureEvent.name, isMember, 
-       previousEvents, 
-       COUNT(topic) AS topics, 
+RETURN group.name, futureEvent.name, isMember,
+       previousEvents,
+       COUNT(topic) AS topics,
        round((futureEvent.time - timestamp()) / oneDay) AS days
 ORDER BY days,previousEvents DESC, topics DESC
 ----
@@ -134,9 +151,9 @@ OPTIONAL MATCH (futureEvent)<-[:HOSTED_EVENT]-()-[:HAS_TOPIC]->(topic)<-[:INTERE
 WITH oneDay, group, futureEvent, member, isMember, previousEvents, COUNT(topic) AS topics
 OPTIONAL MATCH (member)-[:FRIENDS]-(:Member)-[rsvpYes:RSVP_YES]->(futureEvent)
 
-RETURN group.name, futureEvent.name, isMember, 
-       round((futureEvent.time - timestamp()) / oneDay) AS days, 
-       previousEvents, topics, 
+RETURN group.name, futureEvent.name, isMember,
+       round((futureEvent.time - timestamp()) / oneDay) AS days,
+       previousEvents, topics,
        COUNT(rsvpYes) AS friendsGoing
 ORDER BY days, friendsGoing DESC, previousEvents DESC
 LIMIT 15
