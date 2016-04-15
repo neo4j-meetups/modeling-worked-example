@@ -526,8 +526,10 @@ People typically don&#8217;t change those as their interests change but they do 
 <div class="paragraph">
 <p>We can do this by inferring <code>INTERESTED_IN</code> relationships based on these groups.</p>
 </div>
-<div class="paragraph">
-<p>image::http://guides.neo4j.com/intro/img/group_has_topic_member_of.png</p>
+<div class="imageblock">
+<div class="content">
+<img src="http://guides.neo4j.com/intro/img/group_has_topic_member_of.png" alt="group has topic member of">
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -540,7 +542,7 @@ People typically don&#8217;t change those as their interests change but they do 
 <pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (m:Member)-[:MEMBER_OF]->()-[:HAS_TOPIC]->(topic)
 
 WITH m, topic, COUNT(*) AS times
-WHERE times >= 5 AND NOT (m)-[:INTERESTED_IN]->(topic)
+WHERE times >= 5
 
 MERGE (m)-[:INTERESTED_IN]->(topic)</code></pre>
 </div>
@@ -560,7 +562,7 @@ MERGE (m)-[:INTERESTED_IN]->(topic)</code></pre>
 <p>counts how many times each topic has showed up</p>
 </li>
 <li>
-<p>removes any topics that show up less than 5 times or that the member is already interested in</p>
+<p>removes any topics that show up less than 5 times</p>
 </li>
 <li>
 <p>creates an <code>INTERESTED_IN</code> relationship between the member and the remaining topics</p>
@@ -569,7 +571,7 @@ MERGE (m)-[:INTERESTED_IN]->(topic)</code></pre>
 </div>
 <div class="paragraph">
 <p>On this dataset we have a sufficiently small number of members that we can process them all in one go.
-With a production sized dataset we&#8217;d need to process batches of members at a time.</p>
+With a production sized dataset we&#8217;d need to process members in batches.</p>
 </div>
 </div>
 <div class="sect2">
@@ -601,9 +603,18 @@ ORDER BY score DESC</code></pre>
 </div>
 </div>
 <div class="sect2">
+<h3 id="_exercise_tweak_the_recommendation_query">Exercise: Tweak the recommendation query</h3>
+<div class="paragraph">
+<p>*</p>
+</div>
+<div class="paragraph">
+<p>We could have a query for people to make our user join a new group and then see how the recommendations change.</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_next_step">Next Step</h3>
 <div class="paragraph">
-<p>Let&#8217;s recommend look at events of our groups.</p>
+<p>In the next section we&#8217;re going to explore the events hosted by our groups and then make event recommendations.</p>
 </div>
 <div class="paragraph">
 <p><a play-topic='http://guides.neo4j.com/intro/04_events.html'>Event Recommendations</a></p>
@@ -612,7 +623,7 @@ ORDER BY score DESC</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-04-15 05:46:02 BST
+Last updated 2016-04-15 06:54:15 BST
 </div>
 </div>
 </body>

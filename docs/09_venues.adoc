@@ -2,6 +2,76 @@
 :csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
 :icons: font
 
+== Venues
+
+One of the most important factors influencing which events people attend is where those events are being hosted.
+In this section we're going to introduce venues into the graph and then use those in our recommendation queries.
+
+We'll start by seeing what data we've got on venues:
+
+[source,cypher,subs=attributes]
+----
+LOAD CSV WITH HEADERS
+FROM "{csv-url}venues.csv"
+AS row
+RETURN row
+LIMIT 10
+----
+
+So we've got a venue id, name and then some address details including the lat and long.
+Let's get that imported!
+
+== Exercise: Importing venues
+
+* Load the venues into the graph - make sure you store `latitude` and `longitude` as properties as we'll be using those in the next section.
+* Connect the events we loaded earlier to our newly loaded venues
+
+_Tip_ You'll have to iterate over the events CSV file again to get the `venue_id` for each event
+
+== Verifying venues import
+
+* ADD SLIDE SHOWING THE QUERIES FOR LOADING*
+Maybe also an 'answers' guide to go along with it?
+
+Hopefully you've got `latitude` and `longitude` properties on each of the venues we just imported.
+You can check by running the following query:
+
+[source,cypher,subs=attributes]
+----
+MATCH (venue:Venue)
+WHERE EXISTS(venue.latitude) AND EXISTS(venue.longitude)
+RETURN COUNT(*)
+----
+
+You should see a count > 0.
+If you don't then grab one of the trainers and we can help you fix it.
+
+Next we're going to do some distance calculations with those values.
+
+== Distance to venues
+
+We'll start with a simple query to find venues near here:
+
+[source,cypher,subs=attributes]
+----
+WITH {latitude: 0.1, longtitude: 0.34} AS graphConnectTrainingVenue
+MATCH (venue:Venue)
+
+WITH venue, distance(venue, graphConnectTrainingVenue) AS distance
+RETURN venue, distance
+ORDER BY distance
+----
+
+Try changing the first line to point to some other lat/longs in London.
+e.g. the QE2 where Graph Connect will be tomorrow is at <INSERT-QE2-LAT-LONG>
+
+== Exercise: Using venues in recommendations
+
+* Update the events recommendation query we wrote earlier to return the distance to here
+* Filter out events which are more than 1km away
+
+* ADD THESE ANSWERS TO THE SLIDES*
+
 We can do recommendations for my favourite venues
 Venues within a certain distance of a particular part of London
 

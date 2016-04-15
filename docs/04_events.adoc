@@ -79,7 +79,7 @@ ORDER BY days
 That's a good start but it's a bit restrictive - I'm never going to learn about events in groups that I haven't joined yet.
 
 
-== Exercise: 
+== Exercise:
 
 
 Next we're going to introduce venues into the model.
