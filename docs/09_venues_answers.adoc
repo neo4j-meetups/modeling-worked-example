@@ -1,0 +1,71 @@
+= Venues Answers
+:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
+:icons: font
+
+== Exercise: Importing venues
+
+* Load the venues into the graph - make sure you store `latitude` and `longitude` as properties as we'll be using those in the next section.
+* Connect the events we loaded earlier to our newly loaded venues
+
+== Load the venues into the graph
+
+[source,cypher,subs=attributes]
+----
+LOAD CSV WITH HEADERS FROM "{csv-url}venues.csv" AS row
+MERGE (venue:Venue {id: row.id})
+ON CREATE SET venue.name = row.name,
+              venue.latitude = tofloat(row.lat),
+              venue.longitude = tofloat(row.lon),
+              venue.address = row.address_1
+----
+
+== Connect events to venues
+
+[source,cypher,subs=attributes]
+----
+LOAD CSV WITH HEADERS FROM "{csv-url}events.csv" AS row
+MATCH (venue:Venue {id: row.venue_id})
+MATCH (event:Event {id: row.id})
+MERGE (event)-[:VENUE]->(venue)
+----
+
+== Exercise: Using venues in recommendations
+
+* Update the events recommendation query we wrote earlier to return the distance to here
+* Filter out events which are more than 1km away
+
+== Return distance to venue
+
+[source,cypher,subs=attributes]
+----
+WITH {latitude: 51.518551, longitude: -0.086114} AS here
+
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent),
+      (venue)<-[:VENUE]-(futureEvent)
+
+RETURN group.name,
+       futureEvent.name,
+       round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days,
+       distance(venue, here) AS distance
+ORDER BY days
+---
+
+== Filter out events > 1km away
+
+[source,cypher,subs=attributes]
+----
+WITH {latitude: 51.518551, longitude: -0.086114} AS here
+
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent),
+      (venue)<-[:VENUE]-(futureEvent)
+
+WITH group, futureEvent, distance(venue, here) AS distance
+WHERE distance < 1000
+
+RETURN group.name,
+       futureEvent.name,
+       round((futureEvent.time - timestamp())
+             / (24.0*60*60*1000)) AS days,
+       distance
+ORDER BY days
+---
