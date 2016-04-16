@@ -122,7 +122,7 @@ ASSERT m.id IS UNIQUE</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The CSV file contains one entry for each group a member is part of so we will iterate over some members multiple time.</p>
+<p>The CSV file contains one entry for each group a member is part of so we will iterate over some members multiple times.</p>
 </div>
 <div class="paragraph">
 <p>Run the following query to import members into the graph:</p>
@@ -176,7 +176,8 @@ ON CREATE SET membership.joined=toInt(row.joined);</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (member:Member)-[membership:MEMBER_OF]->(group)
-RETURN member, group, membership</code></pre>
+RETURN member, group, membership
+LIMIT 10</code></pre>
 </div>
 </div>
 	</div>
@@ -191,12 +192,15 @@ RETURN member, group, membership</code></pre>
     <br/>
     <div>
       <div class="paragraph">
-<p>We&#8217;re bound to want to search members by name so we&#8217;ll put an index on <code>Member(name)</code> so we can quickly do that.</p>
+<p>We&#8217;re going to search for members by name so we&#8217;ll put an index on <code>Member(name)</code> so we can quickly do that.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CREATE INDEX ON :Member(name)</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Now it&#8217;s your turn!</p>
 </div>
 	</div>
   </div>
@@ -310,7 +314,7 @@ LIMIT 10</code></pre>
     <br/>
     <div>
       <div class="paragraph">
-<p>Now we’re going to make our recommendation on an individual basis.</p>
+<p>Now that we&#8217;ve got the data loaded in we can start making recommendations on an individual basis.</p>
 </div>
 <div class="imageblock">
 <div class="content">

@@ -116,6 +116,7 @@ For our next recommendation we're still going to be finding similar groups to th
 
 [source,cypher,subs=attributes]
 ----
+MATCH (member:Member {name: "Mark Needham"})
 MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
 RETURN otherGroup.name,
        COUNT(topic) AS topicsInCommon,
@@ -140,8 +141,9 @@ In the following query we move the exclusion pattern up into a `WHERE` clause so
 
 [source,cypher,subs=attributes]
 ----
+MATCH (member:Member {name: "Mark Needham"})
 MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
-WHERE NOT( (:Member {name: "Mark Needham"})-[:MEMBER_OF]->(otherGroup) )
+WHERE NOT((member)-[:MEMBER_OF]->(otherGroup) )
 RETURN otherGroup.name,
        COUNT(topic) AS topicsInCommon,
        COLLECT(topic.name) AS topics
