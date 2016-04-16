@@ -37,4 +37,4 @@ How many of the attendeees will know Java?
 
 How can we integrate real-time information, such as live-feeds to provide updated recommendations as the underlying data changes.
 
-pass:a[<a play-topic='{guides}/07_real_time_recommendations.html'>Real time Recommendations</a>]
+pass:a[<a play-topic='{guides}/08_layered_events.html'>Layered event recommendations</a>]

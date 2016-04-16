@@ -1,0 +1,346 @@
+<style type="text/css" media="screen">
+/*
+.nodes-image {
+	margin:-100;
+}
+*/	
+    .imageblock .content img {
+        max-width: 900px;
+        max-height: 300px;
+    }
+	.deck h3 {
+		display: block !important;
+		margin-bottom:8px;
+		margin-top:5px;
+	}
+	.listingblock {
+		margin:8px;
+	}
+	.pull-bottom {
+		position:relative;
+		bottom:1em;
+	}
+</style>
+<style type="text/css" media="screen">
+#editor.maximize-editor .CodeMirror-code {
+ font-size:40px;
+ line-height:45px;
+}
+</style><article class="guide">
+  <carousel class="deck container-fluid">
+    <!--slide class="row-fluid">
+      <div class="col-sm-3">
+        <h3>Similar groups</h3>
+        <p class="lead">Information</p>
+			<!dl>
+				
+				
+				
+				
+				
+			</dl>
+		</div>
+      <div class="col-sm-9">
+        <figure>
+          <img style="width:300px" src=""/>
+        </figure>
+      </div>
+    </slide-->
+    
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Find similar groups to Neo4j</h3>
+    <br/>
+    <div>
+      <div class="imageblock">
+<div class="content">
+<img src="http://localhost:8001/img/group_has_topic.png" alt="group has topic">
+</div>
+</div>
+<div class="verseblock">
+<pre class="content">As a member of the Neo4j London group
+I want to find other similar meetup groups
+So that I can join those groups</pre>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>What makes groups similar?</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>One thing that makes groups similar is the topics that they’re about.</p>
+</div>
+<div class="verseblock">
+<pre class="content">As a member of the Neo4j London group
+I want to find other similar meetup groups
+So that I can join those groups</pre>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS
+FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups.csv"
+AS row
+RETURN row
+LIMIT 10</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Import Groups</h3>
+    <br/>
+    <div>
+      <div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS
+FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups.csv"
+AS row
+CREATE (:Group { id:row.id,
+                 name:row.name,
+                 urlname:row.urlname,
+                 rating:toInt(row.rating),
+                 created:toInt(row.created) })</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We use CREATE because we know the database is empty when we start.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (g:Group)
+RETURN g.id, g.name, g.urlname</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Topics express areas of interest for both groups and members.</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Detour: MERGE &amp; Constraints</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>We want to use <code>MERGE</code> because we want to avoid creating duplicate topics
+We&#8217;ll put a unique constraint on <code>:Topic(id)</code> so that we don’t create the same topic twice.</p>
+</div>
+<div class="paragraph">
+<p>Unique constraints:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>ensure uniqueness of a (label, property) pair</p>
+</li>
+<li>
+<p>allow fast lookup of nodes which match these (label,property) pairs by creating an index on the (label, property) pair.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CREATE CONSTRAINT ON (t:Topic) ASSERT t.id IS UNIQUE</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CREATE CONSTRAINT ON (g:Group) ASSERT g.id IS UNIQUE</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Import Topics</h3>
+    <br/>
+    <div>
+      <div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups_topics.csv"  AS row
+MERGE (topic:Topic {id: row.id})
+ON CREATE SET topic.name = row.name,
+              topic.urlkey = row.urlkey</code></pre>
+</div>
+</div>
+
+
+
+   <div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (t:Topic)
+RETURN t.id, t.name</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Connect groups and topics</h3>
+    <br/>
+    <div>
+      <div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups_topics.csv"  AS row
+MATCH (topic:Topic {id: row.id})
+MATCH (group:Group {id: row.groupId})
+MERGE (group)-[:HAS_TOPIC]->(topic)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The use of <code>MERGE</code> here ensures that we end up with a single unique link between a group and a topic.</p>
+</div>
+<div class="paragraph">
+<p>If we run the query a second time nothing will happen.
+If we run another <code>MERGE</code> query that tries to create a <code>:HAS_TOPIC</code> relationship when one already exists it won’t do anything.</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Additional Indexes</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>We create an index on <code>:Group(name)</code> so that we can quickly look up groups by name.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CREATE INDEX ON :Group(name)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Same for topics.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CREATE INDEX ON :Topic(name)</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Exercise: Explore the graph</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>We&#8217;ve now loaded groups and topics but we don&#8217;t know exactly what&#8217;s in our graph so let&#8217;s do some exploration.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>What&#8217;s the most popular topic?</p>
+</li>
+<li>
+<p>Which group was created most recently?</p>
+</li>
+<li>
+<p>How many groups have been running for 4 years or more?</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><em>Hint:</em> The <a href="http://neo4j.com/docs/milestone/cypher-refcard/">Cypher refcard</a> will come in handy for syntax we haven&#8217;t covered yet!</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Find similar groups to Neo4j</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>So you&#8217;ve hopefully now got an idea of what the data looks like.
+It&#8217;s time to write our first recommendation query which will find groups that have the same topics as the Neo4j London group:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup)
+RETURN otherGroup.name, COUNT(topic) AS topicsInCommon,
+       COLLECT(topic.name) AS topics
+ORDER BY topicsInCommon DESC, otherGroup.name
+LIMIT 10</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This query</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>starts from the Neo4j group,</p>
+</li>
+<li>
+<p>finds its topics,</p>
+</li>
+<li>
+<p>then looks for other groups that have those topics</p>
+</li>
+<li>
+<p>and aggregates the groups with the most topics in common.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Try changing the group name e.g. <code>Big Data Debate</code> or <code>Docker London</code> and see how the results change.</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Next Step</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>Let&#8217;s look at our groups and how we can use that related information to recommend new groups for ourselves.</p>
+</div>
+<div class="paragraph">
+<p><a play-topic='http://localhost:8001/02_my_similar_groups.html'>Groups similar to mine</a></p>
+</div>
+	</div>
+  </div>
+</slide>
+  </carousel>
+</article>

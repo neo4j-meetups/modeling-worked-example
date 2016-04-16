@@ -1,0 +1,98 @@
+<style type="text/css" media="screen">
+/*
+.nodes-image {
+	margin:-100;
+}
+*/	
+    .imageblock .content img {
+        max-width: 900px;
+        max-height: 300px;
+    }
+	.deck h3 {
+		display: block !important;
+		margin-bottom:8px;
+		margin-top:5px;
+	}
+	.listingblock {
+		margin:8px;
+	}
+	.pull-bottom {
+		position:relative;
+		bottom:1em;
+	}
+</style>
+<style type="text/css" media="screen">
+#editor.maximize-editor .CodeMirror-code {
+ font-size:40px;
+ line-height:45px;
+}
+</style><article class="guide">
+  <carousel class="deck container-fluid">
+    <!--slide class="row-fluid">
+      <div class="col-sm-3">
+        <h3>RSVPs</h3>
+        <p class="lead">Information</p>
+			<!dl>
+				
+				
+				
+				
+				
+			</dl>
+		</div>
+      <div class="col-sm-9">
+        <figure>
+          <img style="width:300px" src=""/>
+        </figure>
+      </div>
+    </slide-->
+    
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>RSVPs</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>To make location based recommendations we need to know where people have previously attended events.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (member:Member {name: "Mark Needham"})-[:RSVPD]->(event)-[:VENUE]->(venue)
+WHERE event.time < timestamp()
+
+WITH DISTINCT member, venue
+MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
+WHERE futureEvent.time > timestamp()
+
+RETURN group.name,
+       futureEvent.name,
+       round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days,
+       distance(venue, here) AS distance
+ORDER BY days</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Next Step</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>In our next section we&#8217;re going to take a brief detour to introduce procedures, a new addition in Neo4j 3.0.0.
+We&#8217;ll then make use of them in our recommendations and even write some of our own if time permits.</p>
+</div>
+<div class="paragraph">
+<p><a play-topic='http://localhost:8001/07_procedures.html'>Procedures</a></p>
+</div>
+	</div>
+  </div>
+</slide>
+  </carousel>
+</article>

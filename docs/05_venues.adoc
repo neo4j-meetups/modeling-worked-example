@@ -82,4 +82,4 @@ To do that we'll need to import the events that people have previously attended.
 
 The meetup.com API gives us RSVPs which can serve as a proxy for attendance.
 
-pass:a[<a play-topic='{guides}/05_layered_events.html'>Layered Event Recommendations</a>]
+pass:a[<a play-topic='{guides}/06_rsvps.html'>RSVPs</a>]

@@ -2,23 +2,6 @@
 :csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
 :icons: font
 
-[source,cypher,subs=attributes]
-----
-MATCH (member:Member {name: "Mark Needham"})-[:RSVPD]->(event)-[:VENUE]->(venue)
-WHERE event.time < timestamp()
-
-WITH DISTINCT member, venue
-MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
-WHERE futureEvent.time > timestamp()
-
-RETURN group.name,
-       futureEvent.name,
-       round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days,
-       distance(venue, here) AS distance
-ORDER BY days
-----
-
-
 == Combine Multiple Scores into a Layered Query
 
 Here we are going to build a hybrid recommendation engine that takes lots of factors into account.
@@ -161,6 +144,7 @@ LIMIT 15
 
 == Next Step
 
-For high performance recommendations we can use Neo4j Stored Procedures to run some more demanding algorithms on our data.
+By now you probably have lots of ideas of how we can improve the graph to make even better recommendations.
+In this last session you'll have the chance to explore some of this solo or in a team with other attendees.
 
-pass:a[<a play-topic='{guides}/06_procedures.html'>Using Neo4j Procedures for Recommendations</a>]
+pass:a[<a play-topic='{guides}/09_free_for_all.html'>Your turn</a>]

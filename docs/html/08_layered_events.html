@@ -423,26 +423,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h1>Layered Events</h1>
 </div>
 <div id="content">
-<div id="preamble">
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-cypher" data-lang="cypher">MATCH (member:Member {name: "Mark Needham"})-[:RSVPD]->(event)-[:VENUE]->(venue)
-WHERE event.time < timestamp()
-
-WITH DISTINCT member, venue
-MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
-WHERE futureEvent.time > timestamp()
-
-RETURN group.name,
-       futureEvent.name,
-       round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days,
-       distance(venue, here) AS distance
-ORDER BY days</code></pre>
-</div>
-</div>
-</div>
-</div>
 <div class="sect2">
 <h3 id="_combine_multiple_scores_into_a_layered_query">Combine Multiple Scores into a Layered Query</h3>
 <div class="paragraph">
@@ -608,16 +588,17 @@ LIMIT 15</code></pre>
 <div class="sect2">
 <h3 id="_next_step">Next Step</h3>
 <div class="paragraph">
-<p>For high performance recommendations we can use Neo4j Stored Procedures to run some more demanding algorithms on our data.</p>
+<p>By now you probably have lots of ideas of how we can improve the graph to make even better recommendations.
+In this last session you&#8217;ll have the chance to explore some of this solo or in a team with other attendees.</p>
 </div>
 <div class="paragraph">
-<p><a play-topic='http://guides.neo4j.com/intro/06_procedures.html'>Using Neo4j Procedures for Recommendations</a></p>
+<p><a play-topic='http://guides.neo4j.com/intro/09_free_for_all.html'>Your turn</a></p>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-04-15 19:23:00 BST
+Last updated 2016-04-15 19:36:36 BST
 </div>
 </div>
 </body>

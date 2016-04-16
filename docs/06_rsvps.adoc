@@ -1,0 +1,31 @@
+= RSVPs
+:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
+:icons: font
+
+== RSVPs
+
+To make location based recommendations we need to know where people have previously attended events.
+
+
+[source,cypher,subs=attributes]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:RSVPD]->(event)-[:VENUE]->(venue)
+WHERE event.time < timestamp()
+
+WITH DISTINCT member, venue
+MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
+WHERE futureEvent.time > timestamp()
+
+RETURN group.name,
+       futureEvent.name,
+       round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days,
+       distance(venue, here) AS distance
+ORDER BY days
+----
+
+
+== Next Step
+In our next section we're going to take a brief detour to introduce procedures, a new addition in Neo4j 3.0.0.
+We'll then make use of them in our recommendations and even write some of our own if time permits.
+
+pass:a[<a play-topic='{guides}/07_procedures.html'>Procedures</a>]

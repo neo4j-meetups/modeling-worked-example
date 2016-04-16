@@ -1,0 +1,311 @@
+<style type="text/css" media="screen">
+/*
+.nodes-image {
+	margin:-100;
+}
+*/	
+    .imageblock .content img {
+        max-width: 900px;
+        max-height: 300px;
+    }
+	.deck h3 {
+		display: block !important;
+		margin-bottom:8px;
+		margin-top:5px;
+	}
+	.listingblock {
+		margin:8px;
+	}
+	.pull-bottom {
+		position:relative;
+		bottom:1em;
+	}
+</style>
+<style type="text/css" media="screen">
+#editor.maximize-editor .CodeMirror-code {
+ font-size:40px;
+ line-height:45px;
+}
+</style><article class="guide">
+  <carousel class="deck container-fluid">
+    <!--slide class="row-fluid">
+      <div class="col-sm-3">
+        <h3>Recommendations by explicit interest</h3>
+        <p class="lead">Information</p>
+			<!dl>
+				
+				
+				
+				
+				
+			</dl>
+		</div>
+      <div class="col-sm-9">
+        <figure>
+          <img style="width:300px" src=""/>
+        </figure>
+      </div>
+    </slide-->
+    
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Member Interests (Topics)</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>What data do we have?
+Run the following query to find out:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS
+FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/members.csv" AS row
+RETURN row.id, row.topics
+LIMIT 10</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that we&#8217;re still processing the same members file as we were earlier but returning different columns this time.</p>
+</div>
+<div class="paragraph">
+<p>So we&#8217;ve got one column containing the member id and one with a <code>;</code> delimited set of topic ids.
+Our next task is to create a relationship between members and their topics.
+To do that we&#8217;re going to need to split up the string containing topic ids so we can process them one at a time.</p>
+</div>
+<div class="paragraph">
+<p>We&#8217;ll use <a href="http://neo4j.com/docs/new-manual/developer-manual/3.0-RC1/#functions-split">split</a> and <a href="http://neo4j.com/docs/new-manual/developer-manual/3.0-RC1/#query-plan-unwind">UNWIND</a> to help us do this.</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Member Interests (Topics)</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>Run the following query to create an <code>INTERESTED_IN</code> relationship between members and topics:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">USING PERIODIC COMMIT 10000
+LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/members.csv" AS row
+
+WITH split(row.topics, ";") AS topics, row.id AS memberId
+UNWIND topics AS topicId
+
+WITH DISTINCT memberId, topicId
+MATCH (member:Member {id: memberId})
+MATCH (topic:Topic {id: topicId})
+MERGE (member)-[:INTERESTED_IN]->(topic)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This might take a bit of time - there&#8217;s a lot of members and topics to get through!</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Find my similar groups</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>Now we&#8217;re ready to write our first query centered around a person instead of a group.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (member:Member {name: "Mark Needham"})-[:INTERESTED_IN]->(topic),
+      (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
+WITH member, topic, COUNT(*) AS score
+MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)
+WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
+RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
+ORDER BY score DESC</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this query we</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>start from me</p>
+</li>
+<li>
+<p>find the topics I&#8217;m interested in</p>
+</li>
+<li>
+<p>find the groups I&#8217;m a member of that have those topics</p>
+</li>
+<li>
+<p>aggregates the number of times each topic appears</p>
+</li>
+<li>
+<p>finds other groups that have these topics filtering out ones that I&#8217;m already a member of</p>
+</li>
+<li>
+<p>returns those other groups sorted by how many of my topics they cater for</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This is quite a crude scoring mechanism - can we think of something better to go here?</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>What am I actually interested in?</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>The <code>INTERESTED_IN</code> relationships that we created are based on interests that a user declared when they signed up for meetup.com.
+People typically don&#8217;t change those as their interests change but they do join new groups frequently which allows us to know their interests better than they do!</p>
+</div>
+<div class="paragraph">
+<p>We can do this by inferring <code>INTERESTED_IN</code> relationships based on these groups.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://localhost:8001/img/group_has_topic_member_of.png" alt="group has topic member of">
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Inferring interests</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>We can write the following query to add inferred <code>INTERESTED_IN</code> relationships to each member:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (m:Member)-[:MEMBER_OF]->()-[:HAS_TOPIC]->(topic)
+
+WITH m, topic, COUNT(*) AS times
+WHERE times >= 5
+
+MERGE (m)-[:INTERESTED_IN]->(topic)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The query:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>goes over each member</p>
+</li>
+<li>
+<p>finds the groups they&#8217;re a member of and which topics those groups advertise</p>
+</li>
+<li>
+<p>counts how many times each topic has showed up</p>
+</li>
+<li>
+<p>removes any topics that show up less than 5 times</p>
+</li>
+<li>
+<p>creates an <code>INTERESTED_IN</code> relationship between the member and the remaining topics</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>On this dataset we have a sufficiently small number of members that we can process them all in one go.
+With a production sized dataset we&#8217;d need to process members in batches.</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Find my similar groups (even if I don&#8217;t know it yet)</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>So we&#8217;re still answering the same fundamental question as before&#8230;&#8203;</p>
+</div>
+<div class="verseblock">
+<pre class="content">As a member of several meetup groups
+I want to find other similar meetup groups that I’m not already a member of
+So that I can join those groups</pre>
+</div>
+<div class="paragraph">
+<p>&#8230;&#8203;but now we&#8217;ve added in some extra relationships which will hopefully lead to a better recommendation.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s see how the results of our group recommendation query change:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (member:Member {name: "Mark Needham"})-[:INTERESTED_IN]->(topic),
+      (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
+WITH member, topic, COUNT(*) AS score
+MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)
+WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
+RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
+ORDER BY score DESC</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Exercise: Tweak the recommendation query</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>*</p>
+</div>
+<div class="paragraph">
+<p>We could have a query for people to make our user join a new group and then see how the recommendations change.</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Next Step</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>In the next section we&#8217;re going to explore the events hosted by our groups and then make event recommendations.</p>
+</div>
+<div class="paragraph">
+<p><a play-topic='http://localhost:8001/04_events.html'>Event Recommendations</a></p>
+</div>
+	</div>
+  </div>
+</slide>
+  </carousel>
+</article>

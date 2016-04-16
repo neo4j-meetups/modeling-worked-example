@@ -1,0 +1,286 @@
+<style type="text/css" media="screen">
+/*
+.nodes-image {
+	margin:-100;
+}
+*/	
+    .imageblock .content img {
+        max-width: 900px;
+        max-height: 300px;
+    }
+	.deck h3 {
+		display: block !important;
+		margin-bottom:8px;
+		margin-top:5px;
+	}
+	.listingblock {
+		margin:8px;
+	}
+	.pull-bottom {
+		position:relative;
+		bottom:1em;
+	}
+</style>
+<style type="text/css" media="screen">
+#editor.maximize-editor .CodeMirror-code {
+ font-size:40px;
+ line-height:45px;
+}
+</style><article class="guide">
+  <carousel class="deck container-fluid">
+    <!--slide class="row-fluid">
+      <div class="col-sm-3">
+        <h3>Layered Events</h3>
+        <p class="lead">Information</p>
+			<!dl>
+				
+				
+				
+				
+				
+			</dl>
+		</div>
+      <div class="col-sm-9">
+        <figure>
+          <img style="width:300px" src=""/>
+        </figure>
+      </div>
+    </slide-->
+    
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Combine Multiple Scores into a Layered Query</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>Here we are going to build a hybrid recommendation engine that takes lots of factors into account.</p>
+</div>
+<div class="paragraph">
+<p>WARN: Let&#8217;s create some scoring functions in APOC so we can use those inside queries.</p>
+</div>
+<div class="paragraph">
+<p>Anyway this is what we have to start with:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>events in my groups</p>
+</li>
+<li>
+<p>events I’ve previously attended</p>
+</li>
+<li>
+<p>topics I’m interested in</p>
+</li>
+<li>
+<p>events my peers attend</p>
+</li>
+</ul>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Events I previously attended</h3>
+    <br/>
+    <div>
+      <div class="verseblock">
+<pre class="content">As a member of several meetup  groups who has previously  attended events
+I want to find other events hosted by those groups
+So that I can attend those events</pre>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Import RSVPs to Events</h3>
+    <br/>
+    <div>
+      
+
+
+   <div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/rsvps.csv" AS row
+RETURN row  LIMIT 10</code></pre>
+</div>
+</div>
+
+
+
+   <div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">USING PERIODIC COMMIT 10000
+LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/rsvps.csv" AS row
+WITH row WHERE row.response = "yes"
+MATCH (member:Member {id: row.member_id})
+MATCH (event:Event {id: row.event_id})
+MERGE (member)-[rsvp:RSVPD {id: row.rsvp_id}]->(event)
+ON CREATE SET rsvp.created = toInt(row.created),
+              rsvp.lastModified = toInt(row.mtime),
+              rsvp.response = row.response;</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Previous events attended</h3>
+    <br/>
+    <div>
+      <div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">WITH 24.0*60*60*1000 AS oneDay
+
+MATCH (member:Member {name: "Mark Needham"})
+MATCH (futureEvent:Event) WHERE futureEvent.time &gt;= timestamp()
+MATCH (futureEvent)&lt;-[:HOSTED_EVENT]-(group)
+
+WITH oneDay, group, futureEvent, member, EXISTS((group)&lt;-[:MEMBER_OF]-(member)) AS isMember
+
+OPTIONAL MATCH (member)-[rsvp:RSVPD]-&gt;(pastEvent)&lt;-[:HOSTED_EVENT]-(group)
+WHERE pastEvent.time &lt; timestamp()
+
+RETURN group.name, futureEvent.name, isMember,
+       COUNT(rsvp) AS previousEvents,
+       round((futureEvent.time - timestamp()) / oneDay) AS days
+ORDER BY days, previousEvents DESC</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>My topics</h3>
+    <br/>
+    <div>
+      <div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">WITH 24.0*60*60*1000 AS oneDay
+
+MATCH (member:Member {name: "Mark Needham"})
+MATCH (futureEvent:Event) WHERE futureEvent.time >= timestamp()
+MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
+
+WITH oneDay, group, futureEvent, member, EXISTS((group)<-[:MEMBER_OF]-(member)) AS isMember
+
+OPTIONAL MATCH (member)-[rsvp:RSVPD]->(pastEvent)<-[:HOSTED_EVENT]-(group)
+WHERE pastEvent.time < timestamp()
+
+WITH oneDay, group, futureEvent, member, isMember,
+     COUNT(rsvp) AS previousEvents
+
+OPTIONAL MATCH (futureEvent)<-[:HOSTED_EVENT]-()-[:HAS_TOPIC]->(topic)<-[:INTERESTED_IN]-(member)
+
+RETURN group.name, futureEvent.name, isMember,
+       previousEvents,
+       COUNT(topic) AS topics,
+       round((futureEvent.time - timestamp()) / oneDay) AS days
+ORDER BY days,previousEvents DESC, topics DESC</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Find the social graph lurking within</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>I have no idea how long this takes to run - had it using a Python script in the talk
+Perhaps this is another candidate for procedures?</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (m1:Member) WHERE size( (m1)-[:RSVPD]->() ) >= 5
+MATCH (m1)-[:RSVPD]->(event:Event)<-[:RSVPD]-(m2:Member) WHERE size( (m2)-[:RSVPD]->() ) >= 5
+WITH m1, m2, COLLECT(event) AS events, COUNT(*) AS times
+WHERE times >= 5
+WITH m1, m2, times, [event IN events | SIZE((event)<-[:RSVPD]-())] AS attendances
+WITH m1, m2, REDUCE(score = 0.0, a IN attendances | score + (1.0 / a)) AS score
+
+MERGE (m1)-[friendsRel:FRIENDS]-(m2)
+ON CREATE SET friendsRel.score = score</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Events my friends are attending</h3>
+    <br/>
+    <div>
+      <div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">WITH 24.0*60*60*1000 AS oneDay
+MATCH (member:Member {name: "Mark Needham"})
+MATCH (futureEvent:Event) WHERE futureEvent.time >= timestamp()
+MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
+
+WITH oneDay, group, futureEvent, member, EXISTS((group)<-[:MEMBER_OF]-(member)) AS isMember
+OPTIONAL MATCH (member)-[rsvp:RSVPD {response: "yes"}]->(pastEvent)<-[:HOSTED_EVENT]-(group)
+WHERE pastEvent.time < timestamp()
+
+WITH oneDay, group, futureEvent, member, isMember, COUNT(rsvp) AS previousEvents
+OPTIONAL MATCH (futureEvent)<-[:HOSTED_EVENT]-()-[:HAS_TOPIC]->(topic)<-[:INTERESTED_IN]-(member)
+
+WITH oneDay, group, futureEvent, member, isMember, previousEvents, COUNT(topic) AS topics
+OPTIONAL MATCH (member)-[:FRIENDS]-(:Member)-[rsvpYes:RSVP_YES]->(futureEvent)
+
+RETURN group.name, futureEvent.name, isMember,
+       round((futureEvent.time - timestamp()) / oneDay) AS days,
+       previousEvents, topics,
+       COUNT(rsvpYes) AS friendsGoing
+ORDER BY days, friendsGoing DESC, previousEvents DESC
+LIMIT 15</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Next Step</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>By now you probably have lots of ideas of how we can improve the graph to make even better recommendations.
+In this last session you&#8217;ll have the chance to explore some of this solo or in a team with other attendees.</p>
+</div>
+<div class="paragraph">
+<p><a play-topic='http://localhost:8001/09_free_for_all.html'>Your turn</a></p>
+</div>
+	</div>
+  </div>
+</slide>
+  </carousel>
+</article>
