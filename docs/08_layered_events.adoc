@@ -99,8 +99,26 @@ ORDER BY days,previousEvents DESC, topics DESC
 
 == Find the social graph lurking within
 
-I have no idea how long this takes to run - had it using a Python script in the talk
-Perhaps this is another candidate for procedures?
+The social graph is a common feature of a lot of modern web applications.
+Typically that social graph is imported from a 3rd party system e.g. Twitter followers or Facebook friends.
+
+In this dataset there is actually a latent social graph hiding beneath the data we've looked at so far.
+RSVPs give us a reasonable idea of which people may know each other based on common meetups they've attended.
+
+We can write the following query to see which people on the meetup scene that I may know:
+
+[source,cypher,subs=attributes]
+----
+MATCH (me:Member {name: "Mark Needham"})-[:RSVPD]->()<-[:RSVPD]-(otherPerson)
+RETURN otherPerson, COUNT(*) AS commonEvents
+ORDER BY commonEvents DESC
+----
+
+== Codifying the latent social graph
+
+We'll have to run a graph global query to codify this social network so we're going to use one of the `apoc` procedures to help us out.
+
+
 
 [source,cypher,subs=attributes]
 ----

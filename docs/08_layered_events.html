@@ -209,8 +209,36 @@ ORDER BY days,previousEvents DESC, topics DESC</code></pre>
     <br/>
     <div>
       <div class="paragraph">
-<p>I have no idea how long this takes to run - had it using a Python script in the talk
-Perhaps this is another candidate for procedures?</p>
+<p>The social graph is a common feature of a lot of modern web applications.
+Typically that social graph is imported from a 3rd party system e.g. Twitter followers or Facebook friends.</p>
+</div>
+<div class="paragraph">
+<p>In this dataset there is actually a latent social graph hiding beneath the data we&#8217;ve looked at so far.
+RSVPs give us a reasonable idea of which people may know each other based on common meetups they&#8217;ve attended.</p>
+</div>
+<div class="paragraph">
+<p>We can write the following query to see which people on the meetup scene that I may know:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (me:Member {name: "Mark Needham"})-[:RSVPD]->()<-[:RSVPD]-(otherPerson)
+RETURN otherPerson, COUNT(*) AS commonEvents
+ORDER BY commonEvents DESC</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Codifying the latent social graph</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>We&#8217;ll have to run a graph global query to codify this social network so we&#8217;re going to use one of the <code>apoc</code> procedures to help us out.</p>
 </div>
 <div class="listingblock">
 <div class="content">

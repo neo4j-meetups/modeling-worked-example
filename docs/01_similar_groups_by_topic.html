@@ -64,6 +64,10 @@
 I want to find other similar meetup groups
 So that I can join those groups</pre>
 </div>
+<div class="paragraph">
+<p>One thing that makes groups similar is the topics that they’re about.
+We&#8217;re going to start the session by importing meetup groups and their topics into Neo4j.</p>
+</div>
 	</div>
   </div>
 </slide>
@@ -76,12 +80,10 @@ So that I can join those groups</pre>
     <br/>
     <div>
       <div class="paragraph">
-<p>One thing that makes groups similar is the topics that they’re about.</p>
+<p>We&#8217;ve done the pre processing work of taking JSON from meetup.com&#8217;s APIs and converting it into CSV files to make it easy to import into Neo4j.</p>
 </div>
-<div class="verseblock">
-<pre class="content">As a member of the Neo4j London group
-I want to find other similar meetup groups
-So that I can join those groups</pre>
+<div class="paragraph">
+<p>Let&#8217;s start by exploring the groups CSV file to see what data we have available to us:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -91,6 +93,10 @@ AS row
 RETURN row
 LIMIT 10</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>We&#8217;ve got a group id, name, description and a few other attributes as well.
+Now we&#8217;ll convert those rows in the CSV file into entities in the graph.</p>
 </div>
 	</div>
   </div>
@@ -103,7 +109,10 @@ LIMIT 10</code></pre>
     <h3>Import Groups</h3>
     <br/>
     <div>
-      <div class="listingblock">
+      <div class="paragraph">
+<p>Run the following query to create a node for each group in the CSV file.</p>
+</div>
+<div class="listingblock">
 <div class="content">
 <pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS
 FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups.csv"
@@ -116,16 +125,22 @@ CREATE (:Group { id:row.id,
 </div>
 </div>
 <div class="paragraph">
-<p>We use CREATE because we know the database is empty when we start.</p>
+<p>We use the <code>CREATE</code> command because we know the database is empty when we start.
+Each node we&#8217;ve created has the <code>Group</code> label to make it easy to look them up later.</p>
+</div>
+<div class="paragraph">
+<p>We&#8217;ve also added several properties.
+By default properties are stored as strings.
+We need to do an explicit conversion (e.g. <code>toInt</code>) if we know that the data in our CSV file has a different type.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s run a quick query to check what we&#8217;ve actually imported:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (g:Group)
 RETURN g.id, g.name, g.urlname</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>Topics express areas of interest for both groups and members.</p>
 </div>
 	</div>
   </div>
@@ -135,12 +150,14 @@ RETURN g.id, g.name, g.urlname</code></pre>
 
 <slide class="row-fluid">
   <div class="col-sm-12">
-    <h3>Detour: MERGE &amp; Constraints</h3>
+    <h3>MERGE &amp; Constraints</h3>
     <br/>
     <div>
       <div class="paragraph">
-<p>We want to use <code>MERGE</code> because we want to avoid creating duplicate topics
-We&#8217;ll put a unique constraint on <code>:Topic(id)</code> so that we don’t create the same topic twice.</p>
+<p>In the next section we&#8217;re going to create topics but our CSV file contains lots of duplicates so we&#8217;re going to use the <code>MERGE</code> command to avoid creating duplicates in the graph.</p>
+</div>
+<div class="paragraph">
+<p>We&#8217;ll put a unique constraint on <code>:Topic(id)</code> so that we don’t create the same topic twice.</p>
 </div>
 <div class="paragraph">
 <p>Unique constraints:</p>
@@ -155,14 +172,48 @@ We&#8217;ll put a unique constraint on <code>:Topic(id)</code> so that we don’
 </li>
 </ul>
 </div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>MERGE &amp; Constraints</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>Run the following query to create a unique constraint on <code>:Topic(id)</code>:</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CREATE CONSTRAINT ON (t:Topic) ASSERT t.id IS UNIQUE</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>We can also retrospectively apply constraints as long as the data we&#8217;ve previously imported doesn&#8217;t violate them.
+Run the following query to create a unique constraint on <code>:Group(id)</code> so we don&#8217;t accidentally end up with duplicate groups.</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CREATE CONSTRAINT ON (g:Group) ASSERT g.id IS UNIQUE</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can check that the constraints have been applied by running the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">:schema</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can also run the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CALL db.constraints()</code></pre>
 </div>
 </div>
 	</div>
@@ -176,22 +227,40 @@ We&#8217;ll put a unique constraint on <code>:Topic(id)</code> so that we don’
     <h3>Import Topics</h3>
     <br/>
     <div>
-      <div class="listingblock">
+      <div class="paragraph">
+<p>Now we&#8217;re going to import topics.
+Let&#8217;s first check what we&#8217;ve got in our CSV file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups_topics.csv"  AS row
+RETURN row
+LIMIT 10</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So we&#8217;ve got a topic id, name and urlkey as well as a group id.
+We&#8217;ll ignore the group id for now and run the following query to import topics into the graph:</p>
+</div>
+<div class="listingblock">
 <div class="content">
 <pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups_topics.csv"  AS row
 MERGE (topic:Topic {id: row.id})
-ON CREATE SET topic.name = row.name,
-              topic.urlkey = row.urlkey</code></pre>
+ON CREATE SET topic.name = row.name, topic.urlkey = row.urlkey</code></pre>
 </div>
 </div>
-
-
-
-   <div class="listingblock">
+<div class="paragraph">
+<p>Let&#8217;s quickly check that they got imported correctly:</p>
+</div>
+<div class="listingblock">
 <div class="content">
 <pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (t:Topic)
 RETURN t.id, t.name</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>At this point we&#8217;ve got topics and groups floating around but nothing connecting them together!
+In the next section we&#8217;ll add relationships between them.</p>
 </div>
 	</div>
   </div>
@@ -204,7 +273,14 @@ RETURN t.id, t.name</code></pre>
     <h3>Connect groups and topics</h3>
     <br/>
     <div>
-      <div class="listingblock">
+      <div class="paragraph">
+<p>You&#8217;ll have noticed that the CSV file we used to import topics also contained a <code>group_id</code> field for each row.
+We&#8217;re now going to process this file again but this time we&#8217;ll find a topic and group for each row and then create a relationship between them.</p>
+</div>
+<div class="paragraph">
+<p>Run the following query:</p>
+</div>
+<div class="listingblock">
 <div class="content">
 <pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups_topics.csv"  AS row
 MATCH (topic:Topic {id: row.id})
@@ -219,6 +295,20 @@ MERGE (group)-[:HAS_TOPIC]->(topic)</code></pre>
 <p>If we run the query a second time nothing will happen.
 If we run another <code>MERGE</code> query that tries to create a <code>:HAS_TOPIC</code> relationship when one already exists it won’t do anything.</p>
 </div>
+<div class="paragraph">
+<p>Let&#8217;s now check that the data was imported correctly:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (group:Group)-[:HAS_TOPIC]->(topic:Topic)
+RETURN group, topic
+LIMIT 10</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Try double clicking on the nodes to expand other nodes that are connected to them.
+You can also single click to view a context menu with other options.</p>
+</div>
 	</div>
   </div>
 </slide>
@@ -231,7 +321,7 @@ If we run another <code>MERGE</code> query that tries to create a <code>:HAS_TOP
     <br/>
     <div>
       <div class="paragraph">
-<p>We create an index on <code>:Group(name)</code> so that we can quickly look up groups by name.</p>
+<p>It&#8217;s quite likely that we&#8217;ll want to search for groups by name so we&#8217;ll create an index on <code>:Group(name)</code> to make that easier.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -239,11 +329,19 @@ If we run another <code>MERGE</code> query that tries to create a <code>:HAS_TOP
 </div>
 </div>
 <div class="paragraph">
-<p>Same for topics.</p>
+<p>Let&#8217;s do the same for topics as well:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CREATE INDEX ON :Topic(name)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can see which indexes we have by using the <code>:schema</code> command or by running the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CALL db.indexes()</code></pre>
 </div>
 </div>
 	</div>
@@ -334,7 +432,8 @@ LIMIT 10</code></pre>
     <br/>
     <div>
       <div class="paragraph">
-<p>Let&#8217;s look at our groups and how we can use that related information to recommend new groups for ourselves.</p>
+<p>In the next section we&#8217;re going to introduce members into the graph.
+We&#8217;ll then look at our graphs and write some queries to recommend new groups for ourselves.</p>
 </div>
 <div class="paragraph">
 <p><a play-topic='http://localhost:8001/02_my_similar_groups.html'>Groups similar to mine</a></p>

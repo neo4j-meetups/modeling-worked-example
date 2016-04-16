@@ -98,7 +98,8 @@ LIMIT 10</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This file contains members for all the groups that we imported in the previous section.</p>
+<p>We&#8217;ve got a member id and name as well as a group id and join date for that group.
+You&#8217;ll also have noticed a <code>;</code> separated list of topic ids - we&#8217;ll look at how to handle that in a few sections time.</p>
 </div>
 	</div>
   </div>
@@ -112,10 +113,7 @@ LIMIT 10</code></pre>
     <br/>
     <div>
       <div class="paragraph">
-<p>Now we&#8217;ll put those members into our database.</p>
-</div>
-<div class="paragraph">
-<p>We first create a unique constraint on <code>Member(id)</code> to ensure we don&#8217;t insert the same member twice.</p>
+<p>Before we run our query to import members we&#8217;ll create a unique constraint on <code>Member(id)</code> to ensure we don&#8217;t insert the same member twice.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -124,19 +122,10 @@ ASSERT m.id IS UNIQUE</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>We&#8217;ll also put an index on <code>Member(name)</code> so we can quickly look up a given member.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CREATE INDEX ON :Member(name)</code></pre>
-</div>
+<p>The CSV file contains one entry for each group a member is part of so we will iterate over some members multiple time.</p>
 </div>
 <div class="paragraph">
-<p>And finally let&#8217;s load the members.</p>
-</div>
-<div class="paragraph">
-<p>Note that we&#8217;re using periodic commit here.
-In this example it means that we&#8217;ll commit every 10,000 rows rather than processing the whole file in one large transaction.</p>
+<p>Run the following query to import members into the graph:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -148,11 +137,26 @@ MERGE (member:Member {id: id})
 ON CREATE SET member.name = name</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Note that we&#8217;re using periodic commit here.
+In this example it means that we&#8217;ll commit every 10,000 rows rather than processing the whole file in one large transaction.</p>
+</div>
+	</div>
+  </div>
+</slide>
 
 
 
-   <div class="paragraph">
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Connect members and groups</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
 <p>Now that we&#8217;ve got the members imported, the next step is to get them connected to the groups that we loaded in the first section.</p>
+</div>
+<div class="paragraph">
+<p>Run the following query to create a <code>MEMBER_OF</code> relationship between members and groups:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -164,6 +168,34 @@ MATCH (member:Member {id: row.id})
 MATCH (group:Group {id: row.groupId})
 MERGE (member)-[membership:MEMBER_OF]->(group)
 ON CREATE SET membership.joined=toInt(row.joined);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s see what our graph looks like now:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (member:Member)-[membership:MEMBER_OF]->(group)
+RETURN member, group, membership</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Additional indexes</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>We&#8217;re bound to want to search members by name so we&#8217;ll put an index on <code>Member(name)</code> so we can quickly do that.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CREATE INDEX ON :Member(name)</code></pre>
 </div>
 </div>
 	</div>

@@ -55,16 +55,87 @@
     <br/>
     <div>
       <div class="paragraph">
-<p>To make location based recommendations we need to know where people have previously attended events.</p>
+<p>To make location based recommendations we need to know where people have previously attended events and luckily the meetup.com API gives us RSVPs which can serve as a proxy for attendance.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s see what data we&#8217;ve got to work with:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (member:Member {name: "Mark Needham"})-[:RSVPD]->(event)-[:VENUE]->(venue)
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS
+FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/rsvps.csv" AS row
+RETURN row
+LIMIT 10</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So we get an identifier for each RSVP, an event_id which the RSVP is for, a member_id that identifies the user and a few other attributes.
+Let&#8217;s get the RSVPs into the graph then!</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Importing RSVPs</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>We&#8217;re only going to worry ourselves with 'yes' RSVPs, we won&#8217;t import any 'no' or 'waitlist' responses.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/rsvps.csv" AS row
+WITH row WHERE row.response = "yes"
+
+MATCH (member:Member {id: row.member_id})
+MATCH (event:Event {id: row.event_id})
+MERGE (member)-[rsvp:RSVPD {id: row.rsvp_id}]->(event)
+ON CREATE SET rsvp.created = toint(row.created),
+              rsvp.lastModified = toint(row.mtime),
+              rsvp.guests = toint(row.guests)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We create <code>RSVPD</code> as a relationship because</p>
+</div>
+<div class="paragraph">
+<p>Now we&#8217;re ready to make use of venues in our events recommendation query.</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Venue based recommendations</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>Our initial event recommendation query only recommends events for the groups that we belong to.</p>
+</div>
+<div class="paragraph">
+<p>We&#8217;ll now add to that and include events hosted at a venue that we&#8217;ve previously been to even if that event is in a different group.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)
+WHERE event.time > timestamp()
+
+WITH member, COLLECT(futureEvent) myGroupsEvents
+MATCH (member)-[:RSVPD]->(event)-[:VENUE]->(venue)
 WHERE event.time < timestamp()
 
-WITH DISTINCT member, venue
+WITH DISTINCT member, myGroupsEvents, venue
 MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
 WHERE futureEvent.time > timestamp()
+
+WITH member,
 
 RETURN group.name,
        futureEvent.name,
@@ -72,6 +143,24 @@ RETURN group.name,
        distance(venue, here) AS distance
 ORDER BY days</code></pre>
 </div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Exercise: Venue based recommendations</h3>
+    <br/>
+    <div>
+      <div class="ulist">
+<ul>
+<li>
+<p>Update the query to recommend events within 1km of venues that we&#8217;ve previously attended</p>
+</li>
+</ul>
 </div>
 	</div>
   </div>

@@ -4,17 +4,62 @@
 
 == RSVPs
 
-To make location based recommendations we need to know where people have previously attended events.
+To make location based recommendations we need to know where people have previously attended events and luckily the meetup.com API gives us RSVPs which can serve as a proxy for attendance.
 
+Let's see what data we've got to work with:
 
 [source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})-[:RSVPD]->(event)-[:VENUE]->(venue)
+LOAD CSV WITH HEADERS
+FROM "{csv-url}rsvps.csv" AS row
+RETURN row
+LIMIT 10
+----
+
+So we get an identifier for each RSVP, an event_id which the RSVP is for, a member_id that identifies the user and a few other attributes.
+Let's get the RSVPs into the graph then!
+
+== Importing RSVPs
+
+We're only going to worry ourselves with 'yes' RSVPs, we won't import any 'no' or 'waitlist' responses.
+
+[source,cypher,subs=attributes]
+----
+LOAD CSV WITH HEADERS FROM "{csv-url}rsvps.csv" AS row
+WITH row WHERE row.response = "yes"
+
+MATCH (member:Member {id: row.member_id})
+MATCH (event:Event {id: row.event_id})
+MERGE (member)-[rsvp:RSVPD {id: row.rsvp_id}]->(event)
+ON CREATE SET rsvp.created = toint(row.created),
+              rsvp.lastModified = toint(row.mtime),
+              rsvp.guests = toint(row.guests)
+----
+
+We create `RSVPD` as a relationship because
+
+Now we're ready to make use of venues in our events recommendation query.
+
+== Venue based recommendations
+
+Our initial event recommendation query only recommends events for the groups that we belong to.
+
+We'll now add to that and include events hosted at a venue that we've previously been to even if that event is in a different group.
+
+[source,cypher,subs=attributes]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)
+WHERE event.time > timestamp()
+
+WITH member, COLLECT(futureEvent) myGroupsEvents
+MATCH (member)-[:RSVPD]->(event)-[:VENUE]->(venue)
 WHERE event.time < timestamp()
 
-WITH DISTINCT member, venue
+WITH DISTINCT member, myGroupsEvents, venue
 MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
 WHERE futureEvent.time > timestamp()
+
+WITH member,
 
 RETURN group.name,
        futureEvent.name,
@@ -22,6 +67,10 @@ RETURN group.name,
        distance(venue, here) AS distance
 ORDER BY days
 ----
+
+== Exercise: Venue based recommendations
+
+* Update the query to recommend events within 1km of venues that we've previously attended
 
 
 == Next Step

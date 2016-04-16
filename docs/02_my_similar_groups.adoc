@@ -33,13 +33,12 @@ RETURN row
 LIMIT 10
 ----
 
-This file contains members for all the groups that we imported in the previous section.
+We've got a member id and name as well as a group id and join date for that group.
+You'll also have noticed a `;` separated list of topic ids - we'll look at how to handle that in a few sections time.
 
 == Add Members
 
-Now we'll put those members into our database.
-
-We first create a unique constraint on `Member(id)` to ensure we don't insert the same member twice.
+Before we run our query to import members we'll create a unique constraint on `Member(id)` to ensure we don't insert the same member twice.
 
 [source,cypher,subs=attributes]
 ----
@@ -47,17 +46,9 @@ CREATE CONSTRAINT ON (m:Member)
 ASSERT m.id IS UNIQUE
 ----
 
-We'll also put an index on `Member(name)` so we can quickly look up a given member.
+The CSV file contains one entry for each group a member is part of so we will iterate over some members multiple times.
 
-[source,cypher,subs=attributes]
-----
-CREATE INDEX ON :Member(name)
-----
-
-And finally let's load the members.
-
-Note that we're using periodic commit here.
-In this example it means that we'll commit every 10,000 rows rather than processing the whole file in one large transaction.
+Run the following query to import members into the graph:
 
 [source,cypher,subs=attributes]
 ----
@@ -69,9 +60,14 @@ MERGE (member:Member {id: id})
 ON CREATE SET member.name = name
 ----
 
-=== Add Membership
+Note that we're using periodic commit here.
+In this example it means that we'll commit every 10,000 rows rather than processing the whole file in one large transaction.
+
+== Connect members and groups
 
 Now that we've got the members imported, the next step is to get them connected to the groups that we loaded in the first section.
+
+Run the following query to create a `MEMBER_OF` relationship between members and groups:
 
 [source,cypher,subs=attributes]
 ----
@@ -84,6 +80,26 @@ MATCH (group:Group {id: row.groupId})
 MERGE (member)-[membership:MEMBER_OF]->(group)
 ON CREATE SET membership.joined=toInt(row.joined);
 ----
+
+Let's see what our graph looks like now:
+
+[source,cypher,subs=attributes]
+----
+MATCH (member:Member)-[membership:MEMBER_OF]->(group)
+RETURN member, group, membership
+LIMIT 10
+----
+
+== Additional indexes
+
+We're going to search for members by name so we'll put an index on `Member(name)` so we can quickly do that.
+
+[source,cypher,subs=attributes]
+----
+CREATE INDEX ON :Member(name)
+----
+
+Now it's your turn!
 
 == Exercise: Find yourself and your groups
 
@@ -137,7 +153,7 @@ Try changing the names of the group and member to see how the results vary.
 
 == Find my similar groups
 
-Now we’re going to make our recommendation on an individual basis.
+Now that we've got the data loaded in we can start making recommendations on an individual basis.
 
 image::{img}/group_has_topic_member_of_interested_in.png[]
 
