@@ -1,7 +1,9 @@
+echo "Usage: sh render.sh [publish]"
 GUIDES=../../neo4j-guides
 # git clone http://github.com/jexp/neo4j-guides $GUIDES
-BASE_URL=${1-http://localhost:8001}
 
+function render {
+BASE_URL=$1
 $GUIDES/run.sh index.adoc index.html +1 $BASE_URL
 $GUIDES/run.sh 01_similar_groups_by_topic.adoc 01_similar_groups_by_topic.html +1 $BASE_URL
 $GUIDES/run.sh 02_my_similar_groups.adoc 02_my_similar_groups.html +1 $BASE_URL
@@ -13,5 +15,17 @@ $GUIDES/run.sh 06_rsvps.adoc 06_rsvps.html +1 $BASE_URL
 $GUIDES/run.sh 07_procedures.adoc 07_procedures.html +1 $BASE_URL
 $GUIDES/run.sh 08_layered_events.adoc 08_layered_events.html +1 $BASE_URL
 $GUIDES/run.sh 09_free_for_all.adoc 09_free_for_all.html +1 $BASE_URL
+}
 
-python $GUIDES/http.py
+if [ "$1" == "publish" ]; then
+  URL=guides.neo4j.com/reco
+  render http://$URL
+  s3cmd put --recursive -P *.html img s3://${URL}/
+  s3cmd put -P index.html s3://${URL}
+  echo "Publication Done"
+else
+  URL=localhost:8001
+  render http://$URL
+  echo "Starting Websever at $URL Ctrl-c to stop"
+  python $GUIDES/http.py
+fi
