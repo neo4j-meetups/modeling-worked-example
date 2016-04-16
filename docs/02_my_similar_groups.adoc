@@ -69,7 +69,7 @@ MERGE (member:Member {id: id})
 ON CREATE SET member.name = name
 ----
 
-=== Add Membership
+== Add Membership
 
 Now that we've got the members imported, the next step is to get them connected to the groups that we loaded in the first section.
 
