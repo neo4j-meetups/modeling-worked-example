@@ -2,42 +2,66 @@
 :csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
 :icons: font
 
-ifndef::env-guide[]
+== Procedures
 
 Procedures are a new feature in Neo4j 3.0.0 which allow you to write custom code which can be invoked directly from Cypher.
 You can read more details in the link:http://neo4j.com/docs/developer-manual/3.0-RC1/#procedures[documentation].
 
-In this section we're not going to install the link:https://github.com/jexp/neo4j-apoc-procedures[apoc] library which contains lots of useful procedures that we can use in our recommendation queries.
+There are some built in procedures.
+You can see what they are by running the following command:
+
+[source, cypher, subs=attributes]
+----
+CALL dbms.procedures()
+----
+
+Try running some of the procedures listed on the page.
+Do they work as you expected?
+
+== Using a procedure's output in a query
+
+We can use the output of procedures in a query as well as passing the output of a query into a procedure.
+For example if we want to get the list of labels in the database in alphabetical order we could write the following query:
+
+[source, cypher, subs=attributes]
+----
+CALL db.labels() YIELD label AS label
+RETURN label
+ORDER BY label
+----
+
+All the built in procedures are used to introspect the database but we can also write our own procedures which can do whatever we want!
+
+== Installing apoc (Awesome procedures)
+
+Lucky for us Michael has actually done the heavy lifting already and created the link:https://github.com/jexp/neo4j-apoc-procedures[apoc] library which contains lots of useful procedures that we can use in our recommendations queries.
+
+First follow these instructions to get `apoc` installed on your local instance of Neo4j:
 
 * Download the latest version of apoc from link:http://michael-insert-link-here.com
 * Copy `apoc-1.0.0-SNAPSHOT.jar` into your plugins folder `/path/to/neo4j/plugins`
 * Restart Neo4j
-* Run `CALL dbms.procedures()` to see the set of procedures now available to you.
 
-== `apoc.load.json`
+If you run the following command you can see which additional procedures are now available to us:
 
-One of the procedures that we should have seen in our list is `apoc.load.json`.
-This procedure allows us to consume JSON documents directly into Neo4j and import data straight into Neo4j without the CSV transformation step.
+[source,cypher,subs = attributes]
+----
+CALL dbms.procedures() YIELD name AS name, signature AS signature
+WITH name, signature
+WHERE name STARTS WITH "apoc"
+RETURN name, signature
+----
 
-We're going to use this procedure to import some more data from meetup, this time in JSON format.
-
-== Importing JSON from the meetup.com API
-
-We need to import some data that's going to be useful for recommendations - I thought maybe comments but that doesn't seem very interesting.
-
-* Here I want to put something showing how you can use one of the APOC procedures to have a job which keeps the graph updated?
-e.g. we could once a day run the inferred topics query maybe
-
-Maybe we can also put in some stuff showing how to wire in an event handler that could keep inferred relationships up to date?
-
-I wonder if this section should go a bit earlier so can show how to use it in the layered recommendation section?
-How many of the attendeees will know Java?
+Let's give them a try!
 
 == Formatting timestamps
 
+A common request in the Neo4j forums is for a function to format timestamps in a human friendly way and we have just the function for that in `apoc.`
+We can use it to find out the date and time of the last 5 events in our dataset:
+
 [source,cypher,subs=attributes]
 ----
-match (venue)<-[:VENUE]-(event:Event)<-[:HOSTED_EVENT]-(group:Group)
+MATCH (venue)<-[:VENUE]-(event:Event)<-[:HOSTED_EVENT]-(group:Group)
 WHERE event.time < timestamp()
 CALL apoc.date.fromMillis(event.time) YIELD value as dateTime
 RETURN event.name, group.name, venue.name, dateTime
@@ -45,8 +69,72 @@ ORDER BY event.time DESC
 LIMIT 5
 ----
 
+This procedure returns only one column: `value`.
+If we aren't sure which columns a procedure is going to return we can query the procedures list and check the signature:
+
+[source,cypher, subs=attributes]
+----
+CALL dbms.procedures() YIELD name AS name, signature AS signature
+WITH name, signature
+WHERE name = "apoc.meta.data"
+RETURN signature
+----
+
+== Importing JSON documents
+
+One of the procedures that we should have seen in our list is `apoc.load.json`.
+You can check that you've got it by running the following command:
+
+[source, cypher, subs=attributes]
+----
+CALL dbms.procedures() YIELD name AS name, signature AS signature
+WITH name, signature
+WHERE name = "apoc.load.json"
+RETURN name, signature
+----
+
+This procedure allows us to consume JSON documents directly into Neo4j and import data straight into Neo4j without the CSV transformation step.
+
+We're going to use this procedure to import some more data from meetup, this time in JSON format.
+
+== Importing JSON from the meetup.com API
+
+The meetup.com API for photos is accessible without needing a key so we're going to import the meta data for photos posted to the Neo4j London group into the graph.
+First let's see what photos have been posted:
+
+[source, cypher, subs = attributes]
+----
+CALL apoc.load.json("https://api.meetup.com/graphdb-london/photos?&sign=true&photo-host=public")
+YIELD value AS document
+WITH document WHERE EXISTS(document.photo_album.event.id)
+RETURN document.link AS link,
+       document.created AS time,
+       document.id AS photoId,
+       document.member.id as memberId,
+       document.photo_album.event.id AS eventId
+----
+
+Try changing the `graphdb-london` bit of the URI to see which photos were posted in other groups.
+This API uses the `urlname` property to look up photos for a group.
+
+Run the following query to find the `urlname` for other groups:
+
+[source, cypher, subs = attributes]
+----
+MATCH (group:Group)
+RETURN group.urlname
+ORDER BY rand()
+LIMIT 10
+----
+
+== Exercise: Import photos meta data
+
+* Import the photo meta data into the graph.
+
+We probably want to create a pattern similar to this: `(member)-[:POSTED]->(photo)-[:EVENT]->(event)` in the graph although you are of course free to create whatever you like!
+
 == Next Step
 
-How can we integrate real-time information, such as live-feeds to provide updated recommendations as the underlying data changes.
+In the next section we'll use these procedures to extend the layered event recommendation we've been building up over the last few sections.
 
-pass:a[<a play-topic='{guides}/08_layered_events.html'>Layered event recommendations</a>]
+pass:a[<a play-topic='{guides}/08_scoring.html'>Scoring recommendations</a>]
