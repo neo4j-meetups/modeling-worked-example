@@ -81,6 +81,9 @@ ORDER BY days
 
 * Update the query to recommend events within 1km of venues that we've previously attended
 
+== To the slides!
+
+image::{img}/slides.jpg[]
 
 == Next Step
 In our next section we're going to take a brief detour to introduce procedures, a new addition in Neo4j 3.0.0.

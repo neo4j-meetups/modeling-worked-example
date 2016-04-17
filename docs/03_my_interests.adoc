@@ -23,6 +23,10 @@ To do that we're going to need to split up the string containing topic ids so we
 
 We'll use link:http://neo4j.com/docs/new-manual/developer-manual/3.0-RC1/#functions-split[split] and link:http://neo4j.com/docs/new-manual/developer-manual/3.0-RC1/#query-plan-unwind[UNWIND] to help us do this.
 
+== The slides are waiting...for you!
+
+image::{img}/slides.jpg[]
+
 == Member Interests (Topics)
 
 Run the following query to create an `INTERESTED_IN` relationship between members and topics:
@@ -86,6 +90,10 @@ image::{img}/group_has_topic_member_of.png[]
 
 * Find topics that I'm interested in via the groups I'm a member of that I don't have an `INTERESTED_IN` relationship to.
 * Which topic shows up most frequently?
+
+== The answers are waiting...
+
+image::{img}/slides.jpg[]
 
 == Inferring interests
 

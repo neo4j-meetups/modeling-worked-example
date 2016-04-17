@@ -4,7 +4,7 @@
 
 == Find similar groups to Neo4j
 
-image::{img}/group_has_topic.png[]
+image::{img}/group_has_topic.png
 
 [verse]
 ____
@@ -68,13 +68,11 @@ RETURN g.id, g.name, g.urlname
 == MERGE & Constraints
 
 In the next section we're going to create topics but our CSV file contains lots of duplicates so we're going to use the `MERGE` command to avoid creating duplicates in the graph.
+We're also going to put a unique constraint on `:Topic(id)` so that we don’t create the same topic twice.
 
-We'll put a unique constraint on `:Topic(id)` so that we don’t create the same topic twice.
+== Focus your eyes on the slides...
 
-Unique constraints:
-
-* ensure uniqueness of a (label, property) pair
-* allow fast lookup of nodes which match these (label,property) pairs by creating an index on the (label, property) pair.
+image::{img}/slides.jpg[]
 
 == MERGE & Constraints
 
@@ -204,6 +202,10 @@ We've now loaded groups and topics but we don't know exactly what's in our graph
 * How many groups have been running for 4 years or more?
 
 _Hint:_ The link:http://neo4j.com/docs/milestone/cypher-refcard/[Cypher refcard] will come in handy for syntax we haven't covered yet!
+
+== Look at the slides...we have answers!
+
+image::{img}/slides.jpg[]
 
 ==  Find similar groups to Neo4j
 

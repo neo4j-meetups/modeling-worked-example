@@ -47,6 +47,13 @@ ASSERT m.id IS UNIQUE
 ----
 
 The CSV file contains one entry for each group a member is part of so we will iterate over some members multiple times.
+We've got a lot of members to process so we're going to use the `PERIODIC COMMIT` clause to process them in batches.
+
+== Look at the slides to reveal all about periodic commit
+
+image::{img}/slides.jpg[]
+
+== Add Members
 
 Run the following query to import members into the graph:
 
@@ -60,8 +67,7 @@ MERGE (member:Member {id: id})
 ON CREATE SET member.name = name
 ----
 
-Note that we're using periodic commit here.
-In this example it means that we'll commit every 10,000 rows rather than processing the whole file in one large transaction.
+The use of periodic commit means that we'll commit every 10,000 rows rather than processing the whole file in one large transaction.
 
 == Connect members and groups
 
@@ -90,6 +96,10 @@ RETURN member, group, membership
 LIMIT 10
 ----
 
+== Look at the slides for a quick explanation of `WITH`
+
+image::{img}/slides.jpg[]
+
 == Additional indexes
 
 We're going to search for members by name so we'll put an index on `Member(name)` so we can quickly do that.
@@ -109,6 +119,10 @@ We've now got groups, topics and members loaded into our database so it's time f
 * How many groups are you a member of?
 * Which topics do those groups have?
 * _(For bonus points)_ Which topic shows up the most?
+
+== All the answers will be revealed...just as soon as you look at the slides
+
+image::{img}/slides.jpg[]
 
 == Exclude groups I’m a member of
 

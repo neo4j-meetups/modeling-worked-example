@@ -142,6 +142,11 @@ Update the recommendations query to:
 
 * WILL THINK OF SOMETHING BETTER TO GO HERE*
 
+== You know the drill by now!
+
+image::{img}/slides.jpg[]
+
+
 == Next Step
 
 Next we're going to introduce venues into the model so we can make recommendations based on where events are being held.

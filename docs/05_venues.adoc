@@ -45,6 +45,10 @@ If you don't then grab one of the trainers and we can help you fix it.
 
 Next we're going to do some distance calculations with those values.
 
+== Tell me everything about distances I'm paying attention, I swear!
+
+image::{img}/slides.jpg[]
+
 == Distance to venues
 
 We'll start with a simple query to find venues near here:
@@ -74,6 +78,11 @@ e.g. the QE2 where Graph Connect will be tomorrow is at `51.5002221,-0.1290273`
 
 * Update the events recommendation query we wrote earlier to return the distance to here
 * Filter out events which are more than 1km away
+
+== Import wisdom will be revealed...
+
+image::{img}/slides.jpg[]
+
 
 == Next Step
 Can we now make use of previous locations where people have attended events to help make better recommendations?
