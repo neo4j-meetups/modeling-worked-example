@@ -81,6 +81,12 @@ We can do this by inferring `INTERESTED_IN` relationships based on these groups.
 
 image::{img}/group_has_topic_member_of.png[]
 
+
+== Exercise: Inferring interests
+
+* Find topics that I'm interested in via the groups I'm a member of that I don't have an `INTERESTED_IN` relationship to.
+* Which topic shows up most frequently?
+
 == Inferring interests
 
 We can write the following query to add inferred `INTERESTED_IN` relationships to each member:
@@ -132,17 +138,9 @@ RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
 ORDER BY score DESC
 ----
 
-== Exercise: Tweak the recommendation query
-
-*
-
-* It would be good to do collaborative filtering query here showing another way of finding similar groups - the ones people in my groups are in
-Is it still going to be too slow?
-
-We could have a query for people to make our user join a new group and then see how the recommendations change.
-
 == Next Step
 
+We're now reached the end of the group recommendation section of the training.
 In the next section we're going to explore the events hosted by our groups and then make event recommendations.
 
 pass:a[<a play-topic='{guides}/04_events.html'>Event Recommendations</a>]

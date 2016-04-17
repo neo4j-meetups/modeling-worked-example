@@ -9,6 +9,7 @@ $GUIDES/run.sh 01_similar_groups_by_topic.adoc 01_similar_groups_by_topic.html +
 $GUIDES/run.sh 02_my_similar_groups.adoc 02_my_similar_groups.html +1 $BASE_URL
 $GUIDES/run.sh 02_find_yourself_answers.adoc 02_find_yourself_answers.html +1 $BASE_URL
 $GUIDES/run.sh 03_my_interests.adoc 03_my_interests.html +1 $BASE_URL
+$GUIDES/run.sh 03_inferred_answers.adoc 03_inferred_answers.html +1 $BASE_URL
 $GUIDES/run.sh 04_events.adoc 04_events.html +1 $BASE_URL
 $GUIDES/run.sh 05_venues.adoc 05_venues.html +1 $BASE_URL
 $GUIDES/run.sh 05_venues_import_answers.adoc 05_venues_import_answers.html +1 $BASE_URL

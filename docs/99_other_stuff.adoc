@@ -26,3 +26,12 @@ WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
 RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
 ORDER BY score DESC
 ----
+
+== Exercise: Tweak the recommendation query
+
+*
+
+* It would be good to do collaborative filtering query here showing another way of finding similar groups - the ones people in my groups are in
+Is it still going to be too slow?
+
+We could have a query for people to make our user join a new group and then see how the recommendations change.
