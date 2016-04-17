@@ -2,12 +2,12 @@
 :csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
 :icons: font
 
-== Combine Multiple Scores into a Layered Query
+== Scoring components of our recommendation query
 
 We're now at the point where we now have multiple facets to our events recommendation query.
 Each of these makes a contribution but perhaps not all equally.
 
-e.g. perhaps we should give more weight to venues closer to our workplace and less weight 
+e.g. perhaps we should give more weight to venues closer to our workplace and less weight to very popular events.
 
 
 Here we are going to build a hybrid recommendation engine that takes lots of factors into account.

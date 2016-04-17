@@ -16,7 +16,7 @@ RETURN row
 LIMIT 10
 ----
 
-So we get an identifier for each RSVP, an event_id which the RSVP is for, a member_id that identifies the user and a few other attributes.
+So we get an identifier for each RSVP, an event id which the RSVP is for, a member id that identifies the user and a few other attributes.
 Let's get the RSVPs into the graph then!
 
 == Importing RSVPs
@@ -36,7 +36,18 @@ ON CREATE SET rsvp.created = toint(row.created),
               rsvp.guests = toint(row.guests)
 ----
 
-Now we're ready to make use of venues in our events recommendation query.
+Let's check they got imported correctly:
+
+[source,cypher,subs=attributes]
+----
+MATCH (event:Event {name: "GraphHack @ Graph Connect 2016"})<-[:RSVPD]-(attendee)
+RETURN attendee
+LIMIT 10
+----
+
+This query shows us who's signed up for the hackathon we're running tonight - hopefully you can see your name on that list?!
+
+Now we're ready to make use of RSVPs and venues in our events recommendation query.
 
 == Venue based recommendations
 

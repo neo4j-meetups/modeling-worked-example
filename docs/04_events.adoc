@@ -94,7 +94,7 @@ We'll start with that and build from there:
 
 [source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->(group)-[:HOSTED_EVENT]->(futureEvent)
 WHERE futureEvent.time > timestamp()
 RETURN group.name,
        futureEvent.name,
@@ -112,16 +112,23 @@ One way we could make a better recommendation is to suggest events hosted by gro
 ----
 MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->(group)-[:HOSTED_EVENT]->(futureEvent)
 WHERE futureEvent.time > timestamp()
-WITH member, COLLECT({group: group, myGroup: true, event: futureEvent}) AS myGroupEvents
+WITH member,
+     COLLECT({group: group, myGroup: true, event: futureEvent}) AS myGroupEvents
 
 MATCH (member)-[:INTERESTED_IN]->()<-[:HAS_TOPIC]-(group)-[:HOSTED_EVENT]->(futureEvent)
 WHERE futureEvent.time > timestamp()
 
-WITH member, myGroupEvents, COLLECT({group: group, myGroup: EXISTS((member)-[:MEMBER_OF]-(group)), event: futureEvent}) AS myTopicEvents
+WITH member, myGroupEvents,
+     COLLECT({group: group, myGroup: EXISTS((member)-[:MEMBER_OF]-(group)), event: futureEvent}) AS myTopicEvents
 
 UNWIND myGroupEvents + myTopicEvents AS row
-RETURN DISTINCT row.event.name, row.event.time, row.group.name, tostring(row.myGroup), COUNT(*) AS times
-ORDER BY times DESC
+
+WITH row.event AS event, row.group AS group, row.myGroup AS myGroup, COUNT(*) AS times
+
+WITH event, group, CASE WHEN myGroup THEN 5 ELSE 0 END AS myGroupScore, times
+
+RETURN row.event.name, row.event.time, row.group.name, myGroupScore + times AS score
+ORDER BY score DESC
 ----
 
 * THIS NEEDS SOME WORK - I'll come back to it*
@@ -133,7 +140,7 @@ Update the recommendations query to:
 * Only show events happening in the next 7 days
 * Give a higher score to events in my groups
 
-* WILL THINK OF SOMETHING BETTER TO GO HERE* 
+* WILL THINK OF SOMETHING BETTER TO GO HERE*
 
 == Next Step
 
