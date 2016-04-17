@@ -5,7 +5,7 @@
 == Events
 
 So far we've only made recommendations for meetup groups that we might like to join.
-Now it’s time to bring events into the graph.
+It's been fun but things start getting much more interesting once we bring events into the equation.
 
 We'll start with exploration of the events CSV file:
 
@@ -34,6 +34,10 @@ CREATE INDEX ON :Event(time)
 
 Now we're all set to import the events into the graph:
 
+== Import Events
+
+Run the following query to import the events:
+
 [source,cypher,subs=attributes]
 ----
 USING PERIODIC COMMIT 10000
@@ -53,7 +57,7 @@ RETURN event
 LIMIT 10
 ----
 
-Now let's connect those events to the groups that host them.
+Looks good!
 
 == Connect events and groups
 
@@ -70,6 +74,18 @@ MATCH (group:Group {id: groupId})
 MATCH (event:Event {id: eventId})
 MERGE (group)-[:HOSTED_EVENT]->(event)
 ----
+
+Run the following query to check that worked as expected:
+
+[source,cypher,subs=attributes]
+----
+MATCH (group:Group)-[:HOSTED_EVENT]->(event)
+WHERE group.name STARTS WITH "Neo4j" AND event.time < timestamp()
+RETURN event
+ORDER BY event.time DESC
+----
+
+If all's well you should see the last 10 events hosted by the Neo4j London group.
 
 == Find future events in my groups
 
@@ -89,7 +105,12 @@ ORDER BY days
 
 That's a good start but it's a bit restrictive - I'm never going to learn about events in groups that I haven't joined yet.
 
-== Exercise:
+== Find future events with my topics
+
+
+
+== Exercise: Extending events recommendation
+
 
 
 == Next Step

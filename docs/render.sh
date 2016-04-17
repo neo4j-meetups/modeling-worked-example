@@ -16,7 +16,7 @@ $GUIDES/run.sh 05_venues_import_answers.adoc 05_venues_import_answers.html +1 $B
 $GUIDES/run.sh 05_venues_distance_queries_answers.adoc 05_venues_distance_queries_answers.html +1 $BASE_URL
 $GUIDES/run.sh 06_rsvps.adoc 06_rsvps.html +1 $BASE_URL
 $GUIDES/run.sh 07_procedures.adoc 07_procedures.html +1 $BASE_URL
-$GUIDES/run.sh 08_layered_events.adoc 08_layered_events.html +1 $BASE_URL
+$GUIDES/run.sh 08_scoring.adoc 08_scoring.html +1 $BASE_URL
 $GUIDES/run.sh 09_free_for_all.adoc 09_free_for_all.html +1 $BASE_URL
 }
 
