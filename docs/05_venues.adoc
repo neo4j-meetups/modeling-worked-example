@@ -51,11 +51,11 @@ We'll start with a simple query to find venues near here:
 
 [source,cypher,subs=attributes]
 ----
-WITH {latitude: 51.518551, longitude: -0.086114} AS graphConnectTrainingVenue
+WITH point({latitude: 51.518551, longitude: -0.086114}) AS graphConnectTrainingVenue
 MATCH (venue:Venue)
 
-WITH venue, distance(venue, graphConnectTrainingVenue) AS distance
-RETURN venue, distance
+WITH venue, distance(point(venue), graphConnectTrainingVenue) AS distance
+RETURN venue.id, venue.name, venue.address, distance
 ORDER BY distance
 LIMIT 10
 ----

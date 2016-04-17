@@ -2,3 +2,4 @@
 neo4j-community-*
 *.pptx
 zip
+docs/*.html
