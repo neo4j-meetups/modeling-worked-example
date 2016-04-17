@@ -33,6 +33,18 @@ Maybe we can also put in some stuff showing how to wire in an event handler that
 I wonder if this section should go a bit earlier so can show how to use it in the layered recommendation section?
 How many of the attendeees will know Java?
 
+== Formatting timestamps
+
+[source,cypher,subs=attributes]
+----
+match (venue)<-[:VENUE]-(event:Event)<-[:HOSTED_EVENT]-(group:Group)
+WHERE event.time < timestamp()
+CALL apoc.date.fromMillis(event.time) YIELD value as dateTime
+RETURN event.name, group.name, venue.name, dateTime
+ORDER BY event.time DESC
+LIMIT 5
+----
+
 == Next Step
 
 How can we integrate real-time information, such as live-feeds to provide updated recommendations as the underlying data changes.

@@ -49,7 +49,7 @@ ASSERT m.id IS UNIQUE
 The CSV file contains one entry for each group a member is part of so we will iterate over some members multiple times.
 We've got a lot of members to process so we're going to use the `PERIODIC COMMIT` clause to process them in batches.
 
-== Look at the slides to reveal all about periodic commit
+== Look at the slides to reveal all about `PERIODIC COMMIT`
 
 image::{img}/slides.jpg[]
 
