@@ -25,7 +25,7 @@ We're going to use this procedure to import some more data from meetup, this tim
 
 We need to import some data that's going to be useful for recommendations - I thought maybe comments but that doesn't seem very interesting.
 
-Here I want to put something showing how you can use one of the APOC procedures to have a job which keeps the graph updated?
+* Here I want to put something showing how you can use one of the APOC procedures to have a job which keeps the graph updated?
 e.g. we could once a day run the inferred topics query maybe
 
 Maybe we can also put in some stuff showing how to wire in an event handler that could keep inferred relationships up to date?

@@ -36,8 +36,6 @@ ON CREATE SET rsvp.created = toint(row.created),
               rsvp.guests = toint(row.guests)
 ----
 
-We create `RSVPD` as a relationship because
-
 Now we're ready to make use of venues in our events recommendation query.
 
 == Venue based recommendations
