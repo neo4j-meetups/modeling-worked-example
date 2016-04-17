@@ -64,10 +64,13 @@ In this query we
   * find the topics I'm interested in
   * find the groups I'm a member of that have those topics
   * aggregates the number of times each topic appears
-  * finds other groups that have these topics filtering out ones that I'm already a member of
+  * finds other groups that have these topics, filtering out ones that I'm already a member of
   * returns those other groups sorted by how many of my topics they cater for
 
-This is quite a crude scoring mechanism - can we think of something better to go here?
+This is quite a crude scoring mechanism which favours generally popular topics.
+Let's account for that.
+
+*SOMETHING HERE WITH BETTER SCORING TO DOWNPLAY REALLY POPULAR TOPICS*
 
 == What am I actually interested in?
 
@@ -132,6 +135,9 @@ ORDER BY score DESC
 == Exercise: Tweak the recommendation query
 
 *
+
+* It would be good to do collaborative filtering query here showing another way of finding similar groups - the ones people in my groups are in
+Is it still going to be too slow?
 
 We could have a query for people to make our user join a new group and then see how the recommendations change.
 

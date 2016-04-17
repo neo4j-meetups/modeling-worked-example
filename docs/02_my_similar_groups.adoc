@@ -120,7 +120,7 @@ MATCH (member:Member {name: "Mark Needham"})
 MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
 RETURN otherGroup.name,
        COUNT(topic) AS topicsInCommon,
-       EXISTS((:Member {name: "Mark Needham"})-[:MEMBER_OF]->(otherGroup)) AS alreadyMember,
+       EXISTS((member)-[:MEMBER_OF]->(otherGroup)) AS alreadyMember,
        COLLECT(topic.name) AS topics
 ORDER BY topicsInCommon DESC
 LIMIT 10

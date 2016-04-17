@@ -1,0 +1,58 @@
+= Recommendations by implicit interest
+:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
+:icons: font
+
+== Exercise: Find yourself and your groups
+
+We've now got groups, topics and members loaded into our database so it's time for a bit more exploration.
+
+* If you're from London write a query to find yourself in the database. If not try and find your neighbour.
+* How many groups are you a member of?
+* Which topics do those groups have?
+* _(For bonus points)_ Which topic shows up the most?
+
+== Find yourself
+
+[source,cypher,subs=attributes]
+----
+MATCH (m:Member {name: "Mark Needham"})
+RETURN m
+----
+
+== Find yourself
+
+[source,cypher,subs=attributes]
+----
+MATCH (m:Member)
+WHERE m.name = "Mark Needham"
+RETURN m
+----
+
+== How many groups are you a member of?
+
+[source,cypher,subs=attributes]
+----
+MATCH (m:Member)-[:MEMBER_OF]->(group)
+WHERE m.name = "Mark Needham"
+RETURN group
+----
+
+== Which topics do these groups have?
+
+[source,cypher,subs=attributes]
+----
+MATCH (m:Member)-[:MEMBER_OF]->(group), (group)-[:HAS_TOPIC]->(topic)
+WHERE m.name = "Mark Needham"
+RETURN group, topic
+----
+
+
+== Which topic shows up the most?
+
+[source,cypher,subs=attributes]
+----
+MATCH (m:Member)-[:MEMBER_OF]->(group), (group)-[:HAS_TOPIC]->(topic)
+WHERE m.name = "Mark Needham"
+RETURN topic, COUNT(*) AS times
+ORDER BY times DESC
+----
