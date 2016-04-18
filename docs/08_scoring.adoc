@@ -4,11 +4,46 @@
 
 == Scoring components of our recommendation query
 
-We're now at the point where we now have multiple facets to our events recommendation query.
+We're now at the point where we have multiple facets to our events recommendation query.
 Each of these makes a contribution but perhaps not all equally.
 
 e.g. perhaps we should give more weight to venues closer to our workplace and less weight to very popular events.
 
+
+== The pareto function
+
+The pareto function in `apoc` allows us to apply a log function to a score.
+We want to dampen the weight of really high scores so they don't completely dominate the recommendation.
+
+Let's give it a try on some fake data to get the hang of it:
+
+[source,cypher, subs=attributes]
+----
+CALL apoc.scoring.pareto(1,2,3,4)
+----
+
+The parameters might seem a bit opaque at the moment but you can learn more about them by running the following query:
+
+[source, cypher, subs=attributes]
+----
+CALL db.procedures() YIELD name AS name, signature AS signature
+WITH name, signature
+WHERE name = "apoc.scoring.pareto"
+RETURN signature
+----
+
+Try changing some of the values and see how the score changes.
+
+== Scoring with Pareto
+
+Now let's try applying the Pareto function to the event recommendation query.
+
+
+[source, cypher, subs=attributes]
+----
+
+
+----
 
 Here we are going to build a hybrid recommendation engine that takes lots of factors into account.
 

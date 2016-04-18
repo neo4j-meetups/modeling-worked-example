@@ -99,7 +99,7 @@ We're going to use this procedure to import some more data from meetup, this tim
 
 == Importing JSON from the meetup.com API
 
-The meetup.com API for photos is accessible without needing a key so we're going to import the meta data for photos posted to the Neo4j London group into the graph.
+The meetup.com API for photos is accessible without needing a key so we're going to import the meta data for photos posted to the Neo4j London group.
 First let's see what photos have been posted:
 
 [source, cypher, subs = attributes]
@@ -131,7 +131,7 @@ LIMIT 10
 
 * Import the photo meta data into the graph.
 
-We probably want to create a pattern similar to this: `(member)-[:POSTED]->(photo)-[:EVENT]->(event)` in the graph although you are of course free to create whatever you like!
+We probably want to create this pattern `(member)-[:POSTED]->(photo)-[:EVENT]->(event)` although you are of course free to create whatever you like!
 
 == Next Step
 

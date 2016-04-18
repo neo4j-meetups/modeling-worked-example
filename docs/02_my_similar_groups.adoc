@@ -96,10 +96,6 @@ RETURN member, group, membership
 LIMIT 10
 ----
 
-== Look at the slides for a quick explanation of `WITH`
-
-image::{img}/slides.jpg[]
-
 == Additional indexes
 
 We're going to search for members by name so we'll put an index on `Member(name)` so we can quickly do that.

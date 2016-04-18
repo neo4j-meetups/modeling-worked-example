@@ -1,0 +1,37 @@
+= My venues answers
+:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
+:icons: font
+
+== Exercise: Events at my venues
+
+Our initial event recommendation query only recommends events for the groups that we belong to.
+Let's now update the query to:
+
+* include events at venues that I've previously visited
+* include events within 1km of the top 5 venues that I've previously visited
+
+== Events at my venues
+
+== Events near my venues
+
+[source,cypher,subs=attributes]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)
+WHERE event.time > timestamp()
+
+WITH member, COLLECT(futureEvent) myGroupsEvents
+MATCH (member)-[:RSVPD]->(event)-[:VENUE]->(venue)
+WHERE event.time < timestamp()
+
+WITH DISTINCT member, myGroupsEvents, venue
+MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
+WHERE futureEvent.time > timestamp()
+
+WITH member,
+
+RETURN group.name,
+       futureEvent.name,
+       round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days,
+       distance(venue, here) AS distance
+ORDER BY days
+----

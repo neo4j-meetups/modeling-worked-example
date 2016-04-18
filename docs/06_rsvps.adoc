@@ -49,37 +49,13 @@ This query shows us who's signed up for the hackathon we're running tonight - ho
 
 Now we're ready to make use of RSVPs and venues in our events recommendation query.
 
-== Venue based recommendations
+== Exercise: Events at my venues
 
 Our initial event recommendation query only recommends events for the groups that we belong to.
+Let's now update the query to:
 
-We'll now add to that and include events hosted at a venue that we've previously been to even if that event is in a different group.
-
-[source,cypher,subs=attributes]
-----
-MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)
-WHERE event.time > timestamp()
-
-WITH member, COLLECT(futureEvent) myGroupsEvents
-MATCH (member)-[:RSVPD]->(event)-[:VENUE]->(venue)
-WHERE event.time < timestamp()
-
-WITH DISTINCT member, myGroupsEvents, venue
-MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
-WHERE futureEvent.time > timestamp()
-
-WITH member,
-
-RETURN group.name,
-       futureEvent.name,
-       round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days,
-       distance(venue, here) AS distance
-ORDER BY days
-----
-
-== Exercise: Venue based recommendations
-
-* Update the query to recommend events within 1km of venues that we've previously attended
+* include events at venues that I've previously visited
+* include events within 1km of the top 5 venues that I've previously visited
 
 == To the slides!
 
