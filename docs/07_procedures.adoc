@@ -38,8 +38,8 @@ Lucky for us Michael has actually done the heavy lifting already and created the
 
 First follow these instructions to get `apoc` installed on your local instance of Neo4j:
 
-* Download the latest version of apoc from link:http://michael-insert-link-here.com
-* Copy `apoc-1.0.0-SNAPSHOT.jar` into your plugins folder `/path/to/neo4j/plugins`
+* Download the latest version of apoc from link:https://github.com/jexp/neo4j-apoc-procedures/releases/latest
+* Copy `apoc-1.0.0-SNAPSHOT.jar` into your plugins folder `$NEO4J_HOME/plugins`
 * Restart Neo4j
 
 If you run the following command you can see which additional procedures are now available to us:
@@ -127,11 +127,21 @@ ORDER BY rand()
 LIMIT 10
 ----
 
+ifdef::env-training[]
+
 == Exercise: Import photos meta data
 
 * Import the photo meta data into the graph.
 
-We probably want to create this pattern `(member)-[:POSTED]->(photo)-[:EVENT]->(event)` although you are of course free to create whatever you like!
+We probably want to create this pattern `+(member)-[:POSTED]->(photo)-[:EVENT]->(event)+` although you are of course free to create whatever you like!
+
+endif::env-training[]
+
+ifndef::env-training[]
+
+include::07_photos_answers.adoc[lines=4..-1]
+
+endif::env-training[]
 
 == Next Step
 

@@ -23,9 +23,13 @@ To do that we're going to need to split up the string containing topic ids so we
 
 We'll use link:http://neo4j.com/docs/new-manual/developer-manual/3.0-RC1/#functions-split[split] and link:http://neo4j.com/docs/new-manual/developer-manual/3.0-RC1/#query-plan-unwind[UNWIND] to help us do this.
 
+ifdef::env-training[]
+
 == The slides are waiting...for you!
 
 image::{img}/slides.jpg[]
+
+endif::env-training[]
 
 == Member Interests (Topics)
 
@@ -74,7 +78,7 @@ In this query we
 This is quite a crude scoring mechanism which favours generally popular topics.
 Let's account for that.
 
-*SOMETHING HERE WITH BETTER SCORING TO DOWNPLAY REALLY POPULAR TOPICS*
+// TODO *SOMETHING HERE WITH BETTER SCORING TO DOWNPLAY REALLY POPULAR TOPICS*
 
 == What am I actually interested in?
 
@@ -85,6 +89,8 @@ We can do this by inferring `INTERESTED_IN` relationships based on these groups.
 
 image::{img}/group_has_topic_member_of.png[]
 
+ifdef::env-training[]
+
 
 == Exercise: Inferring interests
 
@@ -94,6 +100,8 @@ image::{img}/group_has_topic_member_of.png[]
 == The answers are waiting...
 
 image::{img}/slides.jpg[]
+
+endif::env-training[]
 
 == Inferring interests
 

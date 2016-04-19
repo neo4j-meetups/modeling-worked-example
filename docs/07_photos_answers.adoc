@@ -12,12 +12,19 @@ We probably want to create this pattern `(member)-[:POSTED]->(photo)-[:EVENT]->(
 
 [source,cypher, subs=attributes]
 ----
+CREATE CONSTRAINT ON (p:Photo) ASSERT p.id IS UNIQUE;
+----
+
+[source,cypher, subs=attributes]
+----
 CALL apoc.load.json("https://api.meetup.com/graphdb-london/photos?&sign=true&photo-host=public")
 YIELD value AS document
-WITH document WHERE EXISTS(document.photo_album.event.id)
+WITH document WHERE document.photo_album.event.id IS NOT NULL
 
 MATCH (event:Event {id: document.photo_album.event.id})
 OPTIONAL MATCH (member:Member {id: tostring(document.member.id)})
+WITH event, member, document 
+WHERE member IS NOT NULL
 
 MERGE (photo:Photo {id: document.id})
 ON CREATE SET photo.link = document.link, photo.created = document.created

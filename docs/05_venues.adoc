@@ -21,6 +21,8 @@ LIMIT 10
 So we've got a venue id, name and then some address details including the lat and long.
 Let's get that imported!
 
+ifdef::env-training[]
+
 == Exercise: Importing venues
 
 * Load the venues into the graph - make sure you store `latitude` and `longitude` as properties as we'll be using those in the next section.
@@ -32,6 +34,12 @@ _Tip_ You'll have to iterate over the events CSV file again to get the `venue_id
 
 image::{img}/slides.jpg[]
 
+endif::env-training[]
+ifndef::env-training[]
+
+include::05_venues_import_answers[lines=4..-1]
+
+endif::env-training[]
 
 == Verifying venues import
 
@@ -48,11 +56,19 @@ RETURN COUNT(*)
 You should see a count > 0.
 If you don't then grab one of the trainers and we can help you fix it.
 
+ifdef::env-training[]
+
 Next we're going to do some distance calculations with those values.
 
 == Tell me everything about distances I'm paying attention, I swear!
 
 image::{img}/slides.jpg[]
+
+endif::env-training[]
+
+ifdef::env-training[]
+include::05_venues_distance_queries_answers[lines=4..-1]
+endif::env-training[]
 
 == Distance to venues
 
@@ -79,6 +95,7 @@ This query
 Try changing the first line to point to some other lat/longs in London.
 e.g. the QE2 where Graph Connect will be tomorrow is at `51.5002221,-0.1290273`
 
+ifdef::env-training[]
 == Exercise: Using venues in recommendations
 
 * Update the events recommendation query we wrote earlier to return the distance to here
@@ -88,6 +105,7 @@ e.g. the QE2 where Graph Connect will be tomorrow is at `51.5002221,-0.1290273`
 
 image::{img}/slides.jpg[]
 
+endif::env-training[]
 
 == Next Step
 Can we now make use of previous locations where people have attended events to help make better recommendations?

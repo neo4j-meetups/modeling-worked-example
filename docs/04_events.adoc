@@ -24,7 +24,7 @@ First a bit of preparatory work before we import the events:
 
 [source,cypher,subs=attributes]
 ----
-CREATE INDEX ON :Event(id)
+CREATE CONSTRAINT ON (e:Event) ASSERT e.id IS UNIQUE;
 ----
 
 [source,cypher,subs=attributes]
@@ -83,6 +83,7 @@ MATCH (group:Group)-[:HOSTED_EVENT]->(event)
 WHERE group.name STARTS WITH "Neo4j" AND event.time < timestamp()
 RETURN event
 ORDER BY event.time DESC
+LIMIT 10
 ----
 
 If all's well you should see the last 10 events hosted by the Neo4j London group.
@@ -119,7 +120,7 @@ MATCH (member)-[:INTERESTED_IN]->()<-[:HAS_TOPIC]-(group)-[:HOSTED_EVENT]->(futu
 WHERE futureEvent.time > timestamp()
 
 WITH member, myGroupEvents,
-     COLLECT({group: group, myGroup: EXISTS((member)-[:MEMBER_OF]-(group)), event: futureEvent}) AS myTopicEvents
+     COLLECT({group: group, myGroup: EXISTS((member)-[:MEMBER_OF]->(group)), event: futureEvent}) AS myTopicEvents
 
 UNWIND myGroupEvents + myTopicEvents AS row
 
@@ -127,11 +128,13 @@ WITH row.event AS event, row.group AS group, row.myGroup AS myGroup, COUNT(*) AS
 
 WITH event, group, CASE WHEN myGroup THEN 5 ELSE 0 END AS myGroupScore, times
 
-RETURN row.event.name, row.event.time, row.group.name, myGroupScore + times AS score
+RETURN event.name, event.time, group.name, myGroupScore + times AS score
 ORDER BY score DESC
 ----
 
-* THIS NEEDS SOME WORK - I'll come back to it*
+// TODO * THIS NEEDS SOME WORK - I'll come back to it*
+
+ifdef::env-training[]
 
 == Exercise: Extending events recommendation
 
@@ -146,6 +149,7 @@ Update the recommendations query to:
 
 image::{img}/slides.jpg[]
 
+endif::env-training[]
 
 == Next Step
 

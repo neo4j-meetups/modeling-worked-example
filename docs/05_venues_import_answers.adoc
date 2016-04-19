@@ -11,6 +11,11 @@
 
 [source,cypher,subs=attributes]
 ----
+CREATE CONSTRAINT ON (v:Venue) ASSERT v.id IS UNIQUE;
+----
+
+[source,cypher,subs=attributes]
+----
 LOAD CSV WITH HEADERS FROM "{csv-url}venues.csv" AS row
 MERGE (venue:Venue {id: row.id})
 ON CREATE SET venue.name = row.name,

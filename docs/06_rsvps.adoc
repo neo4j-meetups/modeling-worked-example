@@ -25,6 +25,7 @@ We're only going to worry ourselves with 'yes' RSVPs, we won't import any 'no' o
 
 [source,cypher,subs=attributes]
 ----
+USING PERIODIC COMMIT 10000
 LOAD CSV WITH HEADERS FROM "{csv-url}rsvps.csv" AS row
 WITH row WHERE row.response = "yes"
 
@@ -38,16 +39,25 @@ ON CREATE SET rsvp.created = toint(row.created),
 
 Let's check they got imported correctly:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (event:Event {name: "GraphHack @ Graph Connect 2016"})<-[:RSVPD]-(attendee)
 RETURN attendee
 LIMIT 10
 ----
 
+[source,cypher]
+----
+MATCH (event:Event {name: "GraphHack @ Graph Connect 2016"})<-[:RSVPD]-(attendee)
+RETURN count(*)
+----
+
+
+ifdef::env-training[]
 This query shows us who's signed up for the hackathon we're running tonight - hopefully you can see your name on that list?!
 
 Now we're ready to make use of RSVPs and venues in our events recommendation query.
+
 
 == Exercise: Events at my venues
 
@@ -60,6 +70,8 @@ Let's now update the query to:
 == To the slides!
 
 image::{img}/slides.jpg[]
+
+endif::env-training[]
 
 == Next Step
 In our next section we're going to take a brief detour to introduce procedures, a new addition in Neo4j 3.0.0.

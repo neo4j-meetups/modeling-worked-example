@@ -70,7 +70,7 @@ RETURN g.id, g.name, g.urlname
 In the next section we're going to create topics but our CSV file contains lots of duplicates so we're going to use the `MERGE` command to avoid creating duplicates in the graph.
 We're also going to put a unique constraint on `:Topic(id)` so that we don’t create the same topic twice.
 
-== Focus your eyes on the slides...
+== Back to the slides...
 
 image::{img}/slides.jpg[]
 
@@ -193,6 +193,8 @@ We can see which indexes we have by using the `:schema` command or by running th
 CALL db.indexes()
 ----
 
+idef::env-training[]
+
 == Exercise: Explore the graph
 
 We've now loaded groups and topics but we don't know exactly what's in our graph so let's do some exploration.
@@ -206,6 +208,8 @@ _Hint:_ The link:http://neo4j.com/docs/milestone/cypher-refcard/[Cypher refcard]
 == Look at the slides...we have answers!
 
 image::{img}/slides.jpg[]
+
+endif::env-training[]
 
 ==  Find similar groups to Neo4j
 

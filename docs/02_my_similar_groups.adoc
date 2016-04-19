@@ -49,9 +49,13 @@ ASSERT m.id IS UNIQUE
 The CSV file contains one entry for each group a member is part of so we will iterate over some members multiple times.
 We've got a lot of members to process so we're going to use the `PERIODIC COMMIT` clause to process them in batches.
 
+ifdef::env-training[]
+
 == Look at the slides to reveal all about `PERIODIC COMMIT`
 
 image::{img}/slides.jpg[]
+
+endif::env-training[]
 
 == Add Members
 
@@ -96,7 +100,7 @@ RETURN member, group, membership
 LIMIT 10
 ----
 
-== Additional indexes
+== Additional Indexes
 
 We're going to search for members by name so we'll put an index on `Member(name)` so we can quickly do that.
 
@@ -104,6 +108,8 @@ We're going to search for members by name so we'll put an index on `Member(name)
 ----
 CREATE INDEX ON :Member(name)
 ----
+
+ifdef::env-training[]
 
 Now it's your turn!
 
@@ -119,6 +125,8 @@ We've now got groups, topics and members loaded into our database so it's time f
 == All the answers will be revealed...just as soon as you look at the slides
 
 image::{img}/slides.jpg[]
+
+endif::env-training[]
 
 == Exclude groups I’m a member of
 
@@ -143,7 +151,7 @@ That’s because we didn’t force any ordering other than `topicsInCommon` so w
 
 Try changing the member name to your name or your neighbours and see how the results change.
 
-* INSERT SOME OTHER NAMES THAT PEOPLE CAN TRY HERE *
+// TODO * INSERT SOME OTHER NAMES THAT PEOPLE CAN TRY HERE *
 
 == Exclude groups I’m a member of
 
