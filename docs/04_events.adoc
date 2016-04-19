@@ -9,7 +9,7 @@ It's been fun but things start getting much more interesting once we bring event
 
 We'll start with exploration of the events CSV file:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 LOAD CSV WITH HEADERS FROM "{csv-url}events.csv" AS row
 RETURN row
@@ -22,7 +22,7 @@ As you can see we've got an event id, name, time, and description as well as som
 
 First a bit of preparatory work before we import the events:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 CREATE CONSTRAINT ON (e:Event) ASSERT e.id IS UNIQUE;
 ----
@@ -50,7 +50,7 @@ ON CREATE SET event.name = row.name,
 
 Let's check that the events imported correctly:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (event:Event)
 RETURN event
@@ -77,7 +77,7 @@ MERGE (group)-[:HOSTED_EVENT]->(event)
 
 Run the following query to check that worked as expected:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (group:Group)-[:HOSTED_EVENT]->(event)
 WHERE group.name STARTS WITH "Neo4j" AND event.time < timestamp()
@@ -93,7 +93,7 @@ If all's well you should see the last 10 events hosted by the Neo4j London group
 The simplest event recommendation we can make is to find the groups we’re a member of and then find its future events.
 We'll start with that and build from there:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->(group)-[:HOSTED_EVENT]->(futureEvent)
 WHERE futureEvent.time > timestamp()
@@ -109,7 +109,7 @@ That's a good start but it's a bit restrictive - I'm never going to learn about 
 
 One way we could make a better recommendation is to suggest events hosted by groups that have my topics even if I'm not a member of those groups.
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->(group)-[:HOSTED_EVENT]->(futureEvent)
 WHERE futureEvent.time > timestamp()

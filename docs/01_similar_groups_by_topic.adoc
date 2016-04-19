@@ -59,7 +59,7 @@ We need to do an explicit conversion (e.g. `toInt`) if we know that the data in 
 
 Let's run a quick query to check what we've actually imported:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (g:Group)
 RETURN g.id, g.name, g.urlname
@@ -78,7 +78,7 @@ image::{img}/slides.jpg[]
 
 Run the following query to create a unique constraint on `:Topic(id)`:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 CREATE CONSTRAINT ON (t:Topic) ASSERT t.id IS UNIQUE
 ----
@@ -86,21 +86,21 @@ CREATE CONSTRAINT ON (t:Topic) ASSERT t.id IS UNIQUE
 We can also retrospectively apply constraints as long as the data we've previously imported doesn't violate them.
 Run the following query to create a unique constraint on `:Group(id)` so we don't accidentally end up with duplicate groups.
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 CREATE CONSTRAINT ON (g:Group) ASSERT g.id IS UNIQUE
 ----
 
 You can check that the constraints have been applied by running the following command:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 :schema
 ----
 
 We can also run the following command:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 CALL db.constraints()
 ----
@@ -129,7 +129,7 @@ ON CREATE SET topic.name = row.name, topic.urlkey = row.urlkey
 
 Let's quickly check that they got imported correctly:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (t:Topic)
 RETURN t.id, t.name
@@ -160,7 +160,7 @@ If we run another `MERGE` query that tries to create a `:HAS_TOPIC` relationship
 
 Let's now check that the data was imported correctly:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (group:Group)-[:HAS_TOPIC]->(topic:Topic)
 RETURN group, topic
@@ -174,26 +174,26 @@ You can also single click to view a context menu with other options.
 
 It's quite likely that we'll want to search for groups by name so we'll create an index on `:Group(name)` to make that easier.
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 CREATE INDEX ON :Group(name)
 ----
 
 Let's do the same for topics as well:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 CREATE INDEX ON :Topic(name)
 ----
 
 We can see which indexes we have by using the `:schema` command or by running the following command:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 CALL db.indexes()
 ----
 
-idef::env-training[]
+ifdef::env-training[]
 
 == Exercise: Explore the graph
 
@@ -216,7 +216,7 @@ endif::env-training[]
 So you've hopefully now got an idea of what the data looks like.
 It's time to write our first recommendation query which will find groups that have the same topics as the Neo4j London group:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup)
 RETURN otherGroup.name, COUNT(topic) AS topicsInCommon,

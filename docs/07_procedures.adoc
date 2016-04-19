@@ -10,7 +10,7 @@ You can read more details in the link:http://neo4j.com/docs/developer-manual/3.0
 There are some built in procedures.
 You can see what they are by running the following command:
 
-[source, cypher, subs=attributes]
+[source, cypher]
 ----
 CALL dbms.procedures()
 ----
@@ -23,7 +23,7 @@ Do they work as you expected?
 We can use the output of procedures in a query as well as passing the output of a query into a procedure.
 For example if we want to get the list of labels in the database in alphabetical order we could write the following query:
 
-[source, cypher, subs=attributes]
+[source, cypher]
 ----
 CALL db.labels() YIELD label AS label
 RETURN label
@@ -44,7 +44,7 @@ First follow these instructions to get `apoc` installed on your local instance o
 
 If you run the following command you can see which additional procedures are now available to us:
 
-[source,cypher,subs = attributes]
+[source,cypher]
 ----
 CALL dbms.procedures() YIELD name AS name, signature AS signature
 WITH name, signature
@@ -59,7 +59,7 @@ Let's give them a try!
 A common request in the Neo4j forums is for a function to format timestamps in a human friendly way and we have just the function for that in `apoc.`
 We can use it to find out the date and time of the last 5 events in our dataset:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (venue)<-[:VENUE]-(event:Event)<-[:HOSTED_EVENT]-(group:Group)
 WHERE event.time < timestamp()
@@ -72,7 +72,7 @@ LIMIT 5
 This procedure returns only one column: `value`.
 If we aren't sure which columns a procedure is going to return we can query the procedures list and check the signature:
 
-[source,cypher, subs=attributes]
+[source,cypher]
 ----
 CALL dbms.procedures() YIELD name AS name, signature AS signature
 WITH name, signature
@@ -85,7 +85,7 @@ RETURN signature
 One of the procedures that we should have seen in our list is `apoc.load.json`.
 You can check that you've got it by running the following command:
 
-[source, cypher, subs=attributes]
+[source, cypher]
 ----
 CALL dbms.procedures() YIELD name AS name, signature AS signature
 WITH name, signature
@@ -102,7 +102,7 @@ We're going to use this procedure to import some more data from meetup, this tim
 The meetup.com API for photos is accessible without needing a key so we're going to import the meta data for photos posted to the Neo4j London group.
 First let's see what photos have been posted:
 
-[source, cypher, subs = attributes]
+[source, cypher]
 ----
 CALL apoc.load.json("https://api.meetup.com/graphdb-london/photos?&sign=true&photo-host=public")
 YIELD value AS document
@@ -119,7 +119,7 @@ This API uses the `urlname` property to look up photos for a group.
 
 Run the following query to find the `urlname` for other groups:
 
-[source, cypher, subs = attributes]
+[source, cypher]
 ----
 MATCH (group:Group)
 RETURN group.urlname

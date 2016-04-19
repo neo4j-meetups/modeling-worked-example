@@ -55,7 +55,7 @@ This might take a bit of time - there's a lot of members and topics to get throu
 
 Now we're ready to write our first query centered around a person instead of a group.
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (member:Member {name: "Mark Needham"})-[:INTERESTED_IN]->(topic),
       (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
@@ -107,7 +107,7 @@ endif::env-training[]
 
 We can write the following query to add inferred `INTERESTED_IN` relationships to each member:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (m:Member)-[:MEMBER_OF]->()-[:HAS_TOPIC]->(topic)
 
@@ -143,7 +143,7 @@ ____
 
 Let's see how the results of our group recommendation query change:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (member:Member {name: "Mark Needham"})-[:INTERESTED_IN]->(topic),
       (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)

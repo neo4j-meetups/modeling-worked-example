@@ -40,7 +40,7 @@ You'll also have noticed a `;` separated list of topic ids - we'll look at how t
 
 Before we run our query to import members we'll create a unique constraint on `Member(id)` to ensure we don't insert the same member twice.
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 CREATE CONSTRAINT ON (m:Member)
 ASSERT m.id IS UNIQUE
@@ -93,7 +93,7 @@ ON CREATE SET membership.joined=toInt(row.joined);
 
 Let's see what our graph looks like now:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (member:Member)-[membership:MEMBER_OF]->(group)
 RETURN member, group, membership
@@ -104,7 +104,7 @@ LIMIT 10
 
 We're going to search for members by name so we'll put an index on `Member(name)` so we can quickly do that.
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 CREATE INDEX ON :Member(name)
 ----
@@ -132,7 +132,7 @@ endif::env-training[]
 
 For our next recommendation we're still going to be finding similar groups to the Neo4j one but we'll also check whether we're already a member of the other groups.
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (member:Member {name: "Mark Needham"})
 MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
@@ -157,7 +157,7 @@ Try changing the member name to your name or your neighbours and see how the res
 
 In the following query we move the exclusion pattern up into a `WHERE` clause so groups we're already a member of won't be returned at all.
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (member:Member {name: "Mark Needham"})
 MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)

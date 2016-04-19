@@ -19,14 +19,14 @@ We want to dampen the weight of really high scores so they don't completely domi
 
 Let's give it a try on some fake data to get the hang of it:
 
-[source,cypher, subs=attributes]
+[source,cypher]
 ----
 CALL apoc.scoring.pareto(1,2,3,4)
 ----
 
 The parameters might seem a bit opaque at the moment but you can learn more about them by running the following query:
 
-[source, cypher, subs=attributes]
+[source, cypher]
 ----
 CALL db.procedures() YIELD name AS name, signature AS signature
 WITH name, signature
@@ -124,7 +124,7 @@ ORDER BY days, previousEvents DESC
 
 == My topics
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 WITH 24.0*60*60*1000 AS oneDay
 
@@ -159,7 +159,7 @@ RSVPs give us a reasonable idea of which people may know each other based on com
 
 We can write the following query to see which people on the meetup scene that I may know:
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (me:Member {name: "Mark Needham"})-[:RSVPD]->()<-[:RSVPD]-(otherPerson)
 RETURN otherPerson, COUNT(*) AS commonEvents
@@ -174,7 +174,7 @@ We'll have to run a graph global query to materialize this inferred social netwo
 
 First apply that label to active members of our meetups.
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (m:Member) WHERE size( (m)-[:RSVPD]->() ) >= 5
 SET m:Process
@@ -184,7 +184,7 @@ RETURN count(*)
 Then run the query we've seen before for each batch of 1000 at a time, result in up to 100000 relationships to be created.
 
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (m1:Process) WITH m1 LIMIT 1000
 REMOVE m1:Process
@@ -200,7 +200,7 @@ RETURN count(*);
 
 In total we created that 300 000 `FRIENDS` relationships.
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 match ()-[:FRIENDS]-() RETURN COUNT(*)
 ----
@@ -213,7 +213,7 @@ We'll have to run a graph global query to materialize this inferred social netwo
 
 Export active meetup attendees to $NEO4J_HOME/import/active.csv
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (m:Member) WHERE size( (m)-[:RSVPD]->() ) >= 5
 RETURN m.id as id
@@ -240,14 +240,14 @@ ON CREATE SET friendsRel.score = times;
 We'll have to run a graph global query to materialize this inferred social network so we're going to use one of the `apoc` procedures to help us out.
 
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (m:Member) WHERE size( (m)-[:RSVPD]->() ) >= 5
 SET m:Process
 RETURN count(*)
 ----
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (m1:Process) WITH m1 LIMIT 1000
 
@@ -261,7 +261,7 @@ REMOVE m1:Process
 RETURN count(*);
 ----
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (m1:Member) WHERE size( (m1)-[:RSVPD]->() ) >= 5
 MATCH (m1)-[:RSVPD]->(event:Event)<-[:RSVPD]-(m2:Member) WHERE size( (event)<-[:RSVPD]-() ) >= 5  AND size( (m2)-[:RSVPD]->() ) >= 5
@@ -278,7 +278,7 @@ MERGE (m1)-[friendsRel:FRIENDS]-(m2)
 
 == Events my friends are attending
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 WITH 24.0*60*60*1000 AS oneDay
 MATCH (member:Member {name: "Mark Needham"})

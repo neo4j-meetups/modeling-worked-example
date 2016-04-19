@@ -9,7 +9,7 @@
 
 == My inferred interests
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HAS_TOPIC]->(topic)
 WHERE NOT ((member)-[:INTERESTED_IN]->(topic))
@@ -18,7 +18,7 @@ RETURN DISTINCT topic
 
 == My most popular inferred interests
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
 MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HAS_TOPIC]->(topic)
 WHERE NOT ((member)-[:INTERESTED_IN]->(topic))
