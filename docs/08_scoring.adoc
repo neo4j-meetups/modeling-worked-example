@@ -208,10 +208,10 @@ We can for instance run it with the stored procedure `apoc.periodic.commit(state
 [source,cypher]
 ----
 call apoc.periodic.commit("
-MATCH (m1:Process) WITH m1 LIMIT {limit} REMOVE m1:Process
- WITH m1 MATCH (m1)-[:RSVPD]->(event)<-[:RSVPD]-(m2)
- WITH m1, m2, COUNT(*) AS times WHERE times >= 5
- MERGE (m1)-[:FRIENDS]-(m2) RETURN count(*)
+  MATCH (m1:Process) WITH m1 LIMIT {limit} REMOVE m1:Process
+  WITH m1 MATCH (m1)-[:RSVPD]->(event)<-[:RSVPD]-(m2)
+  WITH m1, m2, COUNT(*) AS times WHERE times >= 5
+  MERGE (m1)-[:FRIENDS]-(m2) RETURN count(*)
 ",{limit:1000})
 ----
 
