@@ -76,9 +76,7 @@ In this query we
   * returns those other groups sorted by how many of my topics they cater for
 
 This is quite a crude scoring mechanism which favours generally popular topics.
-Let's account for that.
-
-// TODO *SOMETHING HERE WITH BETTER SCORING TO DOWNPLAY REALLY POPULAR TOPICS*
+We'll have a look at how to address that later on.
 
 == What am I actually interested in?
 
