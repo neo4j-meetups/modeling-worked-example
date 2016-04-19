@@ -9,7 +9,7 @@ It's been fun but things start getting much more interesting once we bring event
 
 We'll start with exploration of the events CSV file:
 
-[source,cypher]
+[source,cypher,subs=attributes]
 ----
 LOAD CSV WITH HEADERS FROM "{csv-url}events.csv" AS row
 RETURN row
