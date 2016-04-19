@@ -6,7 +6,7 @@
 
 * Import the photo meta data into the graph.
 
-We probably want to create this pattern `(member)-[:POSTED]->(photo)-[:EVENT]->(event)` although you are of course free to create whatever you like!
+We probably want to create this pattern `(member)-[:POSTED_PHOTO]->(photo)-[:POSTED_IN_EVENT]->(event)` although you are of course free to create whatever you like!
 
 == Import photos meta data
 
@@ -19,22 +19,18 @@ CREATE CONSTRAINT ON (p:Photo) ASSERT p.id IS UNIQUE;
 ----
 CALL apoc.load.json("https://api.meetup.com/graphdb-london/photos?&sign=true&photo-host=public")
 YIELD value AS document
+
 WITH document WHERE document.photo_album.event.id IS NOT NULL
 
 MATCH (event:Event {id: document.photo_album.event.id})
 OPTIONAL MATCH (member:Member {id: tostring(document.member.id)})
-WITH event, member, document 
-WHERE member IS NOT NULL
 
 MERGE (photo:Photo {id: document.id})
 ON CREATE SET photo.link = document.link, photo.created = document.created
 
-MERGE (member)-[:POSTED_PHOTO]->(photo)
 MERGE (photo)-[:POSTED_IN_EVENT]->(event)
 
-RETURN document.link AS link,
-       document.created AS time,
-       document.id AS photoId,
-       document.member.id as memberId,
-       document.photo_album.event.id AS eventId
+WITH photo, member WHERE  member is NOT NULL
+
+MERGE (member)-[:POSTED_PHOTO]->(photo)
 ----

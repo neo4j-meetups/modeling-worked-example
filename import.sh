@@ -20,7 +20,7 @@ echo ${PWD}
 
 ./${NEO}/bin/neo4j-shell --file ${PWD}/cypher/rsvps.cql
 
-./${NEO}/bin/neo4j-shell --file ${PWD}/cypher/refactor_rsvp.cql
+# ./${NEO}/bin/neo4j-shell --file ${PWD}/cypher/refactor_rsvp.cql
 
 # ./${NEO}/bin/neo4j-shell --file cypher/refactor_membership.cql
 # ./${NEO}/bin/neo4j-shell --file cypher/refactor_topic_interest.cql
