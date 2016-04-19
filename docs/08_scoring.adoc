@@ -194,7 +194,7 @@ Then run the query we've seen before for each batch of 1000 at a time, result in
 MATCH (m1:Process) WITH m1 LIMIT 1000
 REMOVE m1:Process
 WITH m1
-MATCH (m1)-[:RSVPD]->(event)<-[:RSVPD]-(m2) WHERE size( (event)<-[:RSVPD]-() ) >= 5 AND size( (m2)-[:RSVPD]->() ) >= 5
+MATCH (m1)-[:RSVPD]->(event)<-[:RSVPD]-(m2)
 
 WITH m1, m2, COUNT(*) AS times
 WHERE times >= 5
@@ -203,7 +203,19 @@ MERGE (m1)-[:FRIENDS]-(m2)
 RETURN count(*);
 ----
 
-In total we created that 300 000 `FRIENDS` relationships.
+We can for instance run it with the stored procedure `apoc.periodic.commit(statement,params)`
+
+[source,cypher]
+----
+call apoc.periodic.commit("
+MATCH (m1:Process) WITH m1 LIMIT {limit} REMOVE m1:Process
+ WITH m1 MATCH (m1)-[:RSVPD]->(event)<-[:RSVPD]-(m2)
+ WITH m1, m2, COUNT(*) AS times WHERE times >= 5
+ MERGE (m1)-[:FRIENDS]-(m2) RETURN count(*)
+",{limit:1000})
+----
+
+This runs for about 120 seconds in 10 executions, totalling 297084 updates, i.e. `FRIENDS` relationships.
 
 [source,cypher]
 ----
