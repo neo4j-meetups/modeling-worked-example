@@ -160,7 +160,7 @@ The following query does this:
 
 [source,cypher]
 ----
-MATCH (member:Member {name: "Ben Auffarth"})-[:MEMBER_OF]->()<-[:MEMBER_OF]-(other:Member)
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()<-[:MEMBER_OF]-(other:Member)
 WITH DISTINCT member, other
 MATCH (other)-[:MEMBER_OF]->(otherGroup:Group)
 WHERE NOT((member)-[:MEMBER_OF]->(otherGroup))
@@ -172,6 +172,15 @@ ORDER BY times DESC
 
 Apparently we should all be joining the `FREE Marketing, Analytics & Digital Skills in London` group.
 Try changing the name and see if you can find someone who doesn't see that group on their list!
+
+== A hybrid approach
+
+We might even choose to combine those two queries into a hybrid query that uses content based and collaborative filtering together.
+
+[source,cypher]
+----
+
+----
 
 == Next Step
 
