@@ -174,6 +174,7 @@ We only have to change our previous query slightly to find our similar groups ra
 [source,cypher]
 ----
 MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HAS_TOPIC]->()<-[:HAS_TOPIC]-(otherGroup:Group)
+WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
 RETURN otherGroup.name,
        COUNT(*) AS topicsInCommon
 ORDER BY topicsInCommon DESC
@@ -186,9 +187,10 @@ The following query will help you find people who are members of the most groups
 [source,cypher]
 ----
 match (member:Member)-[:MEMBER_OF]->()
-RETURN member, COUNT(*) AS groups
+WITH member, COUNT(*) AS groups
 ORDER BY groups DESC
 LIMIT 10
+RETURN member.name, groups
 ----
 
 == Next Step

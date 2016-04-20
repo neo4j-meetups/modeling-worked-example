@@ -78,6 +78,25 @@ In this query we
 This is quite a crude scoring mechanism which favours generally popular topics.
 We'll have a look at how to address that later on.
 
+== What if I don't specify any interests?
+
+My friend Aleks didn't specify any interests when he signed up for meetup...
+
+[source,cypher]
+----
+MATCH (member:Member {name: "Aleksander Sumowski"})-[:INTERESTED_IN]->(topic), (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
+WITH member, topic, COUNT(*) AS score
+MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)
+WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
+RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
+ORDER BY score DESC
+----
+
+... so we can't make any recommendations to him.
+Sad times!
+
+However, if he's a member of some groups we can infer his interests.
+
 == What am I actually interested in?
 
 The `INTERESTED_IN` relationships that we created are based on interests that a user declared when they signed up for meetup.com.
@@ -100,16 +119,17 @@ image::{img}/slides.jpg[]
 
 endif::env-training[]
 
-== Inferring interests
+== Persisting inferred interests
 
 We can write the following query to add inferred `INTERESTED_IN` relationships to each member:
 
 [source,cypher]
 ----
 MATCH (m:Member)-[:MEMBER_OF]->()-[:HAS_TOPIC]->(topic)
+WHERE NOT (m)-[:INTERESTED_IN]->(topic)
 
 WITH m, topic, COUNT(*) AS times
-WHERE times >= 5
+WHERE times >= 3
 
 MERGE (m)-[:INTERESTED_IN]->(topic)
 ----
@@ -119,7 +139,7 @@ The query:
 * goes over each member
 * finds the groups they're a member of and which topics those groups advertise
 * counts how many times each topic has showed up
-* removes any topics that show up less than 5 times
+* removes any topics that show up less than 3 times
 * creates an `INTERESTED_IN` relationship between the member and the remaining topics
 
 On this dataset we have a sufficiently small number of members that we can process them all in one go.
@@ -136,13 +156,13 @@ I want to find other similar meetup groups that I’m not already a member of
 So that I can join those groups
 ____
 
-...but now we've added in some extra relationships which will hopefully lead to a better recommendation.
+...but now we've added in some extra relationships which allow us to make recommendations even to people like Aleks who haven't specified any interests.
 
-Let's see how the results of our group recommendation query change:
+Run the following query:
 
 [source,cypher]
 ----
-MATCH (member:Member {name: "Mark Needham"})-[:INTERESTED_IN]->(topic),
+MATCH (member:Member {name: "Aleksander Sumowski"})-[:INTERESTED_IN]->(topic),
       (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
 WITH member, topic, COUNT(*) AS score
 MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)

@@ -53,6 +53,6 @@ RETURN group, topic
 ----
 MATCH (m:Member)-[:MEMBER_OF]->(group), (group)-[:HAS_TOPIC]->(topic)
 WHERE m.name = "Mark Needham"
-RETURN topic, COUNT(*) AS times
+RETURN topic.name, COUNT(*) AS times
 ORDER BY times DESC
 ----

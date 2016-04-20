@@ -65,6 +65,11 @@ MATCH (g:Group)
 RETURN g.id, g.name, g.urlname
 ----
 
+
+_Hint_ You can type `Cmd + Enter` or `Control + Enter` to execute a query rather than always pressing the play button.
+More shortcuts are available.
+See `:help keys`
+
 == MERGE & Constraints
 
 In the next section we're going to create topics but our CSV file contains lots of duplicates so we're going to use the `MERGE` command to avoid creating duplicates in the graph.
@@ -201,7 +206,7 @@ We've now loaded groups and topics but we don't know exactly what's in our graph
 
 * What's the most popular topic?
 * Which group was created most recently?
-* How many groups have been running for 4 years or more?
+* How many groups have been running for at least 4 years?
 
 _Hint:_ The link:http://neo4j.com/docs/milestone/cypher-refcard/[Cypher refcard] will come in handy for syntax we haven't covered yet!
 

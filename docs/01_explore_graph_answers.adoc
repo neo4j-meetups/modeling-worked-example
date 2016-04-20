@@ -21,15 +21,6 @@ RETURN t.name, COUNT(*) AS count
 ORDER BY count DESC
 ----
 
-==  What's the most popular topic?
-
-[source,cypher,subs=attributes]
-----
-MATCH (t:Topic)
-RETURN t.name, SIZE((t)-[:HAS_TOPIC]-()) AS count
-ORDER BY count DESC
-----
-
 == Which group was created most recently?
 
 [source,cypher,subs=attributes]
@@ -40,7 +31,7 @@ ORDER BY g.created DESC
 LIMIT 1
 ----
 
-== How many groups have been running for 4 years or more?
+== How many groups have been running for at least 4 years?
 
 [source,cypher,subs=attributes]
 ----
