@@ -41,9 +41,8 @@ Let's check they got imported correctly:
 
 [source,cypher]
 ----
-MATCH (event:Event {name: "GraphHack @ Graph Connect 2016"})<-[:RSVPD]-(attendee)
-RETURN attendee
-LIMIT 10
+MATCH (event:Event {name: "GraphHack @ Graph Connect 2016"})<-[rsvp:RSVPD]-(attendee)
+RETURN *
 ----
 
 [source,cypher]

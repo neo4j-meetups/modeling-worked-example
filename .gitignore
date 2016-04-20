@@ -3,3 +3,6 @@ neo4j-community-*
 *.pptx
 zip
 docs/*.html
+data/**/*.json
+data/*.json
+data/rsvps/*.json
