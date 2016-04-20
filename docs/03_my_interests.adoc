@@ -53,7 +53,7 @@ This might take a bit of time - there's a lot of members and topics to get throu
 
 == Find my similar groups
 
-Now we're ready to write our first query centered around a person instead of a group.
+Now we're ready to write our first query which uses some data we've explicitly provided meetup.
 
 [source,cypher]
 ----
@@ -88,7 +88,6 @@ We can do this by inferring `INTERESTED_IN` relationships based on these groups.
 image::{img}/group_has_topic_member_of.png[]
 
 ifdef::env-training[]
-
 
 == Exercise: Inferring interests
 

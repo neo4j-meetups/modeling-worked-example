@@ -1,4 +1,4 @@
-= Recommendations by implicit interest
+= Groups similar to mine
 :csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
 :icons: font
 
@@ -136,9 +136,9 @@ For our next recommendation we're still going to be finding similar groups to th
 ----
 MATCH (member:Member {name: "Mark Needham"})
 MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
+WHERE NOT((member)-[:MEMBER_OF]->(otherGroup) )
 RETURN otherGroup.name,
        COUNT(topic) AS topicsInCommon,
-       EXISTS((member)-[:MEMBER_OF]->(otherGroup)) AS alreadyMember,
        COLLECT(topic.name) AS topics
 ORDER BY topicsInCommon DESC
 LIMIT 10
@@ -149,31 +149,12 @@ So now we identify them as being ones we’re already a member of so there’s n
 An interesting thing to notice is that we now get back groups which we didn’t before.
 That’s because we didn’t force any ordering other than `topicsInCommon` so we won't get a repeatable order on other columns.
 
-Try changing the member name to your name or your neighbours and see how the results change.
-
-// TODO * INSERT SOME OTHER NAMES THAT PEOPLE CAN TRY HERE *
-
-== Exclude groups I’m a member of
-
-In the following query we move the exclusion pattern up into a `WHERE` clause so groups we're already a member of won't be returned at all.
-
-[source,cypher]
-----
-MATCH (member:Member {name: "Mark Needham"})
-MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
-WHERE NOT((member)-[:MEMBER_OF]->(otherGroup) )
-RETURN otherGroup.name,
-       COUNT(topic) AS topicsInCommon,
-       COLLECT(topic.name) AS topics
-ORDER BY topicsInCommon DESC
-LIMIT 10
-----
-
-Try changing the names of the group and member to see how the results vary.
+* Try changing the member name to your name or your neighbours and see how the results change.
+* Try changing the names of the group and member to see how the results vary.
 
 == Find my similar groups
 
-Now that we've got the data loaded in we can start making recommendations on an individual basis.
+Now that we've got the data loaded in let's start making recommendations on an individual basis.
 
 image::{img}/group_has_topic_member_of_interested_in.png[]
 
@@ -184,12 +165,55 @@ I want to find other similar meetup groups that I’m not already a member of
 So that I can join those groups
 ____
 
-We can use collaborative filtering to see what other groups people in our groups join.
+We'll have a look at two approaches for making individual recommendations:
 
-A classic case of *closing the triangle.*
-We have two sides, let’s close the third side.
+* Content based filtering like we've been doing so far to find similar groups based on the topics they have in common
+* Collaborative filtering where we see what other groups people in our groups join. This is a classic case of *closing the triangle.* We have two sides, let’s close the third side.
 
 If I join groups which have a specific topic more frequently then we can weight in that ones favour.
+
+== Find my similar groups (Content based filtering)
+
+We only have to change our previous query slightly to find our similar groups rather than Neo4j's:
+
+[source,cypher]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HAS_TOPIC]->()<-[:HAS_TOPIC]-(otherGroup:Group)
+RETURN otherGroup.name,
+       COUNT(*) AS topicsInCommon
+ORDER BY topicsInCommon DESC
+LIMIT 10
+----
+
+Try changing the name to someone who's a member of lots of meetups to see how the result varies.
+The following query will help you find people who are members of the most groups:
+
+[source,cypher]
+----
+match (member:Member)-[:MEMBER_OF]->()
+RETURN member, COUNT(*) AS groups
+ORDER BY groups DESC
+LIMIT 10
+----
+
+== Find my similar groups (Collaborative filtering)
+
+We could also choose to ignore content completely and just show the other groups that people in our group joined.
+
+[source,cypher]
+----
+MATCH (member:Member {name: "Ben Auffarth"})-[:MEMBER_OF]->()<-[:MEMBER_OF]-(other:Member)
+WITH DISTINCT member, other
+MATCH (other)-[:MEMBER_OF]->(otherGroup:Group)
+WHERE NOT((member)-[:MEMBER_OF]->(otherGroup))
+WITH otherGroup, COUNT(*) AS times
+MATCH (otherGroup)<-[:MEMBER_OF]-()
+RETURN otherGroup.name, times, COUNT(*) AS members
+ORDER BY times DESC
+----
+
+Apparently we should all be joining the `FREE Marketing, Analytics & Digital Skills in London` group.
+Try changing the name and see if you can find someone who doesn't see that group on their list!
 
 == Next Step
 
