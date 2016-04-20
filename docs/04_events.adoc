@@ -18,7 +18,7 @@ LIMIT 5
 
 As you can see we've got an event id, name, time, and description as well as some ids that reference other entities.
 
-== Import Events
+== Create constraints and indexes
 
 First a bit of preparatory work before we import the events:
 
@@ -153,25 +153,25 @@ We have ~ 300 events that we can recommend to people but at the moment we don't 
 We can do better by using the information that we've captured explaining the relationship between the user and the event.
 i.e. we know whether the event is in our group and we know how many of our topics it covers.
 
-We'll give a score of `5` if it's an event in one of our groups, add that to the number of common topics and then order by the total.
+We'll give a score of `5` if it's an event in one of our groups, add that to the number of common topics, add a penalty for events further in the future and then order by the total.
 
 [source,cypher]
 ----
 MATCH (member:Member {name: "Mark Needham"})
 MATCH (futureEvent:Event)
-WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) < futureEvent.time > timestamp()
+WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()
 
 WITH member, futureEvent, EXISTS((member)-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)) AS myGroup
 OPTIONAL MATCH (member)-[:INTERESTED_IN]->()<-[:HAS_TOPIC]-()-[:HOSTED_EVENT]->(futureEvent)
 
 WITH member, futureEvent, myGroup, COUNT(*) AS commonTopics
 WHERE commonTopics >= 3
-
 MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
 
 WITH futureEvent, group, commonTopics, myGroup, CASE WHEN myGroup THEN 5 ELSE 0 END AS myGroupScore
+WITH futureEvent, group, commonTopics, myGroup, myGroupScore, round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days
 
-RETURN futureEvent.name, futureEvent.time, group.name, commonTopics, myGroup, myGroupScore + commonTopics AS score
+RETURN futureEvent.name, futureEvent.time, group.name, commonTopics, myGroup, days, myGroupScore + commonTopics - days AS score
 ORDER BY score DESC
 LIMIT 10
 ----

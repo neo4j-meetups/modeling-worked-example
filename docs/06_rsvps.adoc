@@ -52,26 +52,54 @@ MATCH (event:Event {name: "GraphHack @ Graph Connect 2016"})<-[:RSVPD]-(attendee
 RETURN count(*)
 ----
 
-
-ifdef::env-training[]
 This query shows us who's signed up for the hackathon we're running tonight - hopefully you can see your name on that list?!
 
 Now we're ready to make use of RSVPs and venues in our events recommendation query.
 
+== Our previous RSVPS
+
+First we'll update the query to add a score for an event based on previous events we've attended in that group.
+
+[source,cypher]
+----
+MATCH (member:Member {name: "Mark Needham"})
+MATCH (futureEvent:Event)
+WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()
+
+WITH member, futureEvent, EXISTS((member)-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)) AS myGroup
+OPTIONAL MATCH (member)-[:INTERESTED_IN]->()<-[:HAS_TOPIC]-()-[:HOSTED_EVENT]->(futureEvent)
+
+WITH member, futureEvent, myGroup, COUNT(*) AS commonTopics
+WHERE commonTopics >= 3
+
+OPTIONAL MATCH (member)-[rsvp:RSVPD]->(previousEvent)<-[:HOSTED_EVENT]-()-[:HOSTED_EVENT]->(futureEvent)
+WHERE previousEvent.time < timestamp()
+
+WITH futureEvent, commonTopics, myGroup, COUNT(rsvp) AS previousEvents
+
+MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
+
+WITH futureEvent, group, venue, commonTopics, myGroup, previousEvents, distance(point(venue), point({latitude: 51.518551, longitude: -0.086114})) AS distance
+WITH futureEvent, group, venue, commonTopics, myGroup, previousEvents, distance, CASE WHEN myGroup THEN 5 ELSE 0 END AS myGroupScore
+WITH futureEvent, group, venue, commonTopics, myGroup, previousEvents, distance, myGroupScore, round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days
+
+RETURN futureEvent.name, futureEvent.time, group.name, venue.name, commonTopics, myGroup, previousEvents, days, distance, myGroupScore + commonTopics - days AS score
+ORDER BY score DESC
+----
+
+Now it's your turn!
 
 == Exercise: Events at my venues
 
-Our initial event recommendation query only recommends events for the groups that we belong to.
+At the moment our event recommendation query takes into account our groups, topics and the previous events we've been to but it doesn't take into account where those events were hosted which could be an important factor.=
 Let's now update the query to:
 
-* include events at venues that I've previously visited
-* include events within 1km of the top 5 venues that I've previously visited
+* calculate a score for events at venues that I've previously visited
+* calculate a score for events within 1km of the top 5 venues that I've previously visited
 
 == To the slides!
 
 image::{img}/slides.jpg[]
-
-endif::env-training[]
 
 == Next Step
 In our next section we're going to take a brief detour to introduce procedures, a new addition in Neo4j 3.0.0.

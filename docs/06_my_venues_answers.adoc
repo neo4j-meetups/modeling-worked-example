@@ -12,26 +12,14 @@ Let's now update the query to:
 
 == Events at my venues
 
+[source,cypher]
+----
+<insert answer here>
+----
+
 == Events near my venues
 
-[source,cypher,subs=attributes]
+[source,cypher]
 ----
-MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)
-WHERE event.time > timestamp()
-
-WITH member, COLLECT(futureEvent) myGroupsEvents
-MATCH (member)-[:RSVPD]->(event)-[:VENUE]->(venue)
-WHERE event.time < timestamp()
-
-WITH DISTINCT member, myGroupsEvents, venue
-MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
-WHERE futureEvent.time > timestamp()
-
-WITH member,
-
-RETURN group.name,
-       futureEvent.name,
-       round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days,
-       distance(venue, here) AS distance
-ORDER BY days
+<insert answer here>
 ----
