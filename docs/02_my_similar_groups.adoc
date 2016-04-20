@@ -165,14 +165,9 @@ I want to find other similar meetup groups that I’m not already a member of
 So that I can join those groups
 ____
 
-We'll have a look at two approaches for making individual recommendations:
+So now rather than finding groups that have the same topics as the Neo4j group we'll be finding groups that have the same topics as our groups.
 
-* Content based filtering like we've been doing so far to find similar groups based on the topics they have in common
-* Collaborative filtering where we see what other groups people in our groups join. This is a classic case of *closing the triangle.* We have two sides, let’s close the third side.
-
-If I join groups which have a specific topic more frequently then we can weight in that ones favour.
-
-== Find my similar groups (Content based filtering)
+== Find my similar groups
 
 We only have to change our previous query slightly to find our similar groups rather than Neo4j's:
 
@@ -195,25 +190,6 @@ RETURN member, COUNT(*) AS groups
 ORDER BY groups DESC
 LIMIT 10
 ----
-
-== Find my similar groups (Collaborative filtering)
-
-We could also choose to ignore content completely and just show the other groups that people in our group joined.
-
-[source,cypher]
-----
-MATCH (member:Member {name: "Ben Auffarth"})-[:MEMBER_OF]->()<-[:MEMBER_OF]-(other:Member)
-WITH DISTINCT member, other
-MATCH (other)-[:MEMBER_OF]->(otherGroup:Group)
-WHERE NOT((member)-[:MEMBER_OF]->(otherGroup))
-WITH otherGroup, COUNT(*) AS times
-MATCH (otherGroup)<-[:MEMBER_OF]-()
-RETURN otherGroup.name, times, COUNT(*) AS members
-ORDER BY times DESC
-----
-
-Apparently we should all be joining the `FREE Marketing, Analytics & Digital Skills in London` group.
-Try changing the name and see if you can find someone who doesn't see that group on their list!
 
 == Next Step
 

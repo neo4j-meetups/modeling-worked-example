@@ -151,6 +151,28 @@ RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
 ORDER BY score DESC
 ----
 
+== What about collaborative filtering?
+
+The queries we've written so far all detect similarity of groups based on content which in this case means topics that they have in common.
+Another way we can detect similarity is by using collaborative filtering where we ignore content completely and show the other groups that people in our groups joined.
+
+The following query does this:
+
+[source,cypher]
+----
+MATCH (member:Member {name: "Ben Auffarth"})-[:MEMBER_OF]->()<-[:MEMBER_OF]-(other:Member)
+WITH DISTINCT member, other
+MATCH (other)-[:MEMBER_OF]->(otherGroup:Group)
+WHERE NOT((member)-[:MEMBER_OF]->(otherGroup))
+WITH otherGroup, COUNT(*) AS times
+MATCH (otherGroup)<-[:MEMBER_OF]-()
+RETURN otherGroup.name, times, COUNT(*) AS members
+ORDER BY times DESC
+----
+
+Apparently we should all be joining the `FREE Marketing, Analytics & Digital Skills in London` group.
+Try changing the name and see if you can find someone who doesn't see that group on their list!
+
 == Next Step
 
 We're now reached the end of the group recommendation section of the training.
