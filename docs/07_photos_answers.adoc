@@ -12,7 +12,7 @@ We probably want to create this pattern `(member)-[:POSTED_PHOTO]->(photo)-[:POS
 
 [source,cypher, subs=attributes]
 ----
-CREATE CONSTRAINT ON (p:Photo) ASSERT p.id IS UNIQUE;
+CREATE CONSTRAINT ON (p:Photo) ASSERT p.id IS UNIQUE
 ----
 
 [source,cypher, subs=attributes]

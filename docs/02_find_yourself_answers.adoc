@@ -15,16 +15,18 @@ We've now got groups, topics and members loaded into our database so it's time f
 
 [source,cypher,subs=attributes]
 ----
-MATCH (m:Member {name: "Mark Needham"})
+MATCH (m:Member)
+WHERE m.name = "Mark Needham"
 RETURN m
 ----
 
 == Find yourself
 
+We can also inline the equality of the `name` property which will compile down to the same query plan:
+
 [source,cypher,subs=attributes]
 ----
-MATCH (m:Member)
-WHERE m.name = "Mark Needham"
+MATCH (m:Member {name: "Mark Needham"})
 RETURN m
 ----
 

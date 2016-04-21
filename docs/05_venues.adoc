@@ -76,10 +76,6 @@ image::{img}/slides.jpg[]
 
 endif::env-training[]
 
-ifdef::env-training[]
-include::05_venues_distance_queries_answers[lines=4..-1]
-endif::env-training[]
-
 == Distance to venues
 
 We'll start with a simple query to find venues near here:

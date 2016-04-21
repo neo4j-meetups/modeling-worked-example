@@ -23,7 +23,7 @@ _Tip_ You'll have to iterate over the events CSV file again to get the `venue_id
 
 [source,cypher,subs=attributes]
 ----
-CREATE CONSTRAINT ON (v:Venue) ASSERT v.id IS UNIQUE;
+CREATE CONSTRAINT ON (v:Venue) ASSERT v.id IS UNIQUE
 ----
 
 [source,cypher,subs=attributes]

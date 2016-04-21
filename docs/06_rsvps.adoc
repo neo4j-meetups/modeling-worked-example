@@ -90,7 +90,7 @@ Now it's your turn!
 
 == Exercise: Events at my venues
 
-At the moment our event recommendation query takes into account our groups, topics and the previous events we've been to but it doesn't take into account where those events were hosted which could be an important factor.=
+At the moment our event recommendation query takes into account our groups, topics and the previous events we've been to but it doesn't take into account where those events were hosted which could be an important factor.
 Let's now update the query to:
 
 * calculate a score for events at venues that I've previously visited

@@ -34,7 +34,7 @@ All the built in procedures are used to introspect the database but we can also 
 
 == Installing apoc (Awesome procedures)
 
-Lucky for us Michael has actually done the heavy lifting already and created the link:https://github.com/jexp/neo4j-apoc-procedures[apoc] library which contains lots of useful procedures that we can use in our recommendations queries.
+Lucky for us link:https://twitter.com/mesirii[Michael] has actually done the heavy lifting already and created the link:https://github.com/jexp/neo4j-apoc-procedures[apoc] library which contains lots of useful procedures that we can use in our recommendations queries.
 
 First follow these instructions to get `apoc` installed on your local instance of Neo4j:
 

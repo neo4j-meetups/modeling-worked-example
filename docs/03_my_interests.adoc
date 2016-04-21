@@ -21,7 +21,7 @@ So we've got one column containing the member id and one with a `;` delimited se
 Our next task is to create a relationship between members and their topics.
 To do that we're going to need to split up the string containing topic ids so we can process them one at a time.
 
-We'll use link:http://neo4j.com/docs/new-manual/developer-manual/3.0-RC1/#functions-split[split] and link:http://neo4j.com/docs/new-manual/developer-manual/3.0-RC1/#query-plan-unwind[UNWIND] to help us do this.
+We'll use link:http://neo4j.com/docs/new-manual/developer-manual/3.0-RC1/#functions-split[split()] and link:http://neo4j.com/docs/new-manual/developer-manual/3.0-RC1/#query-plan-unwind[UNWIND] to help us do this.
 
 ifdef::env-training[]
 
@@ -53,7 +53,7 @@ This might take a bit of time - there's a lot of members and topics to get throu
 
 == Find my similar groups
 
-Now we're ready to write our first query which uses some data we've explicitly provided meetup.
+Now we're ready to write our first query which uses some data we've explicitly provided meetup.com.
 
 [source,cypher]
 ----
@@ -80,7 +80,7 @@ We'll have a look at how to address that later on.
 
 == What if I don't specify any interests?
 
-My friend Aleks didn't specify any interests when he signed up for meetup...
+My friend Aleks didn't specify any interests when he signed up for meetup:
 
 [source,cypher]
 ----
@@ -92,10 +92,12 @@ RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
 ORDER BY score DESC
 ----
 
-... so we can't make any recommendations to him.
+So we can't make any recommendations to him.
 Sad times!
 
 However, if he's a member of some groups we can infer his interests.
+
+Can you find other people who haven't specified any interests?
 
 == What am I actually interested in?
 
@@ -147,7 +149,7 @@ With a production sized dataset we'd need to process members in batches.
 
 == Find my similar groups (even if I don't know it yet)
 
-So we're still answering the same fundamental question as before...
+So we're still answering the same fundamental question as before:
 
 [verse]
 ____
@@ -156,7 +158,7 @@ I want to find other similar meetup groups that I’m not already a member of
 So that I can join those groups
 ____
 
-...but now we've added in some extra relationships which allow us to make recommendations even to people like Aleks who haven't specified any interests.
+But now we've added in some extra relationships which allow us to make recommendations even to people like Aleks who haven't specified any interests.
 
 Run the following query:
 
@@ -170,6 +172,8 @@ WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
 RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
 ORDER BY score DESC
 ----
+
+Hopefully you can now see some results where previously there weren't any.
 
 == What about collaborative filtering?
 

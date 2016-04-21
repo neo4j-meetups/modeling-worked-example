@@ -24,7 +24,7 @@ First a bit of preparatory work before we import the events:
 
 [source,cypher]
 ----
-CREATE CONSTRAINT ON (e:Event) ASSERT e.id IS UNIQUE;
+CREATE CONSTRAINT ON (e:Event) ASSERT e.id IS UNIQUE
 ----
 
 [source,cypher,subs=attributes]

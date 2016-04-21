@@ -186,7 +186,7 @@ The following query will help you find people who are members of the most groups
 
 [source,cypher]
 ----
-match (member:Member)-[:MEMBER_OF]->()
+MATCH (member:Member)-[:MEMBER_OF]->()
 WITH member, COUNT(*) AS groups
 ORDER BY groups DESC
 LIMIT 10

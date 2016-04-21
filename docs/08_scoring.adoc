@@ -219,7 +219,7 @@ This runs for about 120 seconds in 10 executions, totalling 297084 updates, i.e.
 
 [source,cypher]
 ----
-match ()-[:FRIENDS]-() RETURN COUNT(*)
+MATCH ()-[:FRIENDS]-() RETURN COUNT(*)
 ----
 
 
