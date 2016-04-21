@@ -1,5 +1,36 @@
 = Building a Recommendation Engine with Neo4j
 
+ifeval::["{csv-url}" == "file:///"]
+
+== Setup
+
+=== CSV Files
+
+Copy the CSV files into the `/path/to/neo4j/import` directory:
+
+Configure the *import* directory in your `config/neo4j.conf` as follows.
+(Remove and leading `#`.)
+
+.config/neo4j.conf
+----
+dbms.security.allow_csv_import_from_file_urls=true
+
+dbms.directories.import=import
+----
+
+=== Neo4j "apoc" procedures
+
+Copy the `apoc-*.jar` into your /path/to/neo4j/plugins directory.
+
+Configure the  *plugins* directory in your `config/neo4j.conf` as follows.
+(Remove and leading `#`.)
+
+.config/neo4j.conf
+----
+dbms.directories.plugins=plugins
+----
+
+endif::[]
 
 == List of Guides
 
