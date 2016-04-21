@@ -51,7 +51,6 @@ ORDER BY score DESC
 
 [source,cypher]
 ----
-
 MATCH (member:Member {name: "Mark Needham"})
 MATCH (futureEvent:Event)
 WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()

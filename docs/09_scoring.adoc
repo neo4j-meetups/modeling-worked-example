@@ -1,0 +1,103 @@
+= Scoring recommendations
+:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
+:icons: font
+
+ifdef::env-training[]
+
+== Scoring components of our recommendation query
+
+We're now at the point where we have multiple facets to our events recommendation query.
+Each of these makes a contribution but perhaps not all equally.
+
+e.g. perhaps we should give more weight to venues closer to our workplace and less weight to very popular events.
+
+== The pareto function
+
+The pareto function in `apoc` allows us to apply a log function to a score.
+We want to dampen the weight of really high scores so they don't completely dominate the recommendation.
+
+Run the following query to see what arguments the function takes:
+
+[source, cypher]
+----
+CALL dbms.procedures() YIELD name AS name, signature AS signature
+WITH name, signature
+WHERE name = "apoc.scoring.pareto"
+RETURN signature
+----
+
+[width="70%"]
+|=======
+|minimumThreshold |the minimum score required. If less than this the score will be set to `0`
+|eightyPercentValue |the score at which you receive 80% of the `maximumValue`
+|maximumValue |the maximum scor
+|score | your actual score
+|=======
+
+== The pareto function
+
+Let's give it a try on some fake data to get the hang of it:
+
+[source,cypher]
+----
+CALL apoc.scoring.pareto(1,10,20,12)
+----
+
+We start with a score of `12` that we want to transform.
+We're saying that the maximum possible score is `20` and you get 80% of that score (i.e. `16`) if you have a score of `10`.
+After that you get less credit for having a higher score
+
+Try changing some of the values and see how the score changes.
+
+== Scoring with Pareto
+
+Now let's try applying the Pareto function to our event recommendation query.
+
+[source, cypher, subs=attributes]
+----
+MATCH (member:Member {name: "Mark Needham"})
+MATCH (futureEvent:Event)
+WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()
+
+WITH member, futureEvent, EXISTS((member)-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)) AS myGroup
+OPTIONAL MATCH (member)-[:INTERESTED_IN]->()<-[:HAS_TOPIC]-()-[:HOSTED_EVENT]->(futureEvent)
+
+WITH member, futureEvent, myGroup, COUNT(*) AS commonTopics
+WHERE commonTopics >= 3
+OPTIONAL MATCH (member)-[rsvp:RSVPD]->(previousEvent)<-[:HOSTED_EVENT]-()-[:HOSTED_EVENT]->(futureEvent)
+WHERE previousEvent.time < timestamp()
+
+WITH member, futureEvent, commonTopics, myGroup, COUNT(rsvp) AS previousEvents
+
+OPTIONAL MATCH (member)-[:FRIENDS]-(friend:Member)-[rsvpFriend:RSVPD]->(futureEvent)
+WITH member, futureEvent, commonTopics, myGroup, previousEvents, COUNT(rsvpFriend) AS friendsGoing, COLLECT(friend.name) AS friends
+
+MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
+
+WITH member, futureEvent, group, venue, commonTopics, myGroup, previousEvents, friendsGoing, friends, distance(point(venue), point({latitude: 51.518551, longitude: -0.086114})) AS distance
+OPTIONAL MATCH (member)-[rsvp:RSVPD]->(previousEvent)-[:VENUE]->(aVenue)
+WHERE previousEvent.time < timestamp() AND abs(distance(point(venue), point(aVenue))) < 500
+
+WITH futureEvent, group, venue, commonTopics, myGroup, previousEvents, friendsGoing, friends, distance, COUNT(previousEvent) AS eventsAtVenue
+WITH futureEvent, group, venue, commonTopics, myGroup, previousEvents, friendsGoing, friends, distance, eventsAtVenue
+WITH futureEvent, group, venue, commonTopics, myGroup, previousEvents, friendsGoing, friends, distance, eventsAtVenue, round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days
+
+CALL apoc.scoring.existence(5, myGroup)
+CALL apoc.scoring.pareto(1, days)
+
+RETURN futureEvent.name, futureEvent.time, group.name, venue.name, commonTopics, myGroup, previousEvents, friendsGoing, friends[..5], days, distance, eventsAtVenue, myGroupScore + commonTopics + eventsAtVenue + (friendsGoing / 2) - days AS score
+ORDER BY score DESC
+
+----
+
+endif::env-training[]
+
+Let's update the `FRIENDS` relationship to have a `score` to indicate the strength of the friendship.
+
+
+== Next Step
+
+By now you probably have lots of ideas of how we can improve the graph to make even better recommendations.
+In this last session you'll have the chance to explore some of this solo or in a team with other attendees.
+
+pass:a[<a play-topic='{guides}/10_free_for_all.html'>Your turn</a>]

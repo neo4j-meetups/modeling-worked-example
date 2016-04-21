@@ -38,7 +38,8 @@ Lucky for us link:https://twitter.com/mesirii[Michael] has actually done the hea
 
 First follow these instructions to get `apoc` installed on your local instance of Neo4j:
 
-* Download the latest version of apoc from link:https://github.com/jexp/neo4j-apoc-procedures/releases/latest[]
+* On your USB stick you should see a file `apoc-1.0.0-SNAPSHOT.jar`.
+If not then grab a USB stick from one of the trainers or download the latest version of apoc from link:https://github.com/jexp/neo4j-apoc-procedures/releases/latest[]
 * Copy `apoc-1.0.0-SNAPSHOT.jar` into your plugins folder `$NEO4J_HOME/plugins`
 * Restart Neo4j
 
@@ -74,10 +75,11 @@ We can use it to find out the date and time of the last 5 events in our dataset:
 ----
 MATCH (venue)<-[:VENUE]-(event:Event)<-[:HOSTED_EVENT]-(group:Group)
 WHERE event.time < timestamp()
-CALL apoc.date.fromMillis(event.time) YIELD value as dateTime
-RETURN event.name, group.name, venue.name, dateTime
+WITH event, venue, group
 ORDER BY event.time DESC
 LIMIT 5
+CALL apoc.date.fromMillis(event.time) YIELD value as dateTime
+RETURN event.name, group.name, venue.name, dateTime
 ----
 
 This procedure returns only one column: `value`.
@@ -156,6 +158,6 @@ endif::env-training[]
 
 == Next Step
 
-In the next section we'll use these procedures to extend the layered event recommendation we've been building up over the last few sections.
+In the next couple of sections we'll use these procedures to extend the layered event recommendation we've been building up over the last few sections.
 
 pass:a[<a play-topic='{guides}/08_scoring.html'>Scoring recommendations</a>]

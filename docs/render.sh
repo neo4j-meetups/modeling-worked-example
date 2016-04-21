@@ -19,8 +19,10 @@ $GUIDES/run.sh 06_rsvps.adoc 06_rsvps.html +1 "$@"
 $GUIDES/run.sh 06_my_venues_answers.adoc 06_my_venues_answers.html +1 "$@"
 $GUIDES/run.sh 07_procedures.adoc 07_procedures.html +1 "$@"
 $GUIDES/run.sh 07_photos_answers.adoc 07_photos_answers.html +1 "$@"
-$GUIDES/run.sh 08_scoring.adoc 08_scoring.html +1 "$@"
-$GUIDES/run.sh 09_free_for_all.adoc 09_free_for_all.html +1 "$@"
+$GUIDES/run.sh 08_latent_social_graph.adoc 08_latent_social_graph.html +1 "$@"
+$GUIDES/run.sh 08_latent_answers.adoc 08_latent_answers.html +1 "$@"
+$GUIDES/run.sh 09_scoring.adoc 09_scoring.html +1 "$@"
+$GUIDES/run.sh 10_free_for_all.adoc 10_free_for_all.html +1 "$@"
 }
 
 # -a env-training is a flag to enable full content, if you comment it out, the guides are rendered minimally e.g. for a presentation
