@@ -94,7 +94,13 @@ At the moment our event recommendation query takes into account our groups, topi
 Let's now update the query to:
 
 * calculate a score for events at venues that I've previously visited
-* calculate a score for events within 1km of the top 5 venues that I've previously visited
+
+You'll remember from the venues guide that we saw some venues appear many times under different names.
+Let's also update the query to:
+
+* calculate a score for events within 500 metres of venues that I've previously visited
+
+to account for that problem with the data.
 
 == To the slides!
 

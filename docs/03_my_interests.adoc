@@ -194,17 +194,8 @@ RETURN otherGroup.name, times, COUNT(*) AS members
 ORDER BY times DESC
 ----
 
-Apparently we should all be joining the `FREE Marketing, Analytics & Digital Skills in London` group.
-Try changing the name and see if you can find someone who doesn't see that group on their list!
-
-== A hybrid approach
-
-We might even choose to combine those two queries into a hybrid query that uses content based and collaborative filtering together.
-
-[source,cypher]
-----
-
-----
+Apparently we should all be joining the `FREE Marketing, Analytics & Digital Skills in London` group!
+Try changing the name and see if you can find someone who doesn't see that group on their list.
 
 == Next Step
 
