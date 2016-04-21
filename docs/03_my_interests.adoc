@@ -133,7 +133,8 @@ WHERE NOT (m)-[:INTERESTED_IN]->(topic)
 WITH m, topic, COUNT(*) AS times
 WHERE times >= 3
 
-MERGE (m)-[:INTERESTED_IN]->(topic)
+MERGE (m)-[interestedIn:INTERESTED_IN]->(topic)
+SET interestedIn.inferred = true
 ----
 
 The query:
@@ -174,28 +175,6 @@ ORDER BY score DESC
 ----
 
 Hopefully you can now see some results where previously there weren't any.
-
-== What about collaborative filtering?
-
-The queries we've written so far all detect similarity of groups based on content which in this case means topics that they have in common.
-Another way we can detect similarity is by using collaborative filtering where we ignore content completely and show the other groups that people in our groups joined.
-
-The following query does this:
-
-[source,cypher]
-----
-MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()<-[:MEMBER_OF]-(other:Member)
-WITH DISTINCT member, other
-MATCH (other)-[:MEMBER_OF]->(otherGroup:Group)
-WHERE NOT((member)-[:MEMBER_OF]->(otherGroup))
-WITH otherGroup, COUNT(*) AS times
-MATCH (otherGroup)<-[:MEMBER_OF]-()
-RETURN otherGroup.name, times, COUNT(*) AS members
-ORDER BY times DESC
-----
-
-Apparently we should all be joining the `FREE Marketing, Analytics & Digital Skills in London` group!
-Try changing the name and see if you can find someone who doesn't see that group on their list.
 
 == Next Step
 
