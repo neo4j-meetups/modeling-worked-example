@@ -52,7 +52,18 @@ WHERE name STARTS WITH "apoc"
 RETURN name, signature
 ----
 
-Let's give them a try!
+If you don't see any results then the procedures JAR hasn't been picked up.
+Try explicitly setting the path to the plugins folder in `neo4j.conf`
+
+[source,properties]
+----
+dbms.directories.plugins=/path/to/plugins
+----
+
+And then restart Neo4j.
+If that doesn't work grab your closest trainer for help.
+
+Let's give the procedures a try!
 
 == Formatting timestamps
 
