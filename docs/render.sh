@@ -31,6 +31,11 @@ if [ "$1" == "publish" ]; then
   render http://$URL -a csv-url=https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/ -a env-training
   s3cmd put --recursive -P *.html img s3://${URL}/
   s3cmd put -P index.html s3://${URL}
+
+  URL=guides.neo4j.com/reco/file
+  render http://$URL -a env-training -a csv-url=file:///
+  s3cmd put --recursive -P *.html img s3://${URL}/
+  s3cmd put -P index.html s3://${URL}
   echo "Publication Done"
 else
   URL=localhost:8001
