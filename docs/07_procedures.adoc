@@ -40,14 +40,11 @@ First follow these instructions to get `apoc` installed on your local instance o
 
 * On your USB stick you should see a file `apoc-1.0.0-SNAPSHOT.jar`.
 If not then grab a USB stick from one of the trainers or download the latest version of apoc from link:https://github.com/jexp/neo4j-apoc-procedures/releases/latest[]
-* Copy `apoc-1.0.0-SNAPSHOT.jar` into your plugins folder `$NEO4J_HOME/plugins`
+* Copy `apoc-1.0.0-SNAPSHOT.jar` into your plugins folder wherever you have installed Neo4j.
 * If you're using Neo4j desktop you'll need to explicitly specify where that plugins folder is.
-You can do that by adding the following property in `neo4j.conf`
+You can do that by setting `dbms.directories.plugins` in `neo4j.conf`
 
-[source,properties]
-----
-dbms.directories.plugins=/path/to/plugins
-----
+e.g. `dbms.directories.plugins=/Applications/Neo4j\ Community\ Edition.app/Contents/Resources/app/plugins` on Mac OS X
 
 * Restart Neo4j
 
@@ -159,4 +156,4 @@ endif::env-training[]
 
 In the next couple of sections we'll use these procedures to extend the layered event recommendation we've been building up over the last few sections.
 
-pass:a[<a play-topic='{guides}/08_scoring.html'>Scoring recommendations</a>]
+pass:a[<a play-topic='{guides}/08_latent_social_graph.html'>Latent Social Graph</a>]
