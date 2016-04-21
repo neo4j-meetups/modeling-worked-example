@@ -15,9 +15,10 @@ We can write the following query to see which people on the meetup scene that I 
 [source,cypher]
 ----
 MATCH (me:Member {name: "Mark Needham"})-[:RSVPD]->()<-[:RSVPD]-(otherPerson)
-RETURN otherPerson, COUNT(*) AS commonEvents
+WITH otherPerson, COUNT(*) AS commonEvents
 ORDER BY commonEvents DESC
 LIMIT 10
+RETURN otherPerson.name, commonEvents
 ----
 
 == Materialising the latent social graph
