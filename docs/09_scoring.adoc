@@ -140,6 +140,9 @@ call apoc.periodic.commit("
 ",{limit:1000})
 ----
 
+If you want to weight the friendship differently try updating those values and run it again.
+Don't forget that you'll also need to re-run the query to put `Process` labels on members. 
+
 == Next Step
 
 By now you probably have lots of ideas of how we can improve the graph to make even better recommendations.
