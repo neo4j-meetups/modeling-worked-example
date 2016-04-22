@@ -29,7 +29,7 @@ RETURN signature
 |=======
 |minimumThreshold |the minimum score required. If less than this the score will be set to `0`
 |eightyPercentValue |the score at which you receive 80% of the `maximumValue`
-|maximumValue |the maximum scor
+|maximumValue |the maximum score
 |score | your actual score
 |=======
 
@@ -93,8 +93,50 @@ ORDER BY score DESC
 
 Try changing the parameters in the various calls to `apoc.scoring.pareto()` and see how the results change.
 
+== Scoring our friends
+
+In the previous section we created `FRIENDS` relationships between people who'd attended the same events.
+However, we didn't try scoring those friendships in any way so each `FRIENDS` relationship has the same value when in reality we might be better friends with some people than others.
+
 Let's update the `FRIENDS` relationship to have a `score` to indicate the strength of the friendship.
 
+First we'll tag all members that we're going to process:
+
+[source,cypher]
+----
+MATCH (m:Member)-[:FRIENDS]-()
+SET m:Process
+RETURN count(DISTINCT m)
+----
+
+== Scoring our friendsips
+
+Now we'll add a score which takes into account events members have attended together, groups they both belong to and topics they're interested in.
+
+[source,cypher]
+----
+call apoc.periodic.commit("
+  MATCH (m1:Process)
+  WITH m1 LIMIT {limit}
+  REMOVE m1:Process
+  WITH m1
+  MATCH (m1)-[friendship:FRIENDS]-(m2)
+  WITH m1, m2, friendship
+  OPTIONAL MATCH (m1)-[:RSVPD]->(event)<-[:RSVPD]-(m2)
+  WITH m1, m2, friendship, COUNT(event) AS eventsInCommon
+  OPTIONAL MATCH (m1)-[:MEMBER_OF]->(group)<-[:MEMBER_OF]-(m2)
+  WITH m1, m2, friendship, eventsInCommon, COUNT(group) AS groupsInCommon
+  OPTIONAL MATCH (m1)-[i1:INTERESTED_IN]->(topic)<-[i2:INTERESTED_IN]-(m2)
+  WHERE (NOT EXISTS (i1.inferred)) AND (NOT EXISTS(i2.inferred))
+  WITH m1, m2, friendship, eventsInCommon, groupsInCommon, COUNT(topic) AS topicsInCommon
+
+  CALL apoc.scoring.pareto(1, 7, 10, eventsInCommon) YIELD value AS eventsScore
+  CALL apoc.scoring.pareto(1, 3, 10, groupsInCommon) YIELD value AS groupsScore
+  CALL apoc.scoring.pareto(1, 5, 10, topicsInCommon) YIELD value AS topicsScore
+
+  SET friendship.score =  eventsScore + groupsScore + topicsScore
+",{limit:1000})
+----
 
 == Next Step
 
