@@ -11,7 +11,7 @@ Before we get started there are a few things you need to do:
 * Copy the CSV files in the `data` directory into the Neo4j  `import` directory.
 
 Configure the *import* directory in your `config/neo4j.conf` as follows.
-(Remove any leading `#`.)
+(Remove any leading `#`)
 
 .config/neo4j.conf
 ----
@@ -19,7 +19,7 @@ dbms.security.allow_csv_import_from_file_urls=true
 dbms.directories.import=import
 ----
 
-If you're using the desktop version of Neo4j then you will have to set an absolute path for `dbms.directories.import`
+If you're using the desktop version of Neo4j then you will have to set an absolute path for `dbms.directories.import` and import the files there instead
 e.g.
 
 .config/neo4j.conf

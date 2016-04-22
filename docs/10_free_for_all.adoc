@@ -2,48 +2,28 @@
 :csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
 :icons: font
 
+== Your turn
+
 What else can we add to the model to come up with more interesting recommendations?
 Here you have some time to play around with the data and come up with something new
 
-== Ideas
+Here are some ideas that we thought of:
 
-Merge duplicate venues - can we write a query that finds duplicate venues? 
-
-* Comments sentiment analysis - do people actually like the events they go to?
-* Topic ontology - how are topics related? e.g. Neo4j, Cassandra, MongoDB are part of NoSQL
+* Merge duplicate venues - can we write a query that finds duplicate venues?
+* Social network - what events do our twitter/Facebook friends attend? Can we import that data and use it?
+* Topic ontology - how are topics related? Can you find an ontology that we could encode in the graph?
 * Event similarity based on descriptions - use Latent Dirichlet Allocation to derive categories
-* Social network - what events do our twitter/Facebook friends attend?
-* Location - do we favour events in a certain part of town?
 * Day of the week - do we only go to events on certain days of the week?  do we go to different events on weekdays vs weekend?
+* meetup.com provides several streaming APIs - http://www.meetup.com/meetup_api/docs/stream/2/rsvps/#polling - can we use those to update the graph on the fly?
 
-In the talk I'd wired up a python script which polled the meetup streaming API and pulled in RSVPs.
-Should we make a procedure to do the same thing and have people write the query to update the model appropriately?
+Or if none of those appeal you can try something of your own.
 
-Can we wire something together that takes into account people joining or leaving groups as well or is that too difficult?
+If we have time we'll let a few people show the group what they've come up with.
 
-[source,python]
-----
-from py2neo import authenticate, Graph
- authenticate("localhost:7474", "neo4j", "medium")
-graph = Graph()
+== Thank you for coming!
 
-group_ids = [] group_query = "MATCH (g:Group) RETURN g.id AS groupId"
-for row in graph.cypher.execute(group_query):
-    group_ids.append(int(row["groupId"]))
+We hope you had a good day and if you have any suggestions for making the session better do let us know.
 
-for rsvp in stream_meetup():
-    if rsvp["group"]["group_id"] in group_ids:
-        params = { "rsvp_id": str(rsvp["rsvp_id"]),
-                   "event_id": str(rsvp["event"]["event_id"]),
-                   "member_id": str(rsvp["member"]["member_id"]),
-                   "response": rsvp["response"],
-                   "mtime": rsvp["mtime"] }
-        graph.cypher.execute("""
-          MATCH (event:Event {id: {event_id}})
-          MATCH (member:Member {id: {member_id}})
-          MERGE (member)-[rsvpRel:RSVPD {id: {rsvp_id}}]->(event)
-          ON CREATE SET rsvpRel.created = toInt({mtime})
-          ON MATCH  SET rsvpRel.lastModified = toInt({mtime})
-          SET rsvpRel.response = {response}""", params)
+See you tomorrow at the conference!
 
-----
+image::{img}/gc.png[link="http://graphconnect.com/"]
