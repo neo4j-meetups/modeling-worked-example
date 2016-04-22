@@ -29,7 +29,7 @@ dbms.directories.import=C:/Neo4j/data
 
 endif::[]
 
-== List of Guides
+== Our schedule for the day
 
 image::{img}/meetup.png[float=right]
 
