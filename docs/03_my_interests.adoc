@@ -64,6 +64,7 @@ MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)
 WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
 RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
 ORDER BY score DESC
+LIMIT 10
 ----
 
 In this query we
@@ -80,7 +81,7 @@ We'll have a look at how to address that later on.
 
 == What if I don't specify any interests?
 
-My friend Aleks didn't specify any interests when he signed up for meetup:
+My friend Aleks didn't specify any interests when he signed up for meetup.com:
 
 [source,cypher]
 ----

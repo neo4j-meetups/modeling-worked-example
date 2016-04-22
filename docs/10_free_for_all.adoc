@@ -7,6 +7,8 @@ Here you have some time to play around with the data and come up with something 
 
 == Ideas
 
+Merge duplicate venues - can we write a query that finds duplicate venues? 
+
 * Comments sentiment analysis - do people actually like the events they go to?
 * Topic ontology - how are topics related? e.g. Neo4j, Cassandra, MongoDB are part of NoSQL
 * Event similarity based on descriptions - use Latent Dirichlet Allocation to derive categories

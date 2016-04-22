@@ -2,32 +2,29 @@
 
 ifeval::["{csv-url}" == "file:///"]
 
-== Setup
+== Welcome to the recommendations training @ Graph Connect Europe 2016
 
-=== CSV Files
+Before we get started there are a few things you need to do:
 
-Copy the CSV files into the `/path/to/neo4j/import` directory:
+* Grab a USB key from one of the tables. Ask one of the trainers if you can't find one.
+* Install the appropriate Neo4j for your operating system
+* Copy the CSV files in the `data` directory into the Neo4j  `import` directory.
 
 Configure the *import* directory in your `config/neo4j.conf` as follows.
-(Remove and leading `#`.)
+(Remove any leading `#`.)
 
 .config/neo4j.conf
 ----
 dbms.security.allow_csv_import_from_file_urls=true
-
 dbms.directories.import=import
 ----
 
-=== Neo4j "apoc" procedures
-
-Copy the `apoc-*.jar` into your /path/to/neo4j/plugins directory.
-
-Configure the  *plugins* directory in your `config/neo4j.conf` as follows.
-(Remove and leading `#`.)
+If you're using the desktop version of Neo4j then you will have to set an absolute path for `dbms.directories.import`
+e.g.
 
 .config/neo4j.conf
 ----
-dbms.directories.plugins=plugins
+dbms.directories.import=C:/Neo4j/data
 ----
 
 endif::[]
