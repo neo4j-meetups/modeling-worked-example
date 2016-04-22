@@ -135,6 +135,8 @@ call apoc.periodic.commit("
   CALL apoc.scoring.pareto(1, 5, 10, topicsInCommon) YIELD value AS topicsScore
 
   SET friendship.score =  eventsScore + groupsScore + topicsScore
+
+  RETURN COUNT(*)
 ",{limit:1000})
 ----
 
