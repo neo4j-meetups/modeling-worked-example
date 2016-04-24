@@ -6,9 +6,7 @@ ifeval::["{csv-url}" == "file:///"]
 
 Before we get started there are a few things you need to do:
 
-* Grab a USB key from one of the tables. Ask one of the trainers if you can't find one.
-* Install the appropriate Neo4j for your operating system
-* Copy the CSV files in the `data` directory into the Neo4j  `import` directory.
+* Copy the CSV files in the `data` directory from your machine into the Neo4j  `import` directory.
 
 Configure the *import* directory in your `config/neo4j.conf` as follows.
 (Remove any leading `#`)
