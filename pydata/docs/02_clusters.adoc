@@ -1,0 +1,19 @@
+= Clustering Topics
+:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
+:icons: font
+
+== Topic similarity
+
+Finding similar groups based on the number of topics in common is not a bad starting point but at the moment we don't have any way to determine which topics are similar to each other.
+
+e.g. if we're interested in `HBase` perhaps we're also interested in the Hadoop ecosystem.
+
+In the next section we're going to cluster topics using the `igraph` library.
+
+*LINK TO Jupter notebook here*
+
+Also need to include instructions on which lbiraries to install
+
+== Topic similarity
+
+In the previous section we ran a community detection algorithm using

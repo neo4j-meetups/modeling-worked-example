@@ -1,0 +1,49 @@
+= Events
+:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
+:icons: font
+
+== Exercise: Extending events recommendation
+
+Update the recommendations query to:
+
+* Filter out events which have less than 3 common topics
+* Only show events happening in the next 7 days
+
+== Filter out events which have less than 3 common topics
+
+[source,cypher]
+----
+MATCH (member:Member {name: "Mark Needham"})
+MATCH (futureEvent:Event) WHERE futureEvent.time > timestamp()
+
+WITH member, futureEvent, EXISTS((member)-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)) AS myGroup
+OPTIONAL MATCH (member)-[:INTERESTED_IN]->()<-[:HAS_TOPIC]-()-[:HOSTED_EVENT]->(futureEvent)
+
+WITH member, futureEvent, myGroup, COUNT(*) AS commonTopics
+WHERE commonTopics >= 3
+
+MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
+
+RETURN futureEvent.name, futureEvent.time, group.name, commonTopics, myGroup
+ORDER BY futureEvent.time
+----
+
+== Only show events happening in the next 7 days
+
+[source,cypher]
+----
+MATCH (member:Member {name: "Mark Needham"})
+MATCH (futureEvent:Event)
+WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()
+
+WITH member, futureEvent, EXISTS((member)-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)) AS myGroup
+OPTIONAL MATCH (member)-[:INTERESTED_IN]->()<-[:HAS_TOPIC]-()-[:HOSTED_EVENT]->(futureEvent)
+
+WITH member, futureEvent, myGroup, COUNT(*) AS commonTopics
+WHERE commonTopics >= 3
+
+MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
+
+RETURN futureEvent.name, futureEvent.time, group.name, commonTopics, myGroup
+ORDER BY futureEvent.time
+----

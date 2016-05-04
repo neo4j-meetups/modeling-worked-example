@@ -1,0 +1,9 @@
+
+```
+pip install neo4j-driver
+pip install unicodecsv
+```
+
+```
+python3.5 neo.py
+```

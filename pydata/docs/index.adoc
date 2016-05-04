@@ -1,0 +1,18 @@
+= Building a Recommendation Engine with Neo4j
+
+== PyData London 2016: Building a recommendation engine with Python and Neo4j
+
+image::{img}/meetup.png[float=right]
+
+. pass:a[<a play-topic='{guides}/01_similar_groups_by_topic.html'>Recommend Groups by Topic</a>]
+. pass:a[<a play-topic='{guides}/02_my_similar_groups.html'>Groups similar to mine</a>]
+. pass:a[<a play-topic='{guides}/04_events.html'>Event Recommendations</a>]
+. pass:a[<a play-topic='{guides}/06_rsvps.html'>RSVPs</a>]
+
+== Further Resources
+
+* http://neo4j.com/graphgists[Graph Gist Examples]
+* http://neo4j.com/docs/stable/cypher-refcard/[Cypher Reference Card]
+* http://neo4j.com/docs/developer-manual/current/#cypher-query-lang[Neo4j Developer Manual]
+* http://neo4j.com/developer/resources#_neo4j_cypher_resources[Cypher Resource Collection]
+* http://graphdatabases.com[e-book: Graph Databases (free)]
