@@ -1,0 +1,487 @@
+<style type="text/css" media="screen">
+/*
+.nodes-image {
+	margin:-100;
+}
+*/	
+    .imageblock .content img {
+        max-width: 900px;
+        max-height: 300px;
+    }
+	.deck h3 {
+		display: block !important;
+		margin-bottom:8px;
+		margin-top:5px;
+	}
+	.listingblock {
+		margin:8px;
+	}
+	.pull-bottom {
+		position:relative;
+		bottom:1em;
+	}
+</style>
+<style type="text/css" media="screen">
+#editor.maximize-editor .CodeMirror-code {
+ font-size:40px;
+ line-height:45px;
+}
+</style><article class="guide">
+  <carousel class="deck container-fluid">
+    <!--slide class="row-fluid">
+      <div class="col-sm-3">
+        <h3>Similar groups</h3>
+        <p class="lead">Information</p>
+			<!dl>
+				
+				
+				
+				
+				
+			</dl>
+		</div>
+      <div class="col-sm-9">
+        <figure>
+          <img style="width:300px" src=""/>
+        </figure>
+      </div>
+    </slide-->
+    
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Find similar groups to Neo4j</h3>
+    <br/>
+    <div>
+      <div class="imageblock">
+<div class="content">
+<img src="http://localhost:8001/img/group_has_topic.png" alt="group has topic">
+</div>
+</div>
+<div class="verseblock">
+<pre class="content">As a member of the Neo4j London group
+I want to find other similar meetup groups
+So that I can join those groups</pre>
+</div>
+<div class="paragraph">
+<p>One thing that makes groups similar is the topics that they’re about.
+We&#8217;re going to start the session by importing meetup groups and their topics into Neo4j.</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>What makes groups similar?</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>We&#8217;ve done the pre processing work of taking JSON from meetup.com&#8217;s APIs and converting it into CSV files to make it easy to import into Neo4j.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s start by exploring the groups CSV file to see what data we have available to us:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS
+FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups.csv"
+AS row
+RETURN row
+LIMIT 10</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We&#8217;ve got a group id, name, description and a few other attributes as well.
+Now we&#8217;ll convert those rows in the CSV file into entities in the graph.</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Import Groups</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>Run the following query to create a node for each group in the CSV file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS
+FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups.csv"
+AS row
+MERGE (group:Group { id:row.id })
+ON CREATE SET
+  group.name = row.name,
+  group.urlname = row.urlname,
+  group.rating = toInt(row.rating),
+  group.created = toInt(row.created)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>MERGE</code> command will create a node with the <code>Group</code> label with and set an <code>id</code> property using the value in the CSV file.
+If there&#8217;s already a node in the database with that value then it won&#8217;t create anything.</p>
+</div>
+<div class="paragraph">
+<p>We&#8217;ve also set several other several properties.
+By default properties are stored as strings.
+We need to do an explicit conversion (e.g. <code>toInt</code>) if we know that the data in our CSV file has a different type.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s run a quick query to check what we&#8217;ve actually imported:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (g:Group)
+RETURN g.id, g.name, g.urlname</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><em>Hint</em> You can type <code>Cmd + Enter</code> or <code>Control + Enter</code> to execute a query rather than always pressing the play button.
+More shortcuts are available.
+See <code>:help keys</code></p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Import Topics</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>Now we&#8217;re going to import topics.
+Let&#8217;s first check what we&#8217;ve got in our CSV file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups_topics.csv"  AS row
+RETURN row
+LIMIT 10</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So we&#8217;ve got a topic id, name and urlkey as well as a group id.
+We&#8217;ll ignore the group id for now and run the following query to import topics into the graph:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups_topics.csv"  AS row
+MERGE (topic:Topic {id: row.id})
+ON CREATE SET topic.name = row.name, topic.urlkey = row.urlkey</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s quickly check that they got imported correctly:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (t:Topic)
+RETURN t.id, t.name</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>At this point we&#8217;ve got topics and groups floating around but nothing connecting them together!
+In the next section we&#8217;ll add relationships between them.</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Connect groups and topics</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>You&#8217;ll have noticed that the CSV file we used to import topics also contained a <code>group_id</code> field for each row.
+We&#8217;re now going to process this file again but this time we&#8217;ll find a topic and group for each row and then create a relationship between them.</p>
+</div>
+<div class="paragraph">
+<p>Before we do that we&#8217;re going to create some indexes to help speed up the import of our data:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://localhost:8001/img/slides.jpg" alt="slides">
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Create group and topic indexes</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>Run the following queries to create indexes on <code>:Topic(id)</code> and <code>:Group(id)</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CREATE INDEX ON :Group(id)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CREATE INDEX ON :Topic(id)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Run the following command to check that those indexes were created:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">:schema</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we&#8217;re ready to connect groups and topics.</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Connect groups and topics</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>Run the following query to create a <code>HAS_TOPIC</code> relationship between groups and topics:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/groups_topics.csv"  AS row
+MATCH (topic:Topic {id: row.id})
+MATCH (group:Group {id: row.groupId})
+MERGE (group)-[:HAS_TOPIC]->(topic)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The use of <code>MERGE</code> here ensures that we end up with a single unique link between a group and a topic.</p>
+</div>
+<div class="paragraph">
+<p>If we run the query a second time nothing will happen.
+If we run another <code>MERGE</code> query that tries to create a <code>HAS_TOPIC</code> relationship when one already exists it won’t do anything.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s now check that the data was imported correctly:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (group:Group)-[:HAS_TOPIC]-&gt;(topic:Topic)
+RETURN group, topic
+LIMIT 10</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Try double clicking on the nodes to expand other nodes that are connected to them.
+You can also single click to view a context menu with other options.</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>More indexes</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>We&#8217;ll probably want to search for groups and topics by name so let&#8217;s define indexes to allow us to do that quickly.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CREATE INDEX ON :Group(name)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s do the same for topics as well:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CREATE INDEX ON :Topic(name)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can see which indexes we have by using the <code>:schema</code> command or by running the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">CALL db.indexes()</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Exercise: Explore the graph</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>We&#8217;ve now loaded groups and topics but we don&#8217;t know exactly what&#8217;s in our graph so let&#8217;s do some exploration.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>What&#8217;s the most popular topic?</p>
+</li>
+<li>
+<p>Which group was created most recently?</p>
+</li>
+<li>
+<p>How many groups have been running for at least 4 years?</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><em>Hint:</em> The <a href="http://neo4j.com/docs/milestone/cypher-refcard/">Cypher refcard</a> will come in handy for syntax we haven&#8217;t covered yet!</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Answer: What&#8217;s the most popular topic?</h3>
+    <br/>
+    <div>
+      <div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (t:Topic)<-[:HAS_TOPIC]-()
+RETURN t.name, COUNT(*) AS count
+ORDER BY count DESC</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Answer: Which group was created most recently?</h3>
+    <br/>
+    <div>
+      <div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (g:Group)
+RETURN g
+ORDER BY g.created DESC
+LIMIT 1</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Answer: How many groups have been running for at least 4 years?</h3>
+    <br/>
+    <div>
+      <div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">WITH (4 * 365 * 24 * 60 * 60 * 1000) AS fourYears
+MATCH (g:Group)
+WHERE g.created < timestamp() - fourYears
+RETURN g</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Find similar groups to Neo4j</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>So you&#8217;ve hopefully now got an idea of what the data looks like.
+It&#8217;s time to write our first recommendation query which will find groups that have the same topics as the Neo4j London group:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]-&gt;(topic)&lt;-[:HAS_TOPIC]-(otherGroup)
+RETURN otherGroup.name, COUNT(topic) AS topicsInCommon,
+       COLLECT(topic.name) AS topics
+ORDER BY topicsInCommon DESC, otherGroup.name
+LIMIT 10</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This query</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>starts from the Neo4j group,</p>
+</li>
+<li>
+<p>finds its topics,</p>
+</li>
+<li>
+<p>then looks for other groups that have those topics</p>
+</li>
+<li>
+<p>and aggregates the groups with the most topics in common.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Try changing the group name e.g. <code>Big Data Debate</code> or <code>Docker London</code> and see how the results change.</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Next Step</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>In the next section we&#8217;re going to introduce members into the graph.
+We&#8217;ll then look at our graphs and write some queries to recommend new groups for ourselves.</p>
+</div>
+<div class="paragraph">
+<p><a play-topic='http://localhost:8001/02_my_similar_groups.html'>Groups similar to mine</a></p>
+</div>
+	</div>
+  </div>
+</slide>
+  </carousel>
+</article>

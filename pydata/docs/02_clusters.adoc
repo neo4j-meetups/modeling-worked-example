@@ -8,12 +8,38 @@ Finding similar groups based on the number of topics in common is not a bad star
 
 e.g. if we're interested in `HBase` perhaps we're also interested in the Hadoop ecosystem.
 
-In the next section we're going to cluster topics using the `igraph` library.
+In the next section we're going to cluster topics using the `igraph` library via a Jupyter notebook.
 
-*LINK TO Jupter notebook here*
+== Topic similarity Jupyter notebook
 
-Also need to include instructions on which lbiraries to install
+You'll need to download the link:https://nbviewer.jupyter.org/github/neo4j-meetups/modeling-worked-example/blob/master/pydata/Neo4j%20recommendations.ipynb[Neo4j recommendations Jupyter notebook] and install the following packages:
+
+----
+pip install jupyter
+pip install python-igraph
+pip install py2neo
+----
+
+Once you've got those installed you can launch the notebook by running this command from the console:
+
+----
+jupyter notebook
+----
+
+Let's go through the notebook!
 
 == Topic similarity
 
-In the previous section we ran a community detection algorithm using
+In the previous section we ran a community detection algorithm using the `igraph` library and wrote the results back into our Neo4j graph.
+
+You can run the following query to see a sample of what we've imported:
+
+[source,cypher]
+----
+MATCH (cluster:Cluster)<-[inCluster:IN_CLUSTER]-(topic)
+RETURN *
+ORDER BY rand()
+LIMIT 10
+----
+
+== Find my most popular cluster

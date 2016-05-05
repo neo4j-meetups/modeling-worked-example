@@ -1,0 +1,126 @@
+<style type="text/css" media="screen">
+/*
+.nodes-image {
+	margin:-100;
+}
+*/	
+    .imageblock .content img {
+        max-width: 900px;
+        max-height: 300px;
+    }
+	.deck h3 {
+		display: block !important;
+		margin-bottom:8px;
+		margin-top:5px;
+	}
+	.listingblock {
+		margin:8px;
+	}
+	.pull-bottom {
+		position:relative;
+		bottom:1em;
+	}
+</style>
+<style type="text/css" media="screen">
+#editor.maximize-editor .CodeMirror-code {
+ font-size:40px;
+ line-height:45px;
+}
+</style><article class="guide">
+  <carousel class="deck container-fluid">
+    <!--slide class="row-fluid">
+      <div class="col-sm-3">
+        <h3>Clustering Topics</h3>
+        <p class="lead">Information</p>
+			<!dl>
+				
+				
+				
+				
+				
+			</dl>
+		</div>
+      <div class="col-sm-9">
+        <figure>
+          <img style="width:300px" src=""/>
+        </figure>
+      </div>
+    </slide-->
+    
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Topic similarity</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>Finding similar groups based on the number of topics in common is not a bad starting point but at the moment we don&#8217;t have any way to determine which topics are similar to each other.</p>
+</div>
+<div class="paragraph">
+<p>e.g. if we&#8217;re interested in <code>HBase</code> perhaps we&#8217;re also interested in the Hadoop ecosystem.</p>
+</div>
+<div class="paragraph">
+<p>In the next section we&#8217;re going to cluster topics using the <code>igraph</code> library via a Jupyter notebook.</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Topic similarity Jupyter notebook</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>You&#8217;ll need to download the <a href="https://nbviewer.jupyter.org/github/neo4j-meetups/modeling-worked-example/blob/master/pydata/Neo4j%20recommendations.ipynb">Neo4j recommendations Jupyter notebook</a> and install the following packages:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>pip install jupyter
+pip install python-igraph
+pip install py2neo</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you&#8217;ve got those installed you can launch the notebook by running this command from the console:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>jupyter notebook</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s go through the notebook!</p>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Topic similarity</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>In the previous section we ran a community detection algorithm using the <code>igraph</code> library and wrote the results back into our Neo4j graph.</p>
+</div>
+<div class="paragraph">
+<p>You can run the following query to see a sample of what we&#8217;ve imported:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (cluster:Cluster)&lt;-[inCluster:IN_CLUSTER]-(topic)
+RETURN *
+LIMIT 10</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+  </carousel>
+</article>
