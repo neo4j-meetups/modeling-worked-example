@@ -163,7 +163,7 @@ RETURN group, topic
 
 [source,cypher,subs=attributes]
 ----
-MATCH (m:Member)-[:MEMBER_OF]->(group), (group)-[:HAS_TOPIC]->(topic)-[:IN_CLUSTER]->(cluster)
+MATCH (m:Member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)-[:IN_CLUSTER]->(cluster)
 WHERE m.name = "Mark Needham"
 RETURN cluster.name, COUNT(*) AS times
 ORDER BY times DESC
@@ -173,7 +173,7 @@ ORDER BY times DESC
 
 [source,cypher,subs=attributes]
 ----
-MATCH (m:Member)-[:MEMBER_OF]->(group), (group)-[:HAS_TOPIC]->(topic)-[:IN_CLUSTER]->(cluster)
+MATCH (m:Member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)-[:IN_CLUSTER]->(cluster)
 WHERE m.name = "Mark Needham"
 WITH DISTINCT topic, cluster
 RETURN cluster.name, COUNT(*) AS times

@@ -128,6 +128,27 @@ LIMIT 10</code></pre>
 
 <slide class="row-fluid">
   <div class="col-sm-12">
+    <h3>Topic similarity</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>We could even run the following query to see which clusters the Python related topics have ended up in:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (cluster:Cluster)&lt;-[inCluster:IN_CLUSTER]-(topic)
+WHERE topic.name CONTAINS "Python"
+RETURN *</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
     <h3>Next Step</h3>
     <br/>
     <div>

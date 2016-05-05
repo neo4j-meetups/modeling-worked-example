@@ -108,16 +108,21 @@ That's a good start but it's a bit restrictive - I'm never going to learn about 
 == Find future events for my topics
 
 One way we could make a better recommendation is to suggest events hosted by groups that have my topics even if I'm not a member of those groups.
+We'll take t
 
 [source,cypher]
 ----
-MATCH (member:Member {name: "Mark Needham"})
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HAS_TOPIC]->()-[:IN_CLUSTER]-(cluster)
+WITH member, cluster, COUNT(*) AS times
+ORDER BY times DESC
+LIMIT 1
+
 MATCH (futureEvent:Event) WHERE futureEvent.time > timestamp()
 
-WITH member, futureEvent, EXISTS((member)-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)) AS myGroup
-OPTIONAL MATCH (member)-[:INTERESTED_IN]->()<-[:HAS_TOPIC]-()-[:HOSTED_EVENT]->(futureEvent)
+WITH member, cluster, futureEvent, EXISTS((member)-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)) AS myGroup
+OPTIONAL MATCH (futureEvent)<-[:HOSTED_EVENT]-()-[:HAS_TOPIC]->(topic)-[:IN_CLUSTER]->(cluster:Cluster)
 
-WITH member, futureEvent, myGroup, COUNT(*) AS commonTopics
+WITH member, cluster, futureEvent, myGroup, COUNT(topic) AS commonTopics
 MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
 
 RETURN futureEvent.name, futureEvent.time, group.name, commonTopics, myGroup
@@ -126,9 +131,10 @@ ORDER BY futureEvent.time
 
 This query:
 
+  * finds my most popular topics cluster
   * finds all future events
   * checks whether those events are hosted by a group that we're a member of
-  * counts how many common topics we have with the group hosting the event
+  * counts how many common topics my most popular topic cluster has with the group hosting the event
   * finds the group hosting the event
   * returns the events ordered by time
 
@@ -138,14 +144,55 @@ ifdef::env-training[]
 
 Update the recommendations query to:
 
+* Filter out events which have less than 3 common topics
 * Only show events happening in the next 7 days
-* Show events happening for the topics in my top cluster
 
-== You know the drill by now!
+== Answer: Filter out events which have less than 3 common topics
 
-image::{img}/slides.jpg[]
+[source,cypher]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HAS_TOPIC]->()-[:IN_CLUSTER]-(cluster)
+WITH member, cluster, COUNT(*) AS times
+ORDER BY times DESC
+LIMIT 1
 
-endif::env-training[]
+MATCH (futureEvent:Event) WHERE futureEvent.time > timestamp()
+
+WITH member, cluster, futureEvent, EXISTS((member)-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)) AS myGroup
+OPTIONAL MATCH (futureEvent)<-[:HOSTED_EVENT]-()-[:HAS_TOPIC]->(topic)-[:IN_CLUSTER]->(cluster:Cluster)
+
+WITH member, cluster, futureEvent, myGroup, COUNT(topic) AS commonTopics
+WHERE commonTopics >= 3
+
+MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
+
+RETURN futureEvent.name, futureEvent.time, group.name, commonTopics, myGroup
+ORDER BY futureEvent.time
+----
+
+== Answer: Only show events happening in the next 7 days
+
+[source,cypher]
+----
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HAS_TOPIC]->()-[:IN_CLUSTER]-(cluster)
+WITH member, cluster, COUNT(*) AS times
+ORDER BY times DESC
+LIMIT 1
+
+MATCH (futureEvent:Event)
+WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()
+
+WITH member, cluster, futureEvent, EXISTS((member)-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)) AS myGroup
+OPTIONAL MATCH (futureEvent)<-[:HOSTED_EVENT]-()-[:HAS_TOPIC]->(topic)-[:IN_CLUSTER]->(cluster:Cluster)
+
+WITH member, cluster, futureEvent, myGroup, COUNT(topic) AS commonTopics
+WHERE commonTopics >= 3
+
+MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
+
+RETURN futureEvent.name, futureEvent.time, group.name, commonTopics, myGroup
+ORDER BY futureEvent.time
+----
 
 == Sorting the results
 
@@ -157,15 +204,20 @@ We'll give a score of `5` if it's an event in one of our groups, add that to the
 
 [source,cypher]
 ----
-MATCH (member:Member {name: "Mark Needham"})
+MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HAS_TOPIC]->()-[:IN_CLUSTER]-(cluster)
+WITH member, cluster, COUNT(*) AS times
+ORDER BY times DESC
+LIMIT 1
+
 MATCH (futureEvent:Event)
 WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()
 
-WITH member, futureEvent, EXISTS((member)-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)) AS myGroup
-OPTIONAL MATCH (member)-[:INTERESTED_IN]->()<-[:HAS_TOPIC]-()-[:HOSTED_EVENT]->(futureEvent)
+WITH member, cluster, futureEvent, EXISTS((member)-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)) AS myGroup
+OPTIONAL MATCH (futureEvent)<-[:HOSTED_EVENT]-()-[:HAS_TOPIC]->(topic)-[:IN_CLUSTER]->(cluster:Cluster)
 
-WITH member, futureEvent, myGroup, COUNT(*) AS commonTopics
+WITH member, cluster, futureEvent, myGroup, COUNT(topic) AS commonTopics
 WHERE commonTopics >= 3
+
 MATCH (futureEvent)<-[:HOSTED_EVENT]-(group)
 
 WITH futureEvent, group, commonTopics, myGroup, CASE WHEN myGroup THEN 5 ELSE 0 END AS myGroupScore
