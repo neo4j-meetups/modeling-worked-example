@@ -83,6 +83,9 @@ LIMIT 10
 ----
 
 So we've got a topic id, name and urlkey as well as a group id.
+
+= Import Topics
+
 We'll ignore the group id for now and run the following query to import topics into the graph:
 
 [source,cypher,subs=attributes]
@@ -254,7 +257,6 @@ Try changing the group name e.g. `Big Data Debate` or `Docker London` and see ho
 
 == Next Step
 
-In the next section we're going to introduce members into the graph.
-We'll then look at our graphs and write some queries to recommend new groups for ourselves.
+In the next section we're going to run a community detection algorithm over our datasets to find clusters of topics that are similar to each other.
 
-pass:a[<a play-topic='{guides}/02_my_similar_groups.html'>Groups similar to mine</a>]
+pass:a[<a play-topic='{guides}/02_clusters.html'>Clustering topics</a>]

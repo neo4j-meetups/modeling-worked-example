@@ -116,8 +116,27 @@ pip install py2neo</pre>
 <div class="content">
 <pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (cluster:Cluster)&lt;-[inCluster:IN_CLUSTER]-(topic)
 RETURN *
+ORDER BY rand()
 LIMIT 10</code></pre>
 </div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Next Step</h3>
+    <br/>
+    <div>
+      <div class="paragraph">
+<p>In the next section we&#8217;re going to introduce members into the graph.
+We&#8217;ll then look at our graphs and write some queries to recommend new groups for ourselves.</p>
+</div>
+<div class="paragraph">
+<p><a play-topic='http://guides.neo4j.com/pydata/03_my_similar_groups.html'>Groups similar to mine</a></p>
 </div>
 	</div>
   </div>

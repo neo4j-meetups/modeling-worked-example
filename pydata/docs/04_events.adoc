@@ -138,8 +138,8 @@ ifdef::env-training[]
 
 Update the recommendations query to:
 
-* Filter out events which have less than 3 common topics
 * Only show events happening in the next 7 days
+* Show events happening for the topics in my top cluster
 
 == You know the drill by now!
 
@@ -175,9 +175,3 @@ RETURN futureEvent.name, futureEvent.time, group.name, commonTopics, myGroup, da
 ORDER BY score DESC
 LIMIT 10
 ----
-
-== Next Step
-
-Next we're going to introduce venues into the model so we can make recommendations based on where events are being held.
-
-pass:a[<a play-topic='{guides}/05_venues.html'>Venues</a>]

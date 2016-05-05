@@ -42,4 +42,20 @@ ORDER BY rand()
 LIMIT 10
 ----
 
-== Find my most popular cluster
+== Topic similarity
+
+We could even run the following query to see which clusters the Python related topics have ended up in:
+
+[source, cypher]
+----
+MATCH (cluster:Cluster)<-[inCluster:IN_CLUSTER]-(topic)
+WHERE topic.name CONTAINS "Python"
+RETURN *
+----
+
+== Next Step
+
+In the next section we're going to introduce members into the graph.
+We'll then look at our graphs and write some queries to recommend new groups for ourselves.
+
+pass:a[<a play-topic='{guides}/03_my_similar_groups.html'>Groups similar to mine</a>]
