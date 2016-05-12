@@ -54,9 +54,13 @@ This might take a bit of time - there's a lot of members and topics to get throu
 
 Now we're ready to write our first query which uses some data we've explicitly provided meetup.com.
 
-[source,cypher]
+++++
+<label>Name:</label> <input value-for="name" class="form-control" value="A Name">
+++++
+
+[source,cypher,subs="attributes,none"]
 ----
-MATCH (member:Member {name: "Mark Needham"})-[:INTERESTED_IN]->(topic),
+MATCH (member:Member {name: '<span  value-key="name">A Name</span>'})-[:INTERESTED_IN]->(topic),
       (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
 WITH member, topic, COUNT(*) AS score
 MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)
@@ -68,23 +72,38 @@ LIMIT 10
 
 In this query we
 
-  * start from me
-  * find the topics I'm interested in
-  * find the groups I'm a member of that have those topics
+  * start from a user
+  * find the topics they are interested in
+  * find the groups they are a member of that have those topics
   * aggregates the number of times each topic appears
-  * finds other groups that have these topics, filtering out ones that I'm already a member of
-  * returns those other groups sorted by how many of my topics they cater for
+  * finds other groups that have these topics, filtering out ones that they are already a member of
+  * returns those other groups sorted by how many of the member's topics they cater for
 
 This is quite a crude scoring mechanism which favours generally popular topics.
 We'll have a look at how to address that later on.
 
 == What if I don't specify any interests?
 
-My friend Aleks didn't specify any interests when he signed up for meetup.com:
+Let's find someone who didn't specify any interests but is member of a few groups.
 
 [source,cypher]
 ----
-MATCH (member:Member {name: "Aleksander Sumowski"})-[:INTERESTED_IN]->(topic), (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
+MATCH (member:Member) WHERE NOT (member)-[:INTERESTED_IN]->()
+MATCH (member)-[:MEMBER_OF]->()
+RETURN member.name, count(*) as groups
+ORDER BY count(*) DESC
+LIMIT 50
+----
+
+Let's take someone from that list who didn't specify any interests when they signed up for meetup.com:
+
+++++
+<label>Name:</label> <input value-for="name" class="form-control" value="A Name">
+++++
+
+[source,cypher,subs="attributes,none"]
+----
+MATCH (member:Member {name: '<span  value-key="name">A Name</span>'})-[:INTERESTED_IN]->(topic), (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
 WITH member, topic, COUNT(*) AS score
 MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)
 WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
@@ -92,12 +111,10 @@ RETURN otherGroup.name, COLLECT(topic.name), SUM(score) as score
 ORDER BY score DESC
 ----
 
-So we can't make any recommendations to him.
+So we can't make any recommendations to them.
 Sad times!
 
-However, if he's a member of some groups we can infer his interests.
-
-Can you find other people who haven't specified any interests?
+However, if they are a member of some groups we can infer their interests.
 
 == What am I actually interested in?
 
