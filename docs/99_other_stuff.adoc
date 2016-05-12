@@ -1,5 +1,5 @@
-
 == Collaborative filtering
+include::include.adoc[]
 
 This query is too slow so we can't use it at the moment:
 

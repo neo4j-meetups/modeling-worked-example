@@ -1,6 +1,5 @@
 = Venues
-:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
-:icons: font
+include::include.adoc[]
 
 == Venues
 
@@ -82,10 +81,10 @@ We'll start with a simple query to find venues near here:
 
 [source,cypher,subs=attributes]
 ----
-WITH point({latitude: 51.518551, longitude: -0.086114}) AS graphConnectTrainingVenue
+WITH point({training-location}) AS trainingVenue
 MATCH (venue:Venue)
 
-WITH venue, distance(point(venue), graphConnectTrainingVenue) AS distance
+WITH venue, distance(point(venue), trainingVenue) AS distance
 RETURN venue.id, venue.name, venue.address, distance
 ORDER BY distance
 LIMIT 10
@@ -98,8 +97,7 @@ This query
 * calculates the distance from our current location to each venue
 * returns the 10 closest venues to us along with the distance in metres.
 
-Try changing the first line to point to some other lat/longs in London.
-e.g. the QE2 where Graph Connect will be tomorrow is at `51.5002221,-0.1290273`
+Try changing the first line to point to some other latitude / longitude, e.g from Google Maps.
 
 ifdef::env-training[]
 == Exercise: Using venues in recommendations

@@ -1,0 +1,8 @@
+:name-input: '<span  value-key="name"></span>'
+:group-input: '<span  value-key="group"></span>'
+:topic-input: '<span  value-key="topic"></span>'
+:venue-location: {latitude: 51.518551, longitude: -0.086114}
+:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
+:icons: font
+:experimental:
+:refcard: http://neo4j.com/docs/cypher-refcard/current/

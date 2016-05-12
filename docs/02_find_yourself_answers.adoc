@@ -1,12 +1,11 @@
 = Recommendations by implicit interest
-:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
-:icons: font
+include::include.adoc[]
 
 == Exercise: Find yourself and your groups
 
 We've now got groups, topics and members loaded into our database so it's time for a bit more exploration.
 
-* If you're from London write a query to find yourself in the database. If not try and find your neighbour.
+* If you're local, write a query to find yourself in the database. If not try and find your neighbour.
 * How many groups are you a member of?
 * Which topics do those groups have?
 * _(For bonus points)_ Which topic shows up the most?

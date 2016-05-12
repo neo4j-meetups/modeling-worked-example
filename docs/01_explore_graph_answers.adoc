@@ -1,6 +1,5 @@
 = Similar groups
-:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
-:icons: font
+include::include.adoc[]
 
 == Exercise: Explore the graph
 
@@ -10,7 +9,7 @@ We've now loaded groups and topics but we don't know exactly what's in our graph
 * Which group was created most recently?
 * How many groups have been running for 4 years or more?
 
-_Hint:_ The link:http://neo4j.com/docs/milestone/cypher-refcard/[Cypher refcard] will come in handy for syntax we haven't covered yet!
+_Hint:_ The link:{refcard}[Cypher refcard] will come in handy for syntax we haven't covered yet!
 
 ==  What's the most popular topic?
 

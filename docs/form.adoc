@@ -1,0 +1,13 @@
+++++
+<!--form><div class="node"><div class="form-group"-->
+// tag::group[]
+<label>Group:</label> <input value-for="group" class="form-control" value="">
+// end::group[]
+// tag::topic[]
+<label>Topic:</label> <input value-for="topic" class="form-control" value="">
+// end::topic[]
+// tag::name[]
+<label>Name:</label> <input value-for="name" class="form-control" value="">
+// end::name[]
+<!--/div></div></form-->
+++++

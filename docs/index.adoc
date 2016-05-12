@@ -2,11 +2,12 @@
 
 ifeval::["{csv-url}" == "file:///"]
 
-== Welcome to the recommendations training @ Graph Connect Europe 2016
+== Welcome to the Neo4j recommendations training
 
-Before we get started there are a few things you need to do:
+[NOTE]
+Before we get started, copy the CSV files in the `data` directory from your machine into the Neo4j  `import` directory.
 
-* Copy the CSV files in the `data` directory from your machine into the Neo4j  `import` directory.
+////
 
 Configure the *import* directory in your `config/neo4j.conf` as follows.
 (Remove any leading `#`)
@@ -24,6 +25,7 @@ e.g.
 ----
 dbms.directories.import=C:/Neo4j/data
 ----
+////
 
 endif::[]
 
@@ -53,7 +55,7 @@ endif::env-training[]
 == Further Resources
 
 * http://neo4j.com/graphgists[Graph Gist Examples]
-* http://neo4j.com/docs/stable/cypher-refcard/[Cypher Reference Card]
+* http://neo4j.com/docs/cypher-refcard/current/[Cypher Reference Card]
 * http://neo4j.com/docs/developer-manual/current/#cypher-query-lang[Neo4j Developer Manual]
 * http://neo4j.com/developer/resources#_neo4j_cypher_resources[Cypher Resource Collection]
 * http://graphdatabases.com[e-book: Graph Databases (free)]

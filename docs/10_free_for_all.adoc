@@ -1,6 +1,5 @@
 = Free for all
-:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
-:icons: font
+include::include.adoc[]
 
 == Your turn
 
@@ -24,6 +23,6 @@ If we have time we'll let a few people show the group what they've come up with.
 
 We hope you had a good day and if you have any suggestions for making the session better do let us know.
 
-See you tomorrow at the conference!
+See you at our next meetup or event!
 
-image::{img}/gc.png[link="http://graphconnect.com/"]
+// image::{img}/gc.png[link="http://graphconnect.com/"]

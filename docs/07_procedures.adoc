@@ -1,6 +1,5 @@
 = Procedures
-:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
-:icons: font
+include::include.adoc[]
 
 == Procedures
 
@@ -110,7 +109,7 @@ We're going to use this procedure to import some more data from meetup, this tim
 
 == Importing JSON from the meetup.com API
 
-The meetup.com API for photos is accessible without needing a key so we're going to import the meta data for photos posted to the Neo4j London group.
+The meetup.com API for photos is accessible without needing a key so we're going to import the meta data for photos posted to the Neo4j Meetup group.
 First let's see what photos have been posted:
 
 [source, cypher]

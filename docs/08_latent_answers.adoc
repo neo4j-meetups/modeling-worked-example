@@ -1,6 +1,5 @@
 = Latent Social Graph Answers
-:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
-:icons: font
+include::include.adoc[]
 
 == Exercise: Adding friends to the recommendations query
 

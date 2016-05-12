@@ -1,6 +1,5 @@
 = Events
-:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
-:icons: font
+include::include.adoc[]
 
 == Events
 
@@ -86,7 +85,7 @@ ORDER BY event.time DESC
 LIMIT 10
 ----
 
-If all's well you should see the last 10 events hosted by the Neo4j London group.
+If all's well you should see the last 10 events hosted by the Neo4j Meetup group.
 
 == Find future events in my groups
 

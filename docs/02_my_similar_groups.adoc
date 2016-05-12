@@ -1,6 +1,5 @@
 = Groups similar to mine
-:csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
-:icons: font
+include::include.adoc[]
 
 == Exclude groups I’m a member of
 
@@ -15,7 +14,7 @@ image::{img}/group_has_topic_member_of.png[]
 
 [verse]
 ____
-As a member of the Neo4j London group
+As a member of the Neo4j Meetup group
 I want to find other similar meetup groups that I’m not already a member of
 So that I can join those groups
 ____
@@ -117,14 +116,15 @@ Now it's your turn!
 
 We've now got groups, topics and members loaded into our database so it's time for a bit more exploration.
 
-* If you're from London write a query to find yourself in the database. If not try and find your neighbour.
-* How many groups are you a member of?
-* Which topics do those groups have?
-* _(For bonus points)_ Which topic shows up the most?
+. If you're local, write a query to find yourself in the database. If not try and find your neighbour.
+. How many groups are you a member of?
+. Which topics do those groups have?
+. _(For bonus points)_ Which topic shows up the most?
 
 == All the answers will be revealed...just as soon as you look at the slides
 
 image::{img}/slides.jpg[]
+pass:a[<a play-topic='{guides}/02_find_yourself_answers.html'>Answers: Explore the graph</a>]
 
 endif::env-training[]
 
@@ -132,11 +132,16 @@ endif::env-training[]
 
 For our next recommendation we're still going to be finding similar groups to the Neo4j one but we'll also check whether we're already a member of the other groups.
 
-[source,cypher]
+++++
+<label>Name:</label> <input value-for="name" class="form-control" value="A Name">
+++++
+
+[source,cypher,subs="attributes,none"]
 ----
-MATCH (member:Member {name: "Mark Needham"})
-MATCH (group:Group {name: "Neo4j - London User Group"})-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
-WHERE NOT((member)-[:MEMBER_OF]->(otherGroup) )
+MATCH (member:Member) WHERE member.name CONTAINS '<span  value-key="name">A Name</span>'
+MATCH (group:Group)-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
+WHERE group.name CONTAINS 'Neo4j'
+  AND NOT((member)-[:MEMBER_OF]->(otherGroup) )
 RETURN otherGroup.name,
        COUNT(topic) AS topicsInCommon,
        COLLECT(topic.name) AS topics
@@ -169,12 +174,17 @@ So now rather than finding groups that have the same topics as the Neo4j group w
 
 == Find my similar groups
 
+++++
+<label>Name:</label> <input value-for="name" class="form-control" value="A Name">
+++++
+
 We only have to change our previous query slightly to find our similar groups rather than Neo4j's:
 
-[source,cypher]
+[source,cypher,subs="attributes,none"]
 ----
-MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HAS_TOPIC]->()<-[:HAS_TOPIC]-(otherGroup:Group)
-WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
+MATCH (member:Member)-[:MEMBER_OF]->()-[:HAS_TOPIC]->()<-[:HAS_TOPIC]-(otherGroup:Group)
+WHERE member.name CONTAINS '<span  value-key="name">A Name</span>'
+  AND NOT (member)-[:MEMBER_OF]->(otherGroup)
 RETURN otherGroup.name,
        COUNT(*) AS topicsInCommon
 ORDER BY topicsInCommon DESC
