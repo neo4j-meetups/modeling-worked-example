@@ -140,7 +140,7 @@ For our next recommendation we're still going to be finding similar groups to th
 ----
 MATCH (member:Member) WHERE member.name CONTAINS '<span  value-key="name">A Name</span>'
 MATCH (group:Group)-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
-WHERE group.name CONTAINS 'Neo4j'
+WHERE group.name CONTAINS {neo4j-group-name}
   AND NOT((member)-[:MEMBER_OF]->(otherGroup) )
 RETURN otherGroup.name,
        COUNT(topic) AS topicsInCommon,

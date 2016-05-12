@@ -1,6 +1,10 @@
 = Recommendations by explicit interest
 include::include.adoc[]
 
+++++
+<label>Name:</label> <input value-for="name" class="form-control" value="A Name">
+++++
+
 == Exercise: Inferring interests
 
 * Find topics that I'm interested in via the groups I'm a member of that I don't have an `INTERESTED_IN` relationship to.
@@ -10,7 +14,7 @@ include::include.adoc[]
 
 [source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HAS_TOPIC]->(topic)
+MATCH (member:Member {name: '<span  value-key="name">A Name</span>'})-[:MEMBER_OF]->()-[:HAS_TOPIC]->(topic)
 WHERE NOT ((member)-[:INTERESTED_IN]->(topic))
 RETURN DISTINCT topic.name
 ----

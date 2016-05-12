@@ -180,9 +180,9 @@ But now we've added in some extra relationships which allow us to make recommend
 
 Run the following query:
 
-[source,cypher]
+[source,cypher,subs="attributes,none"]
 ----
-MATCH (member:Member {name: "Aleksander Sumowski"})-[:INTERESTED_IN]->(topic),
+MATCH (member:Member {name: '<span  value-key="name">A Name</span>'})-[:INTERESTED_IN]->(topic),
       (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
 WITH member, topic, COUNT(*) AS score
 MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)

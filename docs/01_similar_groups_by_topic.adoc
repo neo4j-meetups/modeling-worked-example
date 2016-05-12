@@ -30,7 +30,7 @@ RETURN row
 LIMIT 10
 ----
 
-Click on the block to put the query in the topmost window on the query editor. 
+Click on the block to put the query in the topmost window on the query editor.
 Hit the triangular icon:play-circle[] button or press kbd:[Ctrl+Enter] to run it and see the query results.
 More shortcuts are available, see pass:a[<a help-topic='keys'>:help keys</a>]
 
@@ -222,10 +222,10 @@ endif::env-training[]
 So you've hopefully now got an idea of what the data looks like.
 It's time to write our first recommendation query which will find groups that have the same topics as the Neo4j Meetup group:
 
-[source,cypher]
+[source,cypher,subs=attributes]
 ----
 MATCH (group:Group)-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup)
-WHERE group.name CONTAINS 'Neo4j'
+WHERE group.name CONTAINS '{neo4j-group-name}'
 RETURN otherGroup.name, COUNT(topic) AS topicsInCommon,
        COLLECT(topic.name) AS topics
 ORDER BY topicsInCommon DESC, otherGroup.name

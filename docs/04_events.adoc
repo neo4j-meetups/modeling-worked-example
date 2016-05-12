@@ -79,7 +79,7 @@ Run the following query to check that worked as expected:
 [source,cypher]
 ----
 MATCH (group:Group)-[hosted:HOSTED_EVENT]->(event)
-WHERE group.name STARTS WITH "Neo4j" AND event.time < timestamp()
+WHERE group.name STARTS WITH "{neo4j-group-name}" AND event.time < timestamp()
 RETURN event, group, hosted
 ORDER BY event.time DESC
 LIMIT 10

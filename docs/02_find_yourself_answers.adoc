@@ -12,10 +12,14 @@ We've now got groups, topics and members loaded into our database so it's time f
 
 == Find yourself
 
+++++
+<label>Name:</label> <input value-for="name" class="form-control" value="A Name">
+++++
+
 [source,cypher,subs=attributes]
 ----
 MATCH (m:Member)
-WHERE m.name = "Mark Needham"
+WHERE m.name = '<span  value-key="name">A Name</span>'
 RETURN m
 ----
 
@@ -25,7 +29,7 @@ We can also inline the equality of the `name` property which will compile down t
 
 [source,cypher,subs=attributes]
 ----
-MATCH (m:Member {name: "Mark Needham"})
+MATCH (m:Member {name: '<span  value-key="name">A Name</span>'})
 RETURN m
 ----
 
@@ -34,7 +38,7 @@ RETURN m
 [source,cypher,subs=attributes]
 ----
 MATCH (m:Member)-[:MEMBER_OF]->(group)
-WHERE m.name = "Mark Needham"
+WHERE m.name = '<span  value-key="name">A Name</span>'
 RETURN group
 ----
 
@@ -43,7 +47,7 @@ RETURN group
 [source,cypher,subs=attributes]
 ----
 MATCH (m:Member)-[:MEMBER_OF]->(group), (group)-[:HAS_TOPIC]->(topic)
-WHERE m.name = "Mark Needham"
+WHERE m.name = '<span  value-key="name">A Name</span>'
 RETURN group, topic
 ----
 
@@ -53,7 +57,7 @@ RETURN group, topic
 [source,cypher,subs=attributes]
 ----
 MATCH (m:Member)-[:MEMBER_OF]->(group), (group)-[:HAS_TOPIC]->(topic)
-WHERE m.name = "Mark Needham"
+WHERE m.name = '<span  value-key="name">A Name</span>'
 RETURN topic.name, COUNT(*) AS times
 ORDER BY times DESC
 ----
