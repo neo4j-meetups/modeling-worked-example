@@ -38,7 +38,7 @@ ON CREATE SET rsvp.created = toint(row.created),
 
 Let's check they got imported correctly:
 
-include::form[tags=event]
+include::form.adoc[tags=event]
 
 [source,cypher]
 ----
