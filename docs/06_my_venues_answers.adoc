@@ -1,6 +1,8 @@
 = My venues answers
+
 include::include.adoc[]
 include::form.adoc[tags=name]
+
 == Exercise: Events at my venues
 
 At the moment our event recommendation query takes into account our groups, topics and the previous events we've been to but it doesn't take into account where those events were hosted which could be an important factor.

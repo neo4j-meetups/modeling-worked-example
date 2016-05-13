@@ -120,11 +120,11 @@ link:http://tagging.pui.ch/automated_tag_clustering[This article] has a good ove
 We'll calculate the 'dice similarity' between members and add the score as a property on the `FRIENDS` relationship.
 Run the following query to find the top 10 people similar to you:
 
-include::form.adoc[tags=name]
+include::form.adoc[tags=name2]
 
 [source, cypher, subs=attributes]
 ----
-MATCH (m1:Member) WHERE m1.name CONTAINS {name}
+MATCH (m1:Member) WHERE m1.name CONTAINS {name2}
 
 MATCH (m1)-[friendship:FRIENDS]-(m2:Member)
 WITH m1, m2, friendship
@@ -140,7 +140,7 @@ In the next section we'll calculate that score for all pairs of friends and stor
 
 == Adding a score to the `FRIENDS` relationship
 
-[source,cypher,subs=attributes,none]
+[source,cypher,subs=attributes]
 ----
 call apoc.periodic.commit("
   MATCH (m1:Process)
@@ -170,11 +170,11 @@ Let's get away from the mega event recommendation query we've built up over the 
 
 In the following query we'll find the events that our best 10 friends are planning to attend:
 
-include::form.adoc[tags=name2]
+include::form.adoc[tags=name3]
 
-[source, cypher, subs=attributes]
+[source,cypher,subs=attributes]
 ----
-MATCH (member:Member) WHERE member.name CONTAINS {name}
+MATCH (member:Member) WHERE member.name CONTAINS {name3}
 MATCH (member)-[friendship:FRIENDS]-(friend)
 WITH member, friend, friendship
 ORDER By friendship.score DESC

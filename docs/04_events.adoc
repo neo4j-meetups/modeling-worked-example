@@ -160,11 +160,11 @@ i.e. we know whether the event is in our group and we know how many of our topic
 
 We'll give a score of `5` if it's an event in one of our groups, add that to the number of common topics, add a penalty for events further in the future and then order by the total.
 
-include::form.adoc[tags=name]
+include::form.adoc[tags=name2]
 
 [source,cypher,subs=attributes]
 ----
-MATCH (member:Member) WHERE member.name CONTAINS {name}
+MATCH (member:Member) WHERE member.name CONTAINS {name2}
 MATCH (futureEvent:Event)
 WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()
 

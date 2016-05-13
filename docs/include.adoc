@@ -1,7 +1,9 @@
 :name: pass:['<span  value-key="name">A Name</span>']
 :name2: pass:['<span  value-key="name2">A Name</span>']
+:name3: pass:['<span  value-key="name3">A Name</span>']
 :group: pass:['<span  value-key="group">Group</span>']
-:topic: pass['<span  value-key="topic">Topic</span>']
+:topic: pass:['<span  value-key="topic">Topic</span>']
+:event: pass:['<span  value-key="event">An Event</span>']
 :trainingLocation: {latitude: 37.7952919, longitude: -122.4036433}
 :neo4j-group-name: 'Graph Database'
 :neo4j-meetup-id: graphdb-sf

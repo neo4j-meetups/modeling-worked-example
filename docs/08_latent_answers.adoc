@@ -1,6 +1,8 @@
 = Latent Social Graph Answers
+
 include::include.adoc[]
 include::form.adoc[tags=name]
+
 == Exercise: Adding friends to the recommendations query
 
 Update the events recommendation query to:

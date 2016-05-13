@@ -40,7 +40,7 @@ Let's check they got imported correctly:
 
 include::form.adoc[tags=event]
 
-[source,cypher]
+[source,cypher,subs=attributes]
 ----
 MATCH (event:Event)<-[rsvp:RSVPD]-(attendee)
 WHERE event.name CONTAINS {event}

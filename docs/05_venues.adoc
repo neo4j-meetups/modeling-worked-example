@@ -42,7 +42,6 @@ _Tip_ You'll have to iterate over the events CSV file again to get the `venue_id
 == It's slide time
 
 image::{img}/slides.jpg[]
-pass:a[<a play-topic='{guides}/05_venues_import_answers.html'>Answers: Importing Venues</a>]
 
 pass:a[<a play-topic='{guides}/05_venues_import_answers.html'>Answers: Importing Venues</a>]
 
@@ -111,7 +110,6 @@ ifdef::env-training[]
 == The answers are waiting...
 
 image::{img}/slides.jpg[]
-
 
 pass:a[<a play-topic='{guides}/05_venues_distance_queries_answers.html'>Answers: Using venues in recommendations</a>]
 

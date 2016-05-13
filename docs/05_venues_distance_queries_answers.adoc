@@ -1,5 +1,7 @@
 = Venue Distance Queries Answers
+
 include::include.adoc[]
+
 include::form.adoc[tags=name]
 
 == Exercise: Using venues in recommendations

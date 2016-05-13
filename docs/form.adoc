@@ -23,6 +23,12 @@
 ++++
 // end::name2[]
 
+// tag::name3[]
+++++
+<input style="display:inline;width:30%;" value-for="name3" class="form-control" value="A Name" size="40">
+++++
+// end::name3[]
+
 
 // tag::event[]
 ++++
