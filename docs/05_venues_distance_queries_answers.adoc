@@ -9,9 +9,11 @@ include::form.adoc[tags=name]
 
 == Return distance to venue
 
-[source,cypher,subs=attributes]
+
+[source,cypher,subs=attributes,none]
 ----
 MATCH (member:Member) WHERE member.name CONTAINS {name}
+
 MATCH (futureEvent:Event)
 WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()
 
@@ -25,13 +27,13 @@ MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
 WITH futureEvent, group, venue, commonTopics, myGroup, CASE WHEN myGroup THEN 5 ELSE 0 END AS myGroupScore
 WITH futureEvent, group, venue, commonTopics, myGroup, myGroupScore, round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days
 
-RETURN futureEvent.name, futureEvent.time, group.name, venue.name, commonTopics, myGroup, days, distance(point(venue), point({latitude: 51.518551, longitude: -0.086114})) AS distance, myGroupScore + commonTopics - days AS score
+RETURN futureEvent.name, futureEvent.time, group.name, venue.name, commonTopics, myGroup, days, distance(point(venue), point({training-location})) AS distance, myGroupScore + commonTopics - days AS score
 ORDER BY score DESC
 ----
 
 == Filter out events > 1km away
 
-[source,cypher,subs=attributes]
+[source,cypher,subs=attributes,none]
 ----
 MATCH (member:Member) WHERE member.name CONTAINS {name}
 
@@ -45,7 +47,7 @@ WITH member, futureEvent, myGroup, COUNT(*) AS commonTopics
 WHERE commonTopics >= 3
 MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
 
-WITH  futureEvent, group, venue,commonTopics, myGroup, distance(point(venue), point({latitude: 51.518551, longitude: -0.086114})) AS distance
+WITH  futureEvent, group, venue,commonTopics, myGroup, distance(point(venue), point({training-location})) AS distance
 WHERE distance < 1000
 
 WITH futureEvent, group, venue, commonTopics, myGroup, distance, CASE WHEN myGroup THEN 5 ELSE 0 END AS myGroupScore

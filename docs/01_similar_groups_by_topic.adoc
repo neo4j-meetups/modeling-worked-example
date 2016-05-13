@@ -222,7 +222,7 @@ endif::env-training[]
 So you've hopefully now got an idea of what the data looks like.
 It's time to write our first recommendation query which will find groups that have the same topics as the Neo4j Meetup group:
 
-[source,cypher,subs=attributes]
+[source,cypher,subs=attributes,none]
 ----
 MATCH (group:Group)-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup)
 WHERE group.name CONTAINS {neo4j-group-name}

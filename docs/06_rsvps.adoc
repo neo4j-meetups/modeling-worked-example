@@ -38,7 +38,7 @@ ON CREATE SET rsvp.created = toint(row.created),
 
 Let's check they got imported correctly:
 
-include::form.adoc[tags=event]
+include::form[tags=event]
 
 [source,cypher]
 ----
@@ -47,7 +47,8 @@ WHERE event.name CONTAINS {event}
 RETURN *
 ----
 
-This query shows us who's signed up for the hackathon we're running tonight - hopefully you can see your name on that list?!
+
+This query shows us who's signed up for the hackathons we've run as part of GraphConnect over the years. Have any of you been to multiple GraphHacks?
 
 Now we're ready to make use of RSVPs and venues in our events recommendation query.
 
@@ -60,6 +61,7 @@ include::form.adoc[tags=name]
 [source,cypher,subs=attributes]
 ----
 MATCH (member:Member) WHERE member.name CONTAINS {name}
+
 MATCH (futureEvent:Event)
 WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()
 
@@ -76,7 +78,7 @@ WITH futureEvent, commonTopics, myGroup, COUNT(rsvp) AS previousEvents
 
 MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
 
-WITH futureEvent, group, venue, commonTopics, myGroup, previousEvents, distance(point(venue), point({latitude: 51.518551, longitude: -0.086114})) AS distance
+WITH futureEvent, group, venue, commonTopics, myGroup, previousEvents, distance(point(venue), point({training-location})) AS distance
 WITH futureEvent, group, venue, commonTopics, myGroup, previousEvents, distance, CASE WHEN myGroup THEN 5 ELSE 0 END AS myGroupScore
 WITH futureEvent, group, venue, commonTopics, myGroup, previousEvents, distance, myGroupScore, round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days
 
@@ -103,6 +105,7 @@ to account for that problem with the data.
 == To the slides!
 
 image::{img}/slides.jpg[]
+
 pass:a[<a play-topic='{guides}/06_my_venues_answers.html'>Answers: Events at my venues</a>]
 
 == Next Step

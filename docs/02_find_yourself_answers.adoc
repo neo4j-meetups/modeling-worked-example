@@ -2,6 +2,10 @@
 include::include.adoc[]
 include::form.adoc[tags=name]
 
+++++
+<label>Name:</label> <input value-for="name" class="form-control" value="A Name">
+++++
+
 == Exercise: Find yourself and your groups
 
 We've now got groups, topics and members loaded into our database so it's time for a bit more exploration.

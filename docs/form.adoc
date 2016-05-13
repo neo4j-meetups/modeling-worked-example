@@ -22,3 +22,10 @@
 <input style="display:inline;width:30%;" value-for="name2" class="form-control" value="A Name" size="40">
 ++++
 // end::name2[]
+
+
+// tag::event[]
+++++
+<input style="display:inline;width:30%;" value-for="event" class="form-control" value="An Event" size="40">
+++++
+// end::event[]

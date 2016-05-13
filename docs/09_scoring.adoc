@@ -51,9 +51,11 @@ Try changing some of the values and see how the score changes.
 
 Now let's try applying the Pareto function to our event recommendation query.
 
+include::form.adoc[tags=name]
+
 [source, cypher, subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})
+MATCH (member:Member) WHERE member.name CONTAINS {name}
 MATCH (futureEvent:Event)
 WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()
 
@@ -72,7 +74,7 @@ WITH member, futureEvent, commonTopics, myGroup, previousEvents, COUNT(rsvpFrien
 
 MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
 
-WITH member, futureEvent, group, venue, commonTopics, myGroup, previousEvents, friendsGoing, friends, distance(point(venue), point({latitude: 51.518551, longitude: -0.086114})) AS distance
+WITH member, futureEvent, group, venue, commonTopics, myGroup, previousEvents, friendsGoing, friends, distance(point(venue), point({training-location})) AS distance
 OPTIONAL MATCH (member)-[rsvp:RSVPD]->(previousEvent)-[:VENUE]->(aVenue)
 WHERE previousEvent.time < timestamp() AND abs(distance(point(venue), point(aVenue))) < 500
 
@@ -116,11 +118,14 @@ There are lots of different similarity measures we could choose from.
 link:http://tagging.pui.ch/automated_tag_clustering[This article] has a good overview.
 
 We'll calculate the 'dice similarity' between members and add the score as a property on the `FRIENDS` relationship.
-Run the following query to find the top 10 people similar to Mark:
+Run the following query to find the top 10 people similar to you:
 
-[source,cypher]
+include::form.adoc[tags=name]
+
+[source, cypher, subs=attributes]
 ----
-MATCH (m1:Member {name: "Mark Needham"}) WHERE (m1)-[:FRIENDS]-()
+MATCH (m1:Member) WHERE m1.name CONTAINS {name}
+
 MATCH (m1)-[friendship:FRIENDS]-(m2:Member)
 WITH m1, m2, friendship
 MATCH (m1)-[:RSVPD]->(commonEvent)<-[:RSVPD]-(m2)
@@ -135,7 +140,7 @@ In the next section we'll calculate that score for all pairs of friends and stor
 
 == Adding a score to the `FRIENDS` relationship
 
-[source,cypher]
+[source,cypher,subs=attributes,none]
 ----
 call apoc.periodic.commit("
   MATCH (m1:Process)
@@ -156,7 +161,7 @@ call apoc.periodic.commit("
   SET friendship.score = diceSimilarity
 
   RETURN COUNT(*)
-",{limit:1000})
+",{limit:500})
 ----
 
 == Friendship based recommendations
@@ -165,9 +170,12 @@ Let's get away from the mega event recommendation query we've built up over the 
 
 In the following query we'll find the events that our best 10 friends are planning to attend:
 
-[source,cypher]
----
-MATCH (member:Member {name: "Mark Needham"})-[friendship:FRIENDS]-(friend)
+include::form.adoc[tags=name2]
+
+[source, cypher, subs=attributes]
+----
+MATCH (member:Member) WHERE member.name CONTAINS {name}
+MATCH (member)-[friendship:FRIENDS]-(friend)
 WITH member, friend, friendship
 ORDER By friendship.score DESC
 LIMIT 10
@@ -175,10 +183,9 @@ MATCH (friend)-[:RSVPD]->(futureEvent)<-[:HOSTED_EVENT]-(group)
 WHERE futureEvent.time > timestamp()
 RETURN futureEvent.name, group.name, COUNT(*) AS friendsGoing, COLLECT(friend.name) AS friends
 ORDER BY friendsGoing DESC
----
+----
 
-Ok so it's a bit biased as I don't really go to anything other than Neo4j meetups!
-Try changing the name to `Aleksander Sumowski` or your own name and see what results you get.
+Try changing the name and see what results you get.
 
 == Other similarity measures
 

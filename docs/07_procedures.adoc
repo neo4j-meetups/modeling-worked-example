@@ -4,6 +4,7 @@ include::include.adoc[]
 == Procedures
 
 Procedures are a new feature in Neo4j 3.x which allow you to write custom code which can be invoked directly from Cypher.
+
 You can read more details in the link:http://neo4j.com/docs/developer-manual/current/#procedures[documentation].
 
 There are some built in procedures.
@@ -39,6 +40,7 @@ First follow these instructions to get `apoc` installed on your local instance o
 
 * You should have already copied `apoc.jar` onto your machine.
 If you haven't then grab a USB stick from one of the trainers or download the latest version of apoc from link:https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/latest[]
+
 * Copy `apoc.jar` into your `plugins` folder wherever you have installed Neo4j.
 
 ////
@@ -78,7 +80,7 @@ WHERE event.time < timestamp()
 WITH event, venue, group
 ORDER BY event.time DESC
 LIMIT 5
-CALL apoc.date.fromMillis(event.time) YIELD value as dateTime
+CALL apoc.date.formatDefault(event.time, 'ms') YIELD value as dateTime
 RETURN event.name, group.name, venue.name, dateTime
 ----
 
@@ -115,9 +117,9 @@ We're going to use this procedure to import some more data from meetup, this tim
 The meetup.com API for photos is accessible without needing a key so we're going to import the meta data for photos posted to the Neo4j Meetup group.
 First let's see what photos have been posted:
 
-[source, cypher]
+[source, cypher,subs=attributes,none]
 ----
-CALL apoc.load.json("https://api.meetup.com/graphdb-london/photos?&sign=true&photo-host=public")
+CALL apoc.load.json("https://api.meetup.com/{neo4j-meetup-id}/photos?&sign=true&photo-host=public")
 YIELD value AS document
 WITH document WHERE EXISTS(document.photo_album.event.id)
 RETURN document.link AS link,
@@ -127,7 +129,7 @@ RETURN document.link AS link,
        document.photo_album.event.id AS eventId
 ----
 
-Try changing the `graphdb-london` bit of the URI to see which photos were posted in other groups.
+Try changing the `{neo4j-meetup-id}` bit of the URI to see which photos were posted in other groups.
 This API uses the `urlname` property to look up photos for a group.
 
 Run the following query to find the `urlname` for other groups:
@@ -148,8 +150,13 @@ ifdef::env-training[]
 
 We probably want to create this pattern `+(member)-[:POSTED]->(photo)-[:EVENT]->(event)+` although you are of course free to create whatever you like!
 
-endif::env-training[]
+== Answers ahead !
 
+image::{img}/slides.jpg[]
+
+pass:a[<a play-topic='{guides}/07_photos_answers.html'>Answers: Photos</a>]
+
+endif::env-training[]
 ifndef::env-training[]
 
 include::07_photos_answers.adoc[lines=4..-1]

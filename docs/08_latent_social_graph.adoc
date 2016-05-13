@@ -11,9 +11,12 @@ RSVPs give us a reasonable idea of which people may know each other based on com
 
 We can write the following query to see which people on the meetup scene that I may know:
 
-[source,cypher]
+include::form.adoc[tags=name]
+
+[source,cypher,subs=attributes]
 ----
-MATCH (me:Member {name: "Mark Needham"})-[:RSVPD]->()<-[:RSVPD]-(otherPerson)
+MATCH (me:Member)-[:RSVPD]->()<-[:RSVPD]-(otherPerson)
+WHERE me.name CONTAINS {name}
 WITH otherPerson, COUNT(*) AS commonEvents
 ORDER BY commonEvents DESC
 LIMIT 10
@@ -22,7 +25,7 @@ RETURN otherPerson.name, commonEvents
 
 == Materialising the latent social graph
 
-In this next section we're going to materialise this inferred social network and create a `FRIENDS` relationship between people who have been to 5 or more of the same events.
+In this next section we're going to materialise this inferred social network and create a `FRIENDS` relationship between people who have been to 7 or more of the same events.
 
 We'll have to run a graph global query to materialise this inferred social network so we're going to process members in batches.
 
@@ -31,7 +34,7 @@ Run the following query.
 
 [source,cypher]
 ----
-MATCH (m:Member) WHERE size( (m)-[:RSVPD]->() ) >= 5
+MATCH (m:Member) WHERE size( (m)-[:RSVPD]->() ) >= 7
 SET m:Process
 RETURN count(*)
 ----
@@ -44,12 +47,12 @@ image::{img}/slides.jpg[]
 
 == Materialising the latent social graph
 
-Let's try processing just the first 1,000 of those members.
+Let's try processing just the first 500 of those members.
 Run the following query:
 
 [source,cypher]
 ----
-MATCH (m1:Process) WITH m1 LIMIT 1000
+MATCH (m1:Process) WITH m1 LIMIT 500
 REMOVE m1:Process
 WITH m1
 MATCH (m1)-[:RSVPD]->(event)<-[:RSVPD]-(m2)
@@ -61,7 +64,7 @@ MERGE (m1)-[:FRIENDS]-(m2)
 RETURN count(*);
 ----
 
-You should see that ~ 63,000 relationships have been created.
+You should see that quite a number of relationships have been created.
 
 It would be nice if we could execute that query multiple times until all members have been processed.
 
@@ -77,10 +80,10 @@ call apoc.periodic.commit("
   WITH m1 MATCH (m1)-[:RSVPD]->(event)<-[:RSVPD]-(m2)
   WITH m1, m2, COUNT(*) AS times WHERE times >= 5
   MERGE (m1)-[:FRIENDS]-(m2) RETURN count(*)
-",{limit:1000})
+",{limit:500})
 ----
 
-This query will probably run for a couple of minutes, creating ~ 300,000 `FRIENDS` relationships.
+This query will probably run for a couple of minutes, creating a lot of `FRIENDS` relationships.
 
 Run the following query to check that they've been created:
 
@@ -89,12 +92,28 @@ Run the following query to check that they've been created:
 MATCH ()-[:FRIENDS]-() RETURN COUNT(*)
 ----
 
+ifdef::env-training[]
+
 == Exercise: Adding friends to the recommendations query
 
 Update the events recommendation query to:
 
 * count how many of our friends have `RSVPD` for an event
 * return the names of those friends as well
+
+== Do we have friends ?
+
+image::{img}/slides.jpg[]
+
+pass:a[<a play-topic='{guides}/08_latent_answers.html'>Answers: Social Graph</a>]
+
+endif::env-training[]
+ifndef::env-training[]
+
+include::08_latent_answers.adoc[lines=4..-1]
+
+endif::env-training[]
+
 
 == Next Step
 In our next section we're going to apply some more sophisticated scoring functions to the recommendation queries that we've built so far.

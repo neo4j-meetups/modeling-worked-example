@@ -76,10 +76,10 @@ MERGE (group)-[:HOSTED_EVENT]->(event)
 
 Run the following query to check that worked as expected:
 
-[source,cypher,subs=attributes]
+[source,cypher,subs=attributes,none]
 ----
 MATCH (group:Group)-[hosted:HOSTED_EVENT]->(event)
-WHERE group.name STARTS WITH "{neo4j-group-name}" AND event.time < timestamp()
+WHERE group.name STARTS WITH {neo4j-group-name} AND event.time < timestamp()
 RETURN event, group, hosted
 ORDER BY event.time DESC
 LIMIT 10
@@ -147,7 +147,8 @@ Update the recommendations query to:
 == You know the drill by now!
 
 image::{img}/slides.jpg[]
-pass:a[<a play-topic='{guides}/04_events_answers.html'>Extending events recommendation</a>]
+
+pass:a[<a play-topic='{guides}/04_events_answers.html'>Answers: Extending events recommendation</a>]
 
 endif::env-training[]
 

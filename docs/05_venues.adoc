@@ -44,6 +44,8 @@ _Tip_ You'll have to iterate over the events CSV file again to get the `venue_id
 image::{img}/slides.jpg[]
 pass:a[<a play-topic='{guides}/05_venues_import_answers.html'>Answers: Importing Venues</a>]
 
+pass:a[<a play-topic='{guides}/05_venues_import_answers.html'>Answers: Importing Venues</a>]
+
 endif::env-training[]
 ifndef::env-training[]
 
@@ -80,7 +82,7 @@ endif::env-training[]
 
 We'll start with a simple query to find venues near here:
 
-[source,cypher,subs=attributes]
+[source,cypher,subs=attributes,none]
 ----
 WITH point({trainingLocation}) AS trainingVenue
 MATCH (venue:Venue)
@@ -93,7 +95,7 @@ LIMIT 10
 
 This query
 
-* specifies our current location in a variable called `graphConnectTrainingVenue`
+* specifies our current location in a variable called `trainingVenue`
 * iterates over all venues
 * calculates the distance from our current location to each venue
 * returns the 10 closest venues to us along with the distance in metres.
@@ -109,6 +111,8 @@ ifdef::env-training[]
 == The answers are waiting...
 
 image::{img}/slides.jpg[]
+
+
 pass:a[<a play-topic='{guides}/05_venues_distance_queries_answers.html'>Answers: Using venues in recommendations</a>]
 
 endif::env-training[]

@@ -1,11 +1,12 @@
 == Collaborative filtering
 include::include.adoc[]
+include::form.adoc[tags=name]
 
 This query is too slow so we can't use it at the moment:
 
 [source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->(group)<-[:MEMBER_OF]-()-[:MEMBER_OF]->(otherGroup)
+MATCH (member:Member {name: {name}})-[:MEMBER_OF]->(group)<-[:MEMBER_OF]-()-[:MEMBER_OF]->(otherGroup)
 RETURN otherGroup.name, COUNT(*) AS score
 ORDER BY score DESC
 ----
@@ -19,7 +20,7 @@ Can also show how you could run a procedure to keep those inferred interests up 
 
 [source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
+MATCH (member:Member {name: {name}})-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
 WITH member, topic, COUNT(*) AS score
 MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)
 WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
