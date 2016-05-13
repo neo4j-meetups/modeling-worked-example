@@ -1,6 +1,6 @@
 = My venues answers
 include::include.adoc[]
-
+include::form.adoc[tags=name]
 == Exercise: Events at my venues
 
 At the moment our event recommendation query takes into account our groups, topics and the previous events we've been to but it doesn't take into account where those events were hosted which could be an important factor.
@@ -17,9 +17,9 @@ to account for that problem with the data.
 
 == Events at my venues
 
-[source,cypher]
+[source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})
+MATCH (member:Member) WHERE member.name CONTAINS {name}
 MATCH (futureEvent:Event)
 WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()
 
@@ -34,7 +34,7 @@ WHERE previousEvent.time < timestamp()
 WITH member, futureEvent, commonTopics, myGroup, COUNT(rsvp) AS previousEvents
 MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
 
-WITH member, futureEvent, group, venue, commonTopics, myGroup, previousEvents, distance(point(venue), point({latitude: 51.518551, longitude: -0.086114})) AS distance
+WITH member, futureEvent, group, venue, commonTopics, myGroup, previousEvents, distance(point(venue), point({trainingLocation})) AS distance
 OPTIONAL MATCH (member)-[rsvp:RSVPD]->(previousEvent)-[:VENUE]->(venue)
 WHERE previousEvent.time < timestamp()
 
@@ -48,9 +48,9 @@ ORDER BY score DESC
 
 == Events near my venues
 
-[source,cypher]
+[source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})
+MATCH (member:Member) WHERE member.name CONTAINS {name}
 MATCH (futureEvent:Event)
 WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()
 
@@ -65,7 +65,7 @@ WHERE previousEvent.time < timestamp()
 WITH member, futureEvent, commonTopics, myGroup, COUNT(rsvp) AS previousEvents
 MATCH (venue)<-[:VENUE]-(futureEvent)<-[:HOSTED_EVENT]-(group)
 
-WITH member, futureEvent, group, venue, commonTopics, myGroup, previousEvents, distance(point(venue), point({latitude: 51.518551, longitude: -0.086114})) AS distance
+WITH member, futureEvent, group, venue, commonTopics, myGroup, previousEvents, distance(point(venue), point({trainingLocation})) AS distance
 OPTIONAL MATCH (member)-[rsvp:RSVPD]->(previousEvent)-[:VENUE]->(aVenue)
 WHERE previousEvent.time < timestamp() AND abs(distance(point(venue), point(aVenue))) < 500
 

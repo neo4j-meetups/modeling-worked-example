@@ -76,7 +76,7 @@ MERGE (group)-[:HOSTED_EVENT]->(event)
 
 Run the following query to check that worked as expected:
 
-[source,cypher]
+[source,cypher,subs=attributes]
 ----
 MATCH (group:Group)-[hosted:HOSTED_EVENT]->(event)
 WHERE group.name STARTS WITH "{neo4j-group-name}" AND event.time < timestamp()
@@ -92,10 +92,12 @@ If all's well you should see the last 10 events hosted by the Neo4j Meetup group
 The simplest event recommendation we can make is to find the groups we’re a member of and then find its future events.
 We'll start with that and build from there:
 
-[source,cypher]
+include::form.adoc[tags=name]
+
+[source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->(group)-[:HOSTED_EVENT]->(futureEvent)
-WHERE futureEvent.time > timestamp()
+MATCH (member:Member)-[:MEMBER_OF]->(group)-[:HOSTED_EVENT]->(futureEvent)
+WHERE member.name CONTAINS {name} AND futureEvent.time > timestamp()
 RETURN group.name,
        futureEvent.name,
        round((futureEvent.time - timestamp()) / (24.0*60*60*1000)) AS days
@@ -108,9 +110,11 @@ That's a good start but it's a bit restrictive - I'm never going to learn about 
 
 One way we could make a better recommendation is to suggest events hosted by groups that have my topics even if I'm not a member of those groups.
 
-[source,cypher]
+include::form.adoc[tags=name]
+
+[source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})
+MATCH (member:Member) WHERE member.name CONTAINS {name}
 MATCH (futureEvent:Event) WHERE futureEvent.time > timestamp()
 
 WITH member, futureEvent, EXISTS((member)-[:MEMBER_OF]->()-[:HOSTED_EVENT]->(futureEvent)) AS myGroup
@@ -143,6 +147,7 @@ Update the recommendations query to:
 == You know the drill by now!
 
 image::{img}/slides.jpg[]
+pass:a[<a play-topic='{guides}/04_events_answers.html'>Extending events recommendation</a>]
 
 endif::env-training[]
 
@@ -154,9 +159,11 @@ i.e. we know whether the event is in our group and we know how many of our topic
 
 We'll give a score of `5` if it's an event in one of our groups, add that to the number of common topics, add a penalty for events further in the future and then order by the total.
 
-[source,cypher]
+include::form.adoc[tags=name]
+
+[source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})
+MATCH (member:Member) WHERE member.name CONTAINS {name}
 MATCH (futureEvent:Event)
 WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()
 

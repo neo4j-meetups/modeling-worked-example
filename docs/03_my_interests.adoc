@@ -54,13 +54,11 @@ This might take a bit of time - there's a lot of members and topics to get throu
 
 Now we're ready to write our first query which uses some data we've explicitly provided meetup.com.
 
-++++
-<label>Name:</label> <input value-for="name" class="form-control" value="A Name">
-++++
+include::form.adoc[tags=name]
 
 [source,cypher,subs="attributes,none"]
 ----
-MATCH (member:Member {name: '<span  value-key="name">A Name</span>'})-[:INTERESTED_IN]->(topic),
+MATCH (member:Member {name: {name}})-[:INTERESTED_IN]->(topic),
       (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
 WITH member, topic, COUNT(*) AS score
 MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)
@@ -97,13 +95,11 @@ LIMIT 50
 
 Let's take someone from that list who didn't specify any interests when they signed up for meetup.com:
 
-++++
-<label>Name:</label> <input value-for="name" class="form-control" value="A Name">
-++++
+include::form.adoc[tags=name]
 
 [source,cypher,subs="attributes,none"]
 ----
-MATCH (member:Member {name: '<span  value-key="name">A Name</span>'})-[:INTERESTED_IN]->(topic), (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
+MATCH (member:Member {name: {name}})-[:INTERESTED_IN]->(topic), (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
 WITH member, topic, COUNT(*) AS score
 MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)
 WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)
@@ -135,6 +131,7 @@ ifdef::env-training[]
 == The answers are waiting...
 
 image::{img}/slides.jpg[]
+pass:a[<a play-topic='{guides}/03_inferred_answers.html'>Answers: Inferring interests</a>]
 
 endif::env-training[]
 
@@ -178,12 +175,15 @@ ____
 
 But now we've added in some extra relationships which allow us to make recommendations even to people like Aleks who haven't specified any interests.
 
-Run the following query:
+Run the following query: 
+
+include::form.adoc[tags=name]
 
 [source,cypher,subs="attributes,none"]
 ----
-MATCH (member:Member {name: '<span  value-key="name">A Name</span>'})-[:INTERESTED_IN]->(topic),
+MATCH (member:Member)-[:INTERESTED_IN]->(topic),
       (member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)
+WHERE member.name CONTAINS {name}
 WITH member, topic, COUNT(*) AS score
 MATCH (topic)<-[:HAS_TOPIC]-(otherGroup)
 WHERE NOT (member)-[:MEMBER_OF]->(otherGroup)

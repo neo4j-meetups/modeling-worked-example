@@ -1,13 +1,24 @@
-++++
-<!--form><div class="node"><div class="form-group"-->
 // tag::group[]
-<label>Group:</label> <input value-for="group" class="form-control" value="">
-// end::group[]
-// tag::topic[]
-<label>Topic:</label> <input value-for="topic" class="form-control" value="">
-// end::topic[]
-// tag::name[]
-<label>Name:</label> <input value-for="name" class="form-control" value="">
-// end::name[]
-<!--/div></div></form-->
 ++++
+<input style="display:inline;width:30%;" value-for="group" class="form-control" value="Group" size="40">
+++++
+// end::group[]
+
+
+// tag::topic[]
+++++
+<input style="display:inline;width:30%;" value-for="topic" class="form-control" value="Topic" size="40">
+++++
+// end::topic[]
+
+// tag::name[]
+++++
+<input style="display:inline;width:30%;" value-for="name" class="form-control" value="A Name" size="40">
+++++
+// end::name[]
+
+// tag::name2[]
+++++
+<input style="display:inline;width:30%;" value-for="name2" class="form-control" value="A Name" size="40">
+++++
+// end::name2[]

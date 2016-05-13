@@ -3,8 +3,8 @@ include::include.adoc[]
 
 == Procedures
 
-Procedures are a new feature in Neo4j 3.0.0 which allow you to write custom code which can be invoked directly from Cypher.
-You can read more details in the link:http://neo4j.com/docs/developer-manual/3.0-RC1/#procedures[documentation].
+Procedures are a new feature in Neo4j 3.x which allow you to write custom code which can be invoked directly from Cypher.
+You can read more details in the link:http://neo4j.com/docs/developer-manual/current/#procedures[documentation].
 
 There are some built in procedures.
 You can see what they are by running the following command:
@@ -33,17 +33,20 @@ All the built in procedures are used to introspect the database but we can also 
 
 == Installing apoc (Awesome procedures)
 
-Lucky for us link:https://twitter.com/mesirii[Michael] has actually done the heavy lifting already and created the link:https://github.com/jexp/neo4j-apoc-procedures[apoc] library which contains lots of useful procedures that we can use in our recommendations queries.
+Lucky for us link:https://twitter.com/mesirii[Michael] has actually done the heavy lifting already and created the link:https://github.com/neo4j-contrib/neo4j-apoc-procedures[apoc] library which contains lots of useful procedures that we can use in our recommendations queries.
 
 First follow these instructions to get `apoc` installed on your local instance of Neo4j:
 
 * You should have already copied `apoc.jar` onto your machine.
-If you haven't then grab a USB stick from one of the trainers or download the latest version of apoc from link:https://github.com/jexp/neo4j-apoc-procedures/releases/latest[]
-* Copy `apoc.jar` into your plugins folder wherever you have installed Neo4j.
+If you haven't then grab a USB stick from one of the trainers or download the latest version of apoc from link:https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/latest[]
+* Copy `apoc.jar` into your `plugins` folder wherever you have installed Neo4j.
+
+////
 * If you're using Neo4j desktop you'll need to explicitly specify where that plugins folder is.
 You can do that by setting `dbms.directories.plugins` in `neo4j.conf`
 
 e.g. `dbms.directories.plugins=/Applications/Neo4j\ Community\ Edition.app/Contents/Resources/app/plugins` on Mac OS X
+////
 
 * Restart Neo4j
 

@@ -1,9 +1,7 @@
 = Recommendations by explicit interest
 include::include.adoc[]
 
-++++
-<label>Name:</label> <input value-for="name" class="form-control" value="A Name">
-++++
+include::form.adoc[tags=name]
 
 == Exercise: Inferring interests
 
@@ -14,7 +12,7 @@ include::include.adoc[]
 
 [source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: '<span  value-key="name">A Name</span>'})-[:MEMBER_OF]->()-[:HAS_TOPIC]->(topic)
+MATCH (member:Member {name: {name}})-[:MEMBER_OF]->()-[:HAS_TOPIC]->(topic)
 WHERE NOT ((member)-[:INTERESTED_IN]->(topic))
 RETURN DISTINCT topic.name
 ----
@@ -23,7 +21,7 @@ RETURN DISTINCT topic.name
 
 [source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]->()-[:HAS_TOPIC]->(topic)
+MATCH (member:Member {name: {name}})-[:MEMBER_OF]->()-[:HAS_TOPIC]->(topic)
 WHERE NOT ((member)-[:INTERESTED_IN]->(topic))
 RETURN topic.name, COUNT(*) AS times
 ORDER BY times DESC

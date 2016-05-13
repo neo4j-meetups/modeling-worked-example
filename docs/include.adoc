@@ -1,7 +1,8 @@
-:name-input: '<span  value-key="name"></span>'
-:group-input: '<span  value-key="group"></span>'
-:topic-input: '<span  value-key="topic"></span>'
-:venue-location: {latitude: 51.518551, longitude: -0.086114}
+:name: pass:['<span  value-key="name">A Name</span>']
+:name2: pass:['<span  value-key="name2">A Name</span>']
+:group: pass:['<span  value-key="group">Group</span>']
+:topic: pass['<span  value-key="topic">Topic</span>']
+:trainingLocation: {latitude: 51.518551, longitude: -0.086114}
 :neo4j-group-name: 'Graph Database'
 :csv-url: https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/
 :icons: font

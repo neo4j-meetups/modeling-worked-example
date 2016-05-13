@@ -1,5 +1,6 @@
 = Venue Distance Queries Answers
 include::include.adoc[]
+include::form.adoc[tags=name]
 
 == Exercise: Using venues in recommendations
 
@@ -10,7 +11,7 @@ include::include.adoc[]
 
 [source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})
+MATCH (member:Member) WHERE member.name CONTAINS {name}
 MATCH (futureEvent:Event)
 WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()
 
@@ -32,7 +33,8 @@ ORDER BY score DESC
 
 [source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})
+MATCH (member:Member) WHERE member.name CONTAINS {name}
+
 MATCH (futureEvent:Event)
 WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()
 

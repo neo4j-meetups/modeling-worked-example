@@ -124,7 +124,7 @@ We've now got groups, topics and members loaded into our database so it's time f
 == All the answers will be revealed...just as soon as you look at the slides
 
 image::{img}/slides.jpg[]
-pass:a[<a play-topic='{guides}/02_find_yourself_answers.html'>Answers: Explore the graph</a>]
+pass:a[<a play-topic='{guides}/02_find_yourself_answers.html'>Answers: Find yourself and your groups</a>]
 
 endif::env-training[]
 
@@ -132,13 +132,11 @@ endif::env-training[]
 
 For our next recommendation we're still going to be finding similar groups to the Neo4j one but we'll also check whether we're already a member of the other groups.
 
-++++
-<label>Name:</label> <input value-for="name" class="form-control" value="A Name">
-++++
+include::form.adoc[tags=name]
 
 [source,cypher,subs="attributes,none"]
 ----
-MATCH (member:Member) WHERE member.name CONTAINS '<span  value-key="name">A Name</span>'
+MATCH (member:Member) WHERE member.name CONTAINS {name}
 MATCH (group:Group)-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup:Group)
 WHERE group.name CONTAINS {neo4j-group-name}
   AND NOT((member)-[:MEMBER_OF]->(otherGroup) )
@@ -174,16 +172,14 @@ So now rather than finding groups that have the same topics as the Neo4j group w
 
 == Find my similar groups
 
-++++
-<label>Name:</label> <input value-for="name" class="form-control" value="A Name">
-++++
+include::form.adoc[tags=name2]
 
 We only have to change our previous query slightly to find our similar groups rather than Neo4j's:
 
 [source,cypher,subs="attributes,none"]
 ----
 MATCH (member:Member)-[:MEMBER_OF]->()-[:HAS_TOPIC]->()<-[:HAS_TOPIC]-(otherGroup:Group)
-WHERE member.name CONTAINS '<span  value-key="name">A Name</span>'
+WHERE member.name CONTAINS {name2}
   AND NOT (member)-[:MEMBER_OF]->(otherGroup)
 RETURN otherGroup.name,
        COUNT(*) AS topicsInCommon

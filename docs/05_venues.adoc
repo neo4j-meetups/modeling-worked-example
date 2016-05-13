@@ -42,6 +42,7 @@ _Tip_ You'll have to iterate over the events CSV file again to get the `venue_id
 == It's slide time
 
 image::{img}/slides.jpg[]
+pass:a[<a play-topic='{guides}/05_venues_import_answers.html'>Answers: Importing Venues</a>]
 
 endif::env-training[]
 ifndef::env-training[]
@@ -81,7 +82,7 @@ We'll start with a simple query to find venues near here:
 
 [source,cypher,subs=attributes]
 ----
-WITH point({training-location}) AS trainingVenue
+WITH point({trainingLocation}) AS trainingVenue
 MATCH (venue:Venue)
 
 WITH venue, distance(point(venue), trainingVenue) AS distance
@@ -108,6 +109,7 @@ ifdef::env-training[]
 == The answers are waiting...
 
 image::{img}/slides.jpg[]
+pass:a[<a play-topic='{guides}/05_venues_distance_queries_answers.html'>Answers: Using venues in recommendations</a>]
 
 endif::env-training[]
 

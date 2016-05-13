@@ -38,16 +38,13 @@ ON CREATE SET rsvp.created = toint(row.created),
 
 Let's check they got imported correctly:
 
-[source,cypher]
-----
-MATCH (event:Event {name: "GraphHack @ Graph Connect 2016"})<-[rsvp:RSVPD]-(attendee)
-RETURN *
-----
+include::form.adoc[tags=event]
 
 [source,cypher]
 ----
-MATCH (event:Event {name: "GraphHack @ Graph Connect 2016"})<-[:RSVPD]-(attendee)
-RETURN count(*)
+MATCH (event:Event)<-[rsvp:RSVPD]-(attendee)
+WHERE event.name CONTAINS {event}
+RETURN *
 ----
 
 This query shows us who's signed up for the hackathon we're running tonight - hopefully you can see your name on that list?!
@@ -58,9 +55,11 @@ Now we're ready to make use of RSVPs and venues in our events recommendation que
 
 First we'll update the query to add a score for an event based on previous events we've attended in that group.
 
-[source,cypher]
+include::form.adoc[tags=name]
+
+[source,cypher,subs=attributes]
 ----
-MATCH (member:Member {name: "Mark Needham"})
+MATCH (member:Member) WHERE member.name CONTAINS {name}
 MATCH (futureEvent:Event)
 WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) > futureEvent.time > timestamp()
 
@@ -104,6 +103,7 @@ to account for that problem with the data.
 == To the slides!
 
 image::{img}/slides.jpg[]
+pass:a[<a play-topic='{guides}/06_my_venues_answers.html'>Answers: Events at my venues</a>]
 
 == Next Step
 In our next section we're going to take a brief detour to introduce procedures, a new addition in Neo4j 3.0.0.
