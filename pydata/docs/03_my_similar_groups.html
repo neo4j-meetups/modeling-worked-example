@@ -346,7 +346,7 @@ RETURN group, topic</code></pre>
     <div>
       <div class="listingblock">
 <div class="content">
-<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (m:Member)-[:MEMBER_OF]->(group), (group)-[:HAS_TOPIC]->(topic)-[:IN_CLUSTER]->(cluster)
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (m:Member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)-[:IN_CLUSTER]->(cluster)
 WHERE m.name = "Mark Needham"
 RETURN cluster.name, COUNT(*) AS times
 ORDER BY times DESC</code></pre>
@@ -365,7 +365,7 @@ ORDER BY times DESC</code></pre>
     <div>
       <div class="listingblock">
 <div class="content">
-<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (m:Member)-[:MEMBER_OF]->(group), (group)-[:HAS_TOPIC]->(topic)-[:IN_CLUSTER]->(cluster)
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (m:Member)-[:MEMBER_OF]->(group)-[:HAS_TOPIC]->(topic)-[:IN_CLUSTER]->(cluster)
 WHERE m.name = "Mark Needham"
 WITH DISTINCT topic, cluster
 RETURN cluster.name, COUNT(*) AS times

@@ -216,17 +216,22 @@ ORDER BY days</code></pre>
     <br/>
     <div>
       <div class="paragraph">
-<p>One way we could make a better recommendation is to suggest events hosted by groups that have my topics even if I&#8217;m not a member of those groups.</p>
+<p>One way we could make a better recommendation is to suggest events hosted by groups that have my topics even if I&#8217;m not a member of those groups.
+We&#8217;ll take t</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (member:Member {name: "Mark Needham"})
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]-&gt;()-[:HAS_TOPIC]-&gt;()-[:IN_CLUSTER]-(cluster)
+WITH member, cluster, COUNT(*) AS times
+ORDER BY times DESC
+LIMIT 1
+
 MATCH (futureEvent:Event) WHERE futureEvent.time &gt; timestamp()
 
-WITH member, futureEvent, EXISTS((member)-[:MEMBER_OF]-&gt;()-[:HOSTED_EVENT]-&gt;(futureEvent)) AS myGroup
-OPTIONAL MATCH (member)-[:INTERESTED_IN]-&gt;()&lt;-[:HAS_TOPIC]-()-[:HOSTED_EVENT]-&gt;(futureEvent)
+WITH member, cluster, futureEvent, EXISTS((member)-[:MEMBER_OF]-&gt;()-[:HOSTED_EVENT]-&gt;(futureEvent)) AS myGroup
+OPTIONAL MATCH (futureEvent)&lt;-[:HOSTED_EVENT]-()-[:HAS_TOPIC]-&gt;(topic)-[:IN_CLUSTER]-&gt;(cluster:Cluster)
 
-WITH member, futureEvent, myGroup, COUNT(*) AS commonTopics
+WITH member, cluster, futureEvent, myGroup, COUNT(topic) AS commonTopics
 MATCH (futureEvent)&lt;-[:HOSTED_EVENT]-(group)
 
 RETURN futureEvent.name, futureEvent.time, group.name, commonTopics, myGroup
@@ -239,13 +244,16 @@ ORDER BY futureEvent.time</code></pre>
 <div class="ulist">
 <ul>
 <li>
+<p>finds my most popular topics cluster</p>
+</li>
+<li>
 <p>finds all future events</p>
 </li>
 <li>
 <p>checks whether those events are hosted by a group that we&#8217;re a member of</p>
 </li>
 <li>
-<p>counts how many common topics we have with the group hosting the event</p>
+<p>counts how many common topics my most popular topic cluster has with the group hosting the event</p>
 </li>
 <li>
 <p>finds the group hosting the event</p>
@@ -272,10 +280,10 @@ ORDER BY futureEvent.time</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Only show events happening in the next 7 days</p>
+<p>Filter out events which have less than 3 common topics</p>
 </li>
 <li>
-<p>Show events happening for the topics in my top cluster</p>
+<p>Only show events happening in the next 7 days</p>
 </li>
 </ul>
 </div>
@@ -287,12 +295,61 @@ ORDER BY futureEvent.time</code></pre>
 
 <slide class="row-fluid">
   <div class="col-sm-12">
-    <h3>You know the drill by now!</h3>
+    <h3>Answer: Filter out events which have less than 3 common topics</h3>
     <br/>
     <div>
-      <div class="imageblock">
+      <div class="listingblock">
 <div class="content">
-<img src="http://guides.neo4j.com/pydata/img/slides.jpg" alt="slides">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]-&gt;()-[:HAS_TOPIC]-&gt;()-[:IN_CLUSTER]-(cluster)
+WITH member, cluster, COUNT(*) AS times
+ORDER BY times DESC
+LIMIT 1
+
+MATCH (futureEvent:Event) WHERE futureEvent.time &gt; timestamp()
+
+WITH member, cluster, futureEvent, EXISTS((member)-[:MEMBER_OF]-&gt;()-[:HOSTED_EVENT]-&gt;(futureEvent)) AS myGroup
+OPTIONAL MATCH (futureEvent)&lt;-[:HOSTED_EVENT]-()-[:HAS_TOPIC]-&gt;(topic)-[:IN_CLUSTER]-&gt;(cluster:Cluster)
+
+WITH member, cluster, futureEvent, myGroup, COUNT(topic) AS commonTopics
+WHERE commonTopics &gt;= 3
+
+MATCH (futureEvent)&lt;-[:HOSTED_EVENT]-(group)
+
+RETURN futureEvent.name, futureEvent.time, group.name, commonTopics, myGroup
+ORDER BY futureEvent.time</code></pre>
+</div>
+</div>
+	</div>
+  </div>
+</slide>
+
+
+
+<slide class="row-fluid">
+  <div class="col-sm-12">
+    <h3>Answer: Only show events happening in the next 7 days</h3>
+    <br/>
+    <div>
+      <div class="listingblock">
+<div class="content">
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]-&gt;()-[:HAS_TOPIC]-&gt;()-[:IN_CLUSTER]-(cluster)
+WITH member, cluster, COUNT(*) AS times
+ORDER BY times DESC
+LIMIT 1
+
+MATCH (futureEvent:Event)
+WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) &gt; futureEvent.time &gt; timestamp()
+
+WITH member, cluster, futureEvent, EXISTS((member)-[:MEMBER_OF]-&gt;()-[:HOSTED_EVENT]-&gt;(futureEvent)) AS myGroup
+OPTIONAL MATCH (futureEvent)&lt;-[:HOSTED_EVENT]-()-[:HAS_TOPIC]-&gt;(topic)-[:IN_CLUSTER]-&gt;(cluster:Cluster)
+
+WITH member, cluster, futureEvent, myGroup, COUNT(topic) AS commonTopics
+WHERE commonTopics &gt;= 3
+
+MATCH (futureEvent)&lt;-[:HOSTED_EVENT]-(group)
+
+RETURN futureEvent.name, futureEvent.time, group.name, commonTopics, myGroup
+ORDER BY futureEvent.time</code></pre>
 </div>
 </div>
 	</div>
@@ -316,15 +373,20 @@ i.e. we know whether the event is in our group and we know how many of our topic
 </div>
 <div class="listingblock">
 <div class="content">
-<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (member:Member {name: "Mark Needham"})
+<pre mode="cypher"  class="highlight pre-scrollable code runnable"><code class="cypher language-cypher">MATCH (member:Member {name: "Mark Needham"})-[:MEMBER_OF]-&gt;()-[:HAS_TOPIC]-&gt;()-[:IN_CLUSTER]-(cluster)
+WITH member, cluster, COUNT(*) AS times
+ORDER BY times DESC
+LIMIT 1
+
 MATCH (futureEvent:Event)
 WHERE timestamp() + (7 * 24 * 60 * 60 * 1000) &gt; futureEvent.time &gt; timestamp()
 
-WITH member, futureEvent, EXISTS((member)-[:MEMBER_OF]-&gt;()-[:HOSTED_EVENT]-&gt;(futureEvent)) AS myGroup
-OPTIONAL MATCH (member)-[:INTERESTED_IN]-&gt;()&lt;-[:HAS_TOPIC]-()-[:HOSTED_EVENT]-&gt;(futureEvent)
+WITH member, cluster, futureEvent, EXISTS((member)-[:MEMBER_OF]-&gt;()-[:HOSTED_EVENT]-&gt;(futureEvent)) AS myGroup
+OPTIONAL MATCH (futureEvent)&lt;-[:HOSTED_EVENT]-()-[:HAS_TOPIC]-&gt;(topic)-[:IN_CLUSTER]-&gt;(cluster:Cluster)
 
-WITH member, futureEvent, myGroup, COUNT(*) AS commonTopics
+WITH member, cluster, futureEvent, myGroup, COUNT(topic) AS commonTopics
 WHERE commonTopics &gt;= 3
+
 MATCH (futureEvent)&lt;-[:HOSTED_EVENT]-(group)
 
 WITH futureEvent, group, commonTopics, myGroup, CASE WHEN myGroup THEN 5 ELSE 0 END AS myGroupScore

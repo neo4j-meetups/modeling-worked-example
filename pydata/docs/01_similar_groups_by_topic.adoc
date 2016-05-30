@@ -84,7 +84,7 @@ LIMIT 10
 
 So we've got a topic id, name and urlkey as well as a group id.
 
-= Import Topics
+== Import Topics
 
 We'll ignore the group id for now and run the following query to import topics into the graph:
 
