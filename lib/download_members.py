@@ -26,7 +26,15 @@ for group in groups:
     while True:
         if uri is None:
             break
-        response = requests.get(uri).json()
+        r = requests.get(uri)
+
+        headers = r.headers
+        remaining = headers["X-RateLimit-Remaining"]
+        reset = headers["X-RateLimit-Reset"]
+
+        print "-> remaining: {0}, reset: {1}".format(remaining, reset)
+
+        response = r.json()
         for result in response["results"]:
             results.append(result)
         uri = response["meta"]["next"] if response["meta"]["next"] else None
