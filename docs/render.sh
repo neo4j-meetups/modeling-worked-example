@@ -6,21 +6,22 @@ function render {
 $GUIDES/run.sh index.adoc index.html +1 "$@"
 $GUIDES/run.sh 01_similar_groups_by_topic.adoc 01_similar_groups_by_topic.html +1 "$@"
 $GUIDES/run.sh 01_explore_graph_answers.adoc 01_explore_graph_answers.html +1 "$@"
+$GUIDES/run.sh 01_explore_graph_answers.adoc answers/1.html +1 "$@"
 $GUIDES/run.sh 02_my_similar_groups.adoc 02_my_similar_groups.html +1 "$@"
-$GUIDES/run.sh 02_find_yourself_answers.adoc 02_find_yourself_answers.html +1 "$@"
+$GUIDES/run.sh 02_find_yourself_answers.adoc answers/2.html +1 "$@"
 $GUIDES/run.sh 03_my_interests.adoc 03_my_interests.html +1 "$@"
-$GUIDES/run.sh 03_inferred_answers.adoc 03_inferred_answers.html +1 "$@"
+$GUIDES/run.sh 03_inferred_answers.adoc answers/3.html +1 "$@"
 $GUIDES/run.sh 04_events.adoc 04_events.html +1 "$@"
-$GUIDES/run.sh 04_events_answers.adoc 04_events_answers.html +1 "$@"
+$GUIDES/run.sh 04_events_answers.adoc answers/4.html +1 "$@"
 $GUIDES/run.sh 05_venues.adoc 05_venues.html +1 "$@"
-$GUIDES/run.sh 05_venues_import_answers.adoc 05_venues_import_answers.html +1 "$@"
-$GUIDES/run.sh 05_venues_distance_queries_answers.adoc 05_venues_distance_queries_answers.html +1 "$@"
+$GUIDES/run.sh 05_venues_import_answers.adoc answers/5a.html +1 "$@"
+$GUIDES/run.sh 05_venues_distance_queries_answers.adoc answers/5b.html +1 "$@"
 $GUIDES/run.sh 06_rsvps.adoc 06_rsvps.html +1 "$@"
-$GUIDES/run.sh 06_my_venues_answers.adoc 06_my_venues_answers.html +1 "$@"
+$GUIDES/run.sh 06_my_venues_answers.adoc answers/6.html +1 "$@"
 $GUIDES/run.sh 07_procedures.adoc 07_procedures.html +1 "$@"
-$GUIDES/run.sh 07_photos_answers.adoc 07_photos_answers.html +1 "$@"
+$GUIDES/run.sh 07_photos_answers.adoc answers/7.html +1 "$@"
 $GUIDES/run.sh 08_latent_social_graph.adoc 08_latent_social_graph.html +1 "$@"
-$GUIDES/run.sh 08_latent_answers.adoc 08_latent_answers.html +1 "$@"
+$GUIDES/run.sh 08_latent_answers.adoc answers/8.html +1 "$@"
 $GUIDES/run.sh 09_scoring.adoc 09_scoring.html +1 "$@"
 $GUIDES/run.sh 10_free_for_all.adoc 10_free_for_all.html +1 "$@"
 }
@@ -29,7 +30,7 @@ $GUIDES/run.sh 10_free_for_all.adoc 10_free_for_all.html +1 "$@"
 if [ "$1" == "publish" ]; then
   URL=guides.neo4j.com/reco
   render http://$URL -a csv-url=https://raw.githubusercontent.com/neo4j-meetups/modeling-worked-example/master/data/ -a env-training
-  s3cmd put --recursive -P *.html img s3://${URL}/
+  s3cmd put --recursive -P *.html img answers s3://${URL}/
   s3cmd put -P index.html s3://${URL}
 
   URL=guides.neo4j.com/reco/file
