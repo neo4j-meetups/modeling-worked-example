@@ -1,10 +1,7 @@
 = Recommendations by implicit interest
 include::include.adoc[]
-include::form.adoc[tags=name]
 
-++++
-<label>Name:</label> <input value-for="name" class="form-control" value="Mark Needham">
-++++
+include::form.adoc[tags=name]
 
 == Exercise: Find yourself and your groups
 
