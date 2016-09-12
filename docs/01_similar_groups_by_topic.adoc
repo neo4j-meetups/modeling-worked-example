@@ -225,7 +225,7 @@ It's time to write our first recommendation query which will find groups that ha
 [source,cypher,subs=attributes,none]
 ----
 MATCH (group:Group)-[:HAS_TOPIC]->(topic)<-[:HAS_TOPIC]-(otherGroup)
-WHERE group.name CONTAINS {neo4j-group-name}
+WHERE (group.name CONTAINS {neo4j-group-name} OR group.name CONTAINS {neo4j-group-name-alt})
 RETURN otherGroup.name, COUNT(topic) AS topicsInCommon,
        COLLECT(topic.name) AS topics
 ORDER BY topicsInCommon DESC, otherGroup.name

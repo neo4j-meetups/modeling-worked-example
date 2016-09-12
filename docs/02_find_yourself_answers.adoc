@@ -3,7 +3,7 @@ include::include.adoc[]
 include::form.adoc[tags=name]
 
 ++++
-<label>Name:</label> <input value-for="name" class="form-control" value="A Name">
+<label>Name:</label> <input value-for="name" class="form-control" value="Mark Needham">
 ++++
 
 == Exercise: Find yourself and your groups

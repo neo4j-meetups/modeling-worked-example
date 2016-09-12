@@ -179,7 +179,7 @@ Run the following query:
 include::form.adoc[tags=name]
 
 ++++
-<label>Name:</label> <input value-for="name" class="form-control" value="A Name">
+<label>Name:</label> <input value-for="name" class="form-control" value="Mark Needham">
 ++++
 
 [source,cypher,subs="attributes,none"]
