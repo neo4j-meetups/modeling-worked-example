@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # NEO="neo4j-community-2.3.2"
-NEO="neo4j-enterprise-3.0.0-RC1"
+NEO="neo4j-enterprise-3.0.1"
 
 echo ${PWD}
 

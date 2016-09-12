@@ -34,7 +34,6 @@ done
 echo "rsvp_id,event_id,member_id,guests,response,created,mtime" > data/rsvps.csv
 for file in `find data/rsvps -type f`
 do
-  echo $file
   jq -r '.[] | [.rsvp_id, .event.id, .member.member_id, .guests, .response, .created, .mtime] | @csv' $file >> data/rsvps.csv
 done
 

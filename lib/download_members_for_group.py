@@ -26,7 +26,6 @@ while True:
     headers = r.headers
     remaining = headers["X-RateLimit-Remaining"]
     reset = headers["X-RateLimit-Reset"]
-
     print "-> remaining: {0}, reset: {1}".format(remaining, reset)
 
     response = r.json()
