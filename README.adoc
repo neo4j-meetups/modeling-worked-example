@@ -57,6 +57,8 @@ Once you've got that create a file `key` with the following content:
 export MEETUP_API_KEY="<your-api-key>"
 ----
 
+Once you've done that you can run the following script:
+
 [source, bash]
 ----
 ./download.sh
