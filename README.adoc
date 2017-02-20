@@ -63,3 +63,20 @@ Once you've done that you can run the following script:
 ----
 ./download.sh
 ----
+
+By default the data that gets downloaded is London specific.
+If you want to download data for another location you'll need to set the following environment variables:
+
+[source, bash]
+----
+export LAT="51.5072"
+export LON="0.1275"
+----
+
+There will now be a bunch of `.json` files in the `data` directory.
+We need to convert those to `.csv` format to make it easier to load them into Neo4j:
+
+[source]
+----
+./csvify.sh
+----

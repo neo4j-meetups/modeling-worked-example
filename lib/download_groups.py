@@ -5,8 +5,8 @@ import json
 from pprint import pprint
 
 key =  os.environ['MEETUP_API_KEY']
-lat = "51.5072"
-lon = "0.1275"
+lat = os.getenv('LAT', "51.5072")
+lon = os.getenv('LON', "0.1275")
 
 seed_topic = "nosql"
 uri = "https://api.meetup.com/2/groups?&topic={0}&lat={1}&lon={2}&key={3}".format(seed_topic, lat, lon, key)

@@ -9,6 +9,8 @@ def chunks(l, n):
         yield l[i:i+n]
 
 key =  os.environ['MEETUP_API_KEY']
+lat = os.getenv('LAT', "51.5072")
+lon = os.getenv('LON', "0.1275")
 
 with open('data/groups.json') as group_file:
     groups_json = json.load(group_file)
@@ -18,7 +20,7 @@ for idx, chunk in enumerate(chunks(groups, 200)):
     print idx, chunk
     results = []
     group = ",".join(chunk)
-    uri = "https://api.meetup.com/2/events?&group_id={0}&lat=51.5072&lon=0.1275&key={1}&fields=announced_at&status=upcoming,past".format(group, key)
+    uri = "https://api.meetup.com/2/events?&group_id={0}&lat={1}&lon={1}&key={2}&fields=announced_at&status=upcoming,past".format(group, lat, lon, key)
 
     while True:
         if uri is None:

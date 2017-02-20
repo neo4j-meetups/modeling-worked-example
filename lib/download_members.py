@@ -4,8 +4,8 @@ from collections import Counter
 import json
 
 key =  os.environ['MEETUP_API_KEY']
-lat = "51.5072"
-lon = "0.1275"
+lat = os.getenv('LAT', "51.5072")
+lon = os.getenv('LON', "0.1275")
 
 with open('data/groups.json') as group_file:
     groups_json = json.load(group_file)
