@@ -49,7 +49,15 @@ include::docs/queries.adoc[]
 
 == Downloading the raw data
 
+If you want to download the raw data you'll need to first get a link:https://secure.meetup.com/meetup_api/key/[meetup API key].
+Once you've got that create a file `key` with the following content:
+
+[source, text]
+----
+export MEETUP_API_KEY="<your-api-key>"
+----
+
 [source, bash]
 ----
-python lib/download_groups.py
+./download.sh
 ----
