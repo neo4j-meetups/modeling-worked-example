@@ -3,6 +3,7 @@ import os
 from collections import Counter
 import json
 import glob
+import time
 
 def chunks(l, n):
     """Yield successive n-sized chunks from l."""
@@ -31,7 +32,22 @@ for event in event_ids:
     while True:
         if uri is None:
             break
-        response = requests.get(uri).json()
+
+        r = requests.get(uri)
+
+        headers = r.headers
+        remaining = int(headers["X-RateLimit-Remaining"])
+        reset = int(headers["X-RateLimit-Reset"])
+
+        print(remaining, reset)
+
+        if remaining <= 3:
+            print("Waiting for a little bit due to rate limiting. Resuming in {0} seconds".format(reset))
+            time.sleep(reset)
+
+        response = r.json()
+        # print(response)
+
         for result in response["results"]:
             results.append(result)
         uri = response["meta"]["next"] if response["meta"]["next"] else None

@@ -4,7 +4,6 @@ from collections import Counter
 import json
 
 def chunks(l, n):
-    """Yield successive n-sized chunks from l."""
     for i in xrange(0, len(l), n):
         yield l[i:i+n]
 
@@ -20,7 +19,7 @@ for idx, chunk in enumerate(chunks(groups, 200)):
     print idx, chunk
     results = []
     group = ",".join(chunk)
-    uri = "https://api.meetup.com/2/events?&group_id={0}&lat={1}&lon={1}&key={2}&fields=announced_at&status=upcoming,past".format(group, lat, lon, key)
+    uri = "https://api.meetup.com/2/events?&group_id={0}&lat={1}&lon={2}&key={3}&fields=announced_at&status=upcoming,past".format(group, lat, lon, key)
 
     while True:
         if uri is None:

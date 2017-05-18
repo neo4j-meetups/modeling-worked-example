@@ -34,9 +34,12 @@ for group in groups:
 
         print "-> remaining: {0}, reset: {1}".format(remaining, reset)
 
-        response = r.json()
-        for result in response["results"]:
-            results.append(result)
-        uri = response["meta"]["next"] if response["meta"]["next"] else None
+        try:
+            response = r.json()
+            for result in response["results"]:
+                results.append(result)
+            uri = response["meta"]["next"] if response["meta"]["next"] else None
+        except ValueError:
+            print("Skipping {0}".format(uri))    
     with(open(members_file, 'w')) as members_file:
         json.dump(results, members_file)
