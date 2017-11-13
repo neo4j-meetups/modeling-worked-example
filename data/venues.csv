@@ -8,12 +8,14 @@ id,name,city,address_1,address_2,lat,lon
 1022224,"Royal Festival Hall","London SE1 8XX","South Bank Centre","Belvedere Road",51.50658,-0.115437
 1023590,"The George Tavern","London","373 Commercial Road","Stepney, E1 0LA",51.514198,-0.052919
 10237892,"Darwin B15 Lecture Theatre","London","UCL, Gower Street, London, WC1E 6BT",,51.523567,-0.132527
+1026588,"Hilton London Metropole","London","225 Edgware Road,W2",,51.519077,-0.168782
 10317582,"Salesforce London Office","London","Level 27A, 25 Old Broad Street, London. EC2N 1HQ ",,51.515289,-0.084091
 1040306,"The Skills Matter eXchange","London","116-120 Goswell Road","EC1V 7DP",51.524521,-0.099231
 10494552,"81 Leonard Street Events","London, EC2A 4QS","81 Leonard Street",,51.524712,-0.083073
 10558052,"NESTA","London","1 Plough Place, EC4A 1DE",,51.51672,-0.108908
 1057276,"The Crown Tavern","London","43 Clerkenwell Green","EC1R 0EB",51.522906,-0.105205
 1059205,"Young Foundation","London","18 Victoria Park Square","E2 9PF",51.528717,-0.053709
+1060332,"Cafe 1001","London","91 Brick Lane","E1 6QL",51.520841,-0.071848
 10711022,"google campus london","London","4-5 Bonhill Street, London EC2A 4BX, United Kingdom",,51.522694,-0.085303
 107295,"The Yorkshire Grey Pub","London","46 Langham Street","W1W 7AX",51.52,-0.1
 1073057,"Mallet Place Building","London","Room 1.03, Malet Place Engineering Building","Malet Place, UCL",51.500152,-0.126236
@@ -48,7 +50,9 @@ id,name,city,address_1,address_2,lat,lon
 1181700,"The Bishops Finger","City of London","9-10 West Smithfield ",,51.518549,-0.102363
 11824122,"Darwin B40 Lecture Theatre, UCL","London","Gower Street, London, WC1E 6BT",,51.522484,-0.132641
 11836342,"London Olympia Conference Centre","W14 8UX","Hammersmith Road, London",,51.494667,-0.212373
+11845662,"Jamie's wine bar ","London EC3N 1DR","River House, 119-121 Minories, ",,51.511463,-0.075546
 1191094,"Google","London","Belgrave House","76 Buckingham Palace Road",51.4948,-0.1467
+1196339,"business design centre","Islington","52 Upper Street",,51.534565,-0.104732
 12012142,"Online Webinar","London","Online Webinar",,51.511215,-0.119824
 1208061,"The Slug and Lettuce","London","19/20 Hanover Street",,51.513912,-0.144299
 12113012,"The Water Poet","London E1 6BX","9-11 Folgate street",,51.521008,-0.078604
@@ -87,6 +91,7 @@ id,name,city,address_1,address_2,lat,lon
 13079772,"eBay","TW9 1EJ","1 Heron Square, Whittaker Avenue, Richmond",,51.458813,-0.306901
 13167072,"Goldman Sachs","London","Christchurch Court, 10-15 Newgate Street, London EC1A 7HD",,51.5154,-0.100329
 13168372,"UCL - Anatomy G29 JZ Young Lecture Theatre, Anatomy Building,","London","Gower Street, London, WC1E 6BT.",,51.522484,-0.132641
+13264312,"Hackney Community College","London","Shoreditch Campus, Falkirk St, N1 6HQ",,51.530708,-0.078284
 13338782,"Wikimedia UK","London","Development House, 56-64 Leonard Street London, LON, EC2A 4LT",,51.524433,-0.084557
 1337040,"IPC, Blue Fin Building","London","110 Southwark Street",,51.506132,-0.090062
 13401242,"Crown & Anchor","London","Chiswick",,51.49242,-0.26092
@@ -98,6 +103,7 @@ id,name,city,address_1,address_2,lat,lon
 1359032,"Institute of Directors","London","116 Pall Mall",,51.507066,-0.132654
 1365728,"The Guardian","London","King's Place","90 York Way",51.492835,-0.269087
 1368716,"The Dragon Bar","London","138-139 Shoreditch High Street, Shoreditch, London, E1 6JE",,51.526509,-0.078056
+1373233,"ExCeL London","London","One Western Gateway","Royal Victoria Dock",51.508066,0.021828
 1374221,"This is an online promotion","This is an online promotion","This is an online promotion",,0,0
 137477,"The Livery","London","130 Wood Street, in the City of London","EC2V 6DL",51.52,-0.1
 1377229,"Novotel London West","London","Hammersmith",,51.492916,-0.225792
@@ -132,6 +138,7 @@ id,name,city,address_1,address_2,lat,lon
 14638622,"Punch Tavern","London","99 Fleet Street",,51.514095,-0.104891
 14692272,"The Hoop & Grapes"," EC4A 4BL"," 80 Farringdon Street, London",,51.51543,-0.10493
 14703932,"Google UK Ltd ","London","1-13 St Giles High Street London WC2H 8AG",,51.51564,-0.127833
+14724642,"Bossa Studios","London","Zetland House, 5-25 Scrutton Street",,51.525997,-0.080267
 14787042,"Wimbledon library","London","Wimbledon Hill Rd, London, Greater London SW19 7NB",,51.42337,-0.210618
 14834822,"Net-A-Porter. 1 The Village Offices, Westfield London Shopping Centre","London","Ariel Way W12 London",,51.507526,-0.219097
 14876642,"JP Morgan","London","25 Bank Street, Canary Wharf, E14 5JP",,51.503254,-0.020288
@@ -154,6 +161,7 @@ id,name,city,address_1,address_2,lat,lon
 1556337,"London Palace Superbowl","London","First Floor, Elephant & Castle Shopping Centre, SE1 6TE",,51.494598,-0.10047
 1557899,"Viet Hoa","London, E2 8DP","70-72 Kingsland Road",,51.529919,-0.077417
 15696122,"UCL - Christopher Ingold XLG2 LT Christopher Ingold Building,","London","20 Gordon Street, London, WC1H 0AJ",,51.525272,-0.13258
+15785582,"Millenium Hotel London Mayfair ","London","44 Grosvenor Square,W1K2HP London",,51.51083,-0.151045
 15789132,"Kings College London Strand Campus","London","Strand, London WC2R 2LS",,51.511253,-0.119225
 1581180,"Channel 4 Television Corporation","SW1P 2TX","124 Horseferry Road, London",,51.495758,-0.133237
 15824142,"Room 431, University College London","London","16 Taviton Street, London, WC1H 0BW",,51.525372,-0.131554
@@ -186,13 +194,15 @@ id,name,city,address_1,address_2,lat,lon
 17199842,"Sapient London","London","Eden House  8 Spital Square  London E1 6DU",,51.520859,-0.077703
 17199922,"SapientNitro","London","Eden House, 8 Spital Square, E1 6DU",,51.520859,-0.077703
 17300632,"uSwitch","London","Notcutt House, 36 Southwark Bridge Road","SE1 9EU",51.50612,-0.095859
+1730781,"Meet at the Market Porter, Borough Market","London","9 Stoney Street, SE1",,51.505432,-0.091239
 17417202,"Trend Micro","London","2 Kingdom Street, London, W2 6BD",,0,0
 17464152,"JUST EAT","London","Fleet Place House, 2 Fleet Place, EC4M 7RF ",,51.516418,-0.103211
-1752361,"Innovation Warehouse","London","1st Floor, 1 East Poultry Avenue","EC1A 9PT",51.519106,-0.101962
+1752361,"Innovation Warehouse","London","1st Floor, 1 East Poultry Avenue","EC1A 9PT",51.519,-0.102775
 17610622,"Shoreditch Works Village Hall","London","33 Hoxton Square, N1 6PB, London",,51.527145,-0.081472
 17753742,"Mediaocean","London","1st Floor, Blue Fin Building. 110 Southwark Street. ","SE1 0TA",51.506321,-0.099883
 17853912,"George Inn","London","George Inn Yard, 77 Borough High Street, Southwark, SE1 1NH",,51.504253,-0.090503
 17891112,"Bloomberg European HQ","EC2A 1PQ","39-45 Finsbury Square, City Gate House",,51.520084,-0.086223
+17900792,"University College London","London","Gower Street, WC1 6BT",,51.52446,-0.12271
 17905002,"Central Foundation Boys’ School","London","Cowper Street EC2A 4SH",,51.525265,-0.085861
 17931682,"Sports Bar & Grill Waterloo","London","Unit 1 The Balcony, Waterloo Railway Station",,51.503479,-0.11191
 17948492,"Skimlinks","London, N1 6BL","52 Bevenden Street",,51.52951,-0.085943
@@ -221,7 +231,7 @@ id,name,city,address_1,address_2,lat,lon
 19679392,"Huddle ","London","1 Braham Street, Maersk House London, E1 8EP",,51.51429,-0.071736
 19725082,"McGregor Boyall boardroom","London","110 Middlesex Street, E1 7JH",,51.517891,-0.078027
 19768252,"Pivotal","London","4th Floor Bentima House, 168-172 Old Street, EC1V 9BP",,51.525036,-0.090498
-19813002,"The Loft @ the Barclays Accelerator","London","69 – 89 Mile End Road, London E1 4TT",,51.52086,-0.05172
+19823782,"Holborn - Lincoln's Inn Fields","London"," Lincoln's Inn Fields WC2A",,51.516251,-0.116605
 1985611,"Canonical Group Limited","London","27th Floor Millbank Tower 21-24 Millbank, SW1P 4QP",,51.491699,-0.12557
 19863192,"Pact Coffee","London","Unit A404a, The Biscuit Factory, 100 Clement's Road, Bermondsey, SE16 4DG",,51.493675,-0.062911
 19964452,"Corbet Place","London","Ely’s Yard,  Truman Brewery,  15 Hanbury St, E1 6QR",,51.520237,-0.073113
@@ -231,8 +241,6 @@ id,name,city,address_1,address_2,lat,lon
 20128872,"The Betsey Trotswood","London","The Betsey Trotswood, 56 Farringdon Rd, EC1R 3BL",,51.523323,-0.107984
 20142822,"ASOS Plc","London","Greater London House, Hampstead Road. London. NW1 7FB",,51.533401,-0.14602
 20145332,"Furniture Makers' Hall","London","12 Austin Friars EC2N 2HE",,51.515919,-0.085648
-20160642,"The Coin Room @ The Escalator","London","69 – 89 Mile End Road, E1 4TT",,51.520874,-0.051742
-20160642,"The Coin Room @ The Escalator","London","69 – 89 Mile End Road, E1 4TT",,51.520901,-0.052804
 20246322,"University College London, Malet Place","London","WC1E 7JE",,51.522984,-0.13223
 20247532,"UCL University, Darwin B40LT  Darwin Building","London","Gower Street   London  WC1E 6BT ",,51.524784,-0.133439
 20291922,"Mediaocean Blue Fin Building","London","110 Southwark Street",,51.505764,-0.100136
@@ -245,6 +253,7 @@ id,name,city,address_1,address_2,lat,lon
 20641612,"OpenCredo Offices, , 5-11 Lavington Street","London","SE1 0NZ",,51.505302,-0.100214
 20643012,"Google HQ  ","London","123 Buckingham Palace Road SW1W 9SH ",,51.493111,-0.146531
 20685632,"Google Campus","London","4 -5 Bonhill Street",,51.522724,-0.086026
+20717262,"Clore Lecture Theatre","London SW7 2AZ","Huxley Building, Imperial College ",,51.500515,-0.178231
 20779532,"Royal Garden Hotel","London W8 4PT","2-24 Kensington High St",,51.502941,-0.188119
 20812662,"Twitter UK ","London","20 Air Street, W1B 5AN",,51.510769,-0.136101
 20874622,"Skills Matter","EC1V 7DP","116-120 Goswell Road",,51.524509,-0.098982
@@ -286,6 +295,7 @@ id,name,city,address_1,address_2,lat,lon
 23095982,"Keyworth Centre - Main Theatre, London South Bank University","London SE1 6NG","Keyworth Street",,51.496857,-0.10081
 23240472,"Finch's Pub","London","12a Finsbury Square, Moorgate, EC2A 1AN",,51.521767,-0.087464
 23258762,"Campus london","London","4-5 BONHILL STREET LONDON EC2A 4BX",,51.522579,-0.085512
+23267442,"Shazam Entertainment","London","26-28 Hammersmith Grove (2nd Floor, East Wing)",,51.495205,-0.22649
 23282962,"Skills Matter","London","116-120 Goswell Road, EC1V 7DP",,51.524509,-0.098982
 23416352,"Skyline Bar at CCT Venues Plus","London E14 5NR","32nd Floor, 40 Bank Street ",,51.502563,-0.019379
 23419572,"The Boardroom, Impact Hub Kings Cross","London","34b York Way, King's Cross",,51.532421,-0.122426
@@ -348,7 +358,10 @@ id,name,city,address_1,address_2,lat,lon
 23803223,"Greenhouse London, ","London","49 Green Lanes,  N16 9BU",,51.553261,-0.088263
 23813392,"eBay Office","London","247 Tottenham Ct Rd, Fitzrovia, London W1T 7QX",,51.51801,-0.131651
 23815374,"Campus London, a Google space","Greater London","4-5 Bonhill Street London EC2A 4BX",,51.522579,-0.085512
+23816031,"Deloitte Digital","London","Buckley Building, 49 Clerkenwell Green, EC1R 0EB",,51.523319,-0.105071
 23816290,"Rising Sun, 44 / 46 EBURY BRIDGE Road","London","PIMLICO, LONDON, SW1W 8PZ",,51.490116,-0.150412
+23818010,"Arlington conference centre ","NW17HE","220 Arlington Road",,51.539925,-0.144615
+23819396,"Basement, The London Edition","London","10 Berners Street, London W1T 3NP",,51.517132,-0.136346
 23821018,"Level 24, ","E14 5AB","One Canada Square, Canary Wharf, London",,51.504963,-0.019462
 23825471,"Jet Green meeting Room @ The Escalator","London","69 – 89 Mile End Road, London E1 4TT, London, London",,51.520901,-0.052804
 23828433,"Connect39 meeting room","London","Level39, One Canada Square, Canary Wharf",,51.504555,-0.01929
@@ -358,6 +371,7 @@ id,name,city,address_1,address_2,lat,lon
 23842367,"King","London","10th Floor Central Saint Giles 1 Saint Giles High Street, WC2H 8AG ",,51.516113,-0.127293
 23850047,"110 Southwark St.","London","Tableau (11th floor)",,51.50642,-0.12721
 23851173,"UCL, Rooms 130, 132 & 233","London","Foster Court, off Malet Place, WC1E 7JE",,51.522984,-0.132229
+23863151,"The Helicon, Oracle floors","London","1 South Place, London EC2M 2UP",,51.519547,-0.087081
 23871524,"coLenguando","Madrid","c/ Encomienda 21",,40.410542,-3.706286
 23876917,"ThoughtWorks Ltd.  First Floor ","London","76-78 Wardour Street  London, W1F 0UR",,51.513191,-0.133494
 23876920,"ThoughtWorks Ltd. ","London","First Floor  76-78 Wardour Street, W1F 0UR ",,51.513191,-0.133494
@@ -410,6 +424,7 @@ id,name,city,address_1,address_2,lat,lon
 24103838,"The Iron Yard","London, SE1 3ER","Studio 8.2, The Leathermarket, Weston St",,51.500652,-0.085317
 24107042,"WeWork Moorgate","London","1 FORE STREET, EC2Y 9DT",,51.518002,-0.090888
 24107105,"Skills Matter at CodeNode","London","10 South Place, EC2M 7EB",,51.518906,-0.086611
+24107464,"Skills Matter","London","CodeNode, 10 South Place, London, EC2M 7EB, GB",,51.507351,-0.127758
 24107464,"Skills Matter","London","CodeNode, 10 South Place, London, EC2M 7EB, GB",,51.518562,-0.085991
 24125399,"BlackRock","London","12 Throgmorton Avenue ",,51.51565,-0.086673
 24130096,"UCL/BBC London Media Technology Campus","London","5th Floor, One Euston Square, 40 Melton Street, London NW1 2FD",,51.527336,-0.133582
@@ -417,6 +432,8 @@ id,name,city,address_1,address_2,lat,lon
 24139670,"Kingsway Hotel","London","66 Great Queen St",,51.515862,-0.120097
 24141931,"Interchange Triangle","London","The Stables Market, Camden Lock Road, NW1 8AH",,51.541409,-0.146597
 24142254,"Skills Matter | CodeNode","London","10 South Place, EC2M 7EB",,51.518551,-0.086114
+24143393,"The Royal Festival Hall 5th Floor. South Bank. Belvedere Road. SE1 8XX","London","The Royal Festival Hall 5th Floor. South Bank. Belvedere Road. SE1 8XX",,51.505322,-0.116054
+24149291,"University College London, Gustave Tuck Lecture Theatre, Wilkins Building (main campus),","London","Gower Street, WC1E 6BT",,51.524284,-0.134608
 24149803,"Microsoft London","London","4th Floor, 2 Waterhouse Square, EC1N 2ST",,51.518459,-0.110305
 24151371,"Erlang Solutions Ltd","London","Back Church Lane E1 1LU",,51.512688,-0.067046
 24152820,"Skills Matter | Code Node","London","10 South Place EC2M 2RB",,51.518551,-0.086114
@@ -447,6 +464,7 @@ id,name,city,address_1,address_2,lat,lon
 24216070,"WeWork Aldgate","London","Aldgate Tower, 35 Whitechapel High St, E1 7PU",,51.514759,-0.072156
 24217933,"Cruciform LT1, Cruciform Building, UCL","London","Gower Street, London, WC1E 6BT",,51.524284,-0.134608
 24226932,"OpenTable","London","  Alphabeta Building  14-18 Finsbury Square  London, EC2A 1AH",,51.521854,-0.086316
+24228539,"WeWork","London","1 Fore Street, EC2Y 9DT",,51.518105,-0.090487
 24229188,"Cloudflare","London","25 Lavington St SE1 0NZ",,51.504795,-0.100216
 24229237,"WeWork","London","9 Devonshire Square, London EC2M 4YD",,51.516838,-0.080202
 24234006,"ECS Digital","London","Woolyard, 52-56 Bermondsey Street, SE1 3UD",,51.501816,-0.082414
@@ -461,17 +479,23 @@ id,name,city,address_1,address_2,lat,lon
 24259051,"HSBC - Headquarters","London","8 Canada Square, London E14 5HQ",,51.505447,-0.017453
 24264800,"Google Campus","London","4-5 Bonhill Street London EC2A 4BX",,51.522598,-0.085515
 24266856,"Old Billingsgate","London","1 Old Billingsgate Walk, EC3R 6DX",,51.508537,-0.084187
+24277543,"Upstairs at The Star of Kings, 126 York Way","London","Kings Cross N1 0AX",,51.536713,-0.121936
+24286347,"Craft Beer Co","London","57 White Lion Street",,51.532753,-0.110737
 24294093,"Wayra UK","London","Shropshire House, 2-10 Capper St London WC1E 6JA",,51.522541,-0.135032
+24296539,"Sainsburys Technology Hub","London","33 Holborn, London, EC1N 2HT",,51.517307,-0.108527
 24304962,"Markel","London","20 Fenchurch Street London EC3M 3AZ",,51.511093,-0.083468
 24306010,"WorldRemit","SW1E 6PA","2nd Floor, 62 Buckingham Gate, London",,51.497723,-0.136051
 24310904," King's College London Waterloo campus","London","Stamford Street London SE1 9NH",,51.506222,-0.11007
+24313465,"Premier Inn","London","Corsham Street, N1 6DR",,51.527771,-0.086882
 24313634,"The Hub @ Argos","London","279 Vauxhall Bridge Road, Victoria, SW1V 1EJ ",,51.494823,-0.14203
 24318069,"InterContinental London - The O2","London SE10 0TW","1 Waterview Dr",,51.502434,-0.00025
 24323806,"Campus London","London EC2A 4BX","4-5 Bonhill Street",,51.522598,-0.085515
 24330345,"Graph Aware","London","2nd floor, 133-135 Great Suffolk Street, London, SE1 1PP",,51.500259,-0.096437
 24332378,"Medical Sciences 31 A V Hill LT, Medical Sciences Building,","London","UCL, Malet Place, WC1E 6BT ",,51.524773,-0.133427
 24334421,"38 - 40 Commercial Road, London, E1 1LN","London","1st Floor - MISTER DEE DEE building",,51.507351,-0.127758
+24337989,"the resting hare","London","11 upper woburn place",,51.526417,-0.129467
 24342871," Skyscanner, the wework Building","London","WeWork, 1 Fore St, London EC2Y 5EJ",,51.518105,-0.090487
+24343952,"The Southwark Tavern","London","The Southwark Tavern, London, SE1 1TU",,51.504917,-0.090806
 24349554,"BT Centre Showcase","London","81 Newgate St",,51.515594,-0.097853
 24358104,"Birbeck,University of London","London","43 Gordon Square, Room G01. WC1H 0PD",,51.524635,-0.13038
 24361081,"WeWork Old Street","London","18-21 Corsham Street, London  N1 6DR",,51.527657,-0.086574
@@ -485,12 +509,13 @@ id,name,city,address_1,address_2,lat,lon
 24391505,"Level39","London","One Canada Square, Canary Wharf, E14 5AB",,51.504929,-0.019505
 24392417,"Shack 15 London - ","London","67-71 Shoreditch High St, London E1 6JJ",,51.524559,-0.077008
 24392460,"Finsbury Square, London","London","EC2A 1RR",,51.521126,-0.086858
+24396535,"Amazon Development Centre","London","1 Leadenhall Street, London EC3V 1PP",,51.51339,-0.083797
 24398983,"King, The Ampersand Building","London","178 Wardour Street, W1F 8FY",,51.515526,-0.135311
 24399084,"AOL Europe, 4th Floor, Albert House,","London","1 - 4 Singer Street, London, EC2A 4BQ ",,51.525925,-0.085236
 24399642,"The Wellington ","London","351 The Strand",,51.511429,-0.119533
 24401709,"Onfido","London"," 40 Long Acre, Covent Garden, WC2E 9LG ",,51.512913,-0.124242
+24404521,"Mahiki","London","1 Dover Street, W1S 4LD",,51.507767,-0.141273
 24406006,"Boyle, Darwin & Fleming rooms, IBM Client Centre, 76/78 Upper Ground, South Bank","London","SE1 9PZ",,51.507462,-0.11262
-24414858,"Hotels.com (NOTE DIFFERENT BUILDING)","London","Address: Block 1, Angel Square, London EC1V 1NS, United Kingdom",,51.507351,-0.127758
 24421039,"Grind ","NY 10007","2nd Floor, 140 West St / Vesey",,40.713799,-74.013931
 24421151,"Sainsburys","London","33 Holborn, London, EC1N 2HT",,51.517307,-0.108527
 24421151,"Sainsburys","London","33 Holborn, London, EC1N 2HT",,51.51753,-0.108834
@@ -526,6 +551,7 @@ id,name,city,address_1,address_2,lat,lon
 24538495,"Jane Street","London","20 Fenchurch St, London EC3M 3BY",,51.512539,-0.080723
 24544979,"Prince of Wales","London","WC2B 5TD",,51.514641,-0.121749
 24545792,"Funding Circle","London","71 Queen Victoria St",,0,0
+24547062,"Equal Experts","London NW1 3FG","30 Brock St",,51.526047,-0.138891
 24547251,"Level 24/25 The Shard - iland Europe Ltd.","London","32 London Bridge St. London SE1 9SG",,51.504417,-0.0863
 24548297,"Impact Hub King's Cross","London","34B York Way, London N1 9AB",,51.53257,-0.122261
 24550275,"Playtech Offices ","London","10 Jamestown Road London, Greater London NW1 7BY",,51.540535,-0.145245
@@ -533,6 +559,7 @@ id,name,city,address_1,address_2,lat,lon
 24562164,"Zoopla","London","Harlequin Building, 65 Southwark Street",,51.505043,-0.097573
 24565705,"Unit 2, Old Street Station ","London","EC1Y 1BE",,51.525669,-0.087562
 24566337,"Rothschild lecture theatre (2nd floor of the School of Medicine building) St Mary's Campus","London","norfolk place & praed street",,51.517105,-0.17288
+24571743,"CodeNode","London","10 South Place, EC2M 2RB",,51.51855,-0.086114
 24572934,"Puppet Offices","SE1 3UD","Woodyard, 52 Bermondsey St, London",,51.501842,-0.082424
 24583532,"Room 114, Foster Court, Malet Place, Off Torrington Place","London","WC1E 7JE",,51.522972,-0.132217
 24589976,"6th Floor, The Walbrook Building","London","25 Walbrook, EC4N 8AF",,51.512077,-0.089888
@@ -559,6 +586,7 @@ id,name,city,address_1,address_2,lat,lon
 24690274,"The Auditorium at Digital Catapult","London","101 Euston Road, NW1 2RA",,51.52853,-0.126954
 24698655,"Google HQ ","London","76 Buckingham Palace Road SW1W 9TQ",,51.494972,-0.146683
 24699233,"TBD`","London","London",,51.507351,-0.127758
+24700468,"Codurance","London","5th floor, 15 Northburgh Street, EC1V 0JR",,51.523815,-0.100329
 24702607," Excel, Royal Victoria Dock, 1 Western Gateway","London","E16 1XL",,51.50816,0.02712
 24713575,"Pivotal Labs [New Location]","London","2nd floor, The Warehouse, The Bower, 211 Old Street London EC1V 9NR",,51.525902,-0.08913
 24718456,"Interchange Atrium","London","Stables Market, Chalk Farm Road, Camden, NW1 8AH",,51.54229,-0.148351
@@ -572,6 +600,7 @@ id,name,city,address_1,address_2,lat,lon
 24757414,"Accelerate West","London","Accelerate West, One Hammersmith Broadway, W69DL",,51.493042,-0.224498
 24758401,"General Assembly Whitechapel","London","1 Commercial Street",,51.51535,-0.072503
 24765740,"London Olympia","London","London Olympia, Hammersmith Rd, London W14 8UX",,51.495846,-0.208413
+24768159,"St Mary's Campus, Paddington - Imperial College London","London","Norfolk Place, W2 1PG",,51.516693,-0.172331
 24768159,"St Mary's Campus, Paddington - Imperial College London","London","Norfolk Place, W2 1PG",,51.51732,-0.17313
 24769923,"Neo Technology UK","London","5-11 Lavington Street, London, SE1 0NZ",,51.504944,-0.100046
 24769952,"Digital McKinsey","London","1 Jermyn Street, Piccadilly","SW1Y 4UH",51.506588,-0.143221
@@ -579,6 +608,7 @@ id,name,city,address_1,address_2,lat,lon
 24777144,"Room MAL 402, Birkbeck, University of London","London WC1E 7HX","Malet Street, Bloomsbury",,51.520996,-0.127844
 24782202,"Hackney House","EC2A 3LT","25-27 Curtain Road",,51.523148,-0.080677
 24782460,"Shoreditch Platform ","London","1 Kingsland Road, London, E2 8AA",,51.527355,-0.078294
+24783045,"WeWork Moorgate","London","1 Fore St, London EC2Y 9DT, UK",,51.518082,-0.091166
 24812000,"Crown & Anchor","W4 5TA","374 Chiswick High Rd, London",,51.492653,-0.263742
 24814185,"Lecture Theatre 308, Huxley Building","London","180 Queen's Gate, SW7 2RH",,51.498749,-0.179383
 24830182,"Costa Fresco","London","190 Tottenham Court Road, W1T 7LH",,51.521667,-0.135103
@@ -593,6 +623,7 @@ id,name,city,address_1,address_2,lat,lon
 24867764,"WeWork, 1 Fore St, ","EC2Y 5EJ","London",,0,0
 24872631,"Salesforce London Office - 26th / 27th / 28th Floors, Salesforce Tower","London","110 Bishopsgate, London. EC2N 4AY",,51.516224,-0.080956
 24878166,"Register Here:","London","https://grs.cisco.com/grsx/cust/grsEventSite.html?EventCode=15195&LanguageId=1&KeyCode=001351232",,0,0
+24883408,"WeWork Aldgate Tower","London"," 2 Leman St, London E1 8FA",,51.514732,-0.072051
 24883748,"Valtech","London, N1 8AF","46 Colebrooke Row",,51.534992,-0.101695
 24883882,"Globetown","London","14 Palmers Road, E2 0SY",,51.529533,-0.042295
 24892260,"Room MAL 151, Birkbeck, University of London","London, WC1E 7HX","Malet Street, Bloomsbury ",,51.520996,-0.127844
@@ -610,6 +641,7 @@ id,name,city,address_1,address_2,lat,lon
 24960206,"Tableau (8th floor)","SE1 0SU","110 Southwark St.",,51.505802,-0.100364
 24960216,"Tableau HQ","London","110 Southwark St., SE1 0SU",,51.506142,-0.100265
 24968507,"The Smokery","London","2-6 Greenhill’s Rents EC1M 6BW",,51.519817,-0.102646
+24970972,"Pusher Office","London","28 Scrutton St, London EC2A 4RP, UK",,51.523228,-0.082713
 24972662,"PLATF9RM","Brighton","Tower Point, 44 North Road, Floor 6",,50.825657,-0.141549
 24972765,"Capita Employee Benefits","London","65 Gresham Street, EC2V 7NQ",,51.515656,-0.093381
 24974215,"GOR B04, 43 Gordon Square - Birkbeck, University of London","London","WC1H 0PD",,51.524643,-0.130289
@@ -628,32 +660,38 @@ id,name,city,address_1,address_2,lat,lon
 25026795,"Courtyard Suite, BMA House","WC1H 9JP","Tavistock Square, London",,51.525101,-0.128338
 25026812,"UCL Medawar Building","WC1E 6BT","Gower Street, London",,51.524303,-0.13461
 25028864,"Pirum Systems","London","2 Copthall Ave, London EC2R 7DA, UK",,51.51585,-0.087812
+25029269,"Sir Alexander Fleming Building (SAF) LT1 G16","London SW7 2AZ","Imperial College London",,51.497856,-0.176502
+25029269,"Sir Alexander Fleming Building (SAF) LT1 G16","London SW7 2AZ","Imperial College London",,51.498798,-0.174877
 25034041,"Peakon Hub","London","Unit 90 Exmouth House 3-11 Pine St, EC1R 0JQ ",,51.525208,-0.109843
 25036262,"St Albans Cricket Club","St Albans","Clarence Park, Clarence Park Road",,51.753502,-0.324208
 25040920,"CV Library London Office","London","Office 408, Vox Studios, Durham Street, London , SE11 5JH",,51.485931,-0.118451
 25052707,"WeWork London Fields","London","115 Mare St, London E8 4RU",,51.537754,-0.056935
 25062808,"Looker London Office","London","1 Fore St",,51.611664,-0.065433
 25064456,"Dolby Screening Room ","London","4-6 Soho Square, Soho",,51.515461,-0.133186
+25069138,"Simply Business","London","99 Gresham St, London EC2V 7NG",,51.515057,-0.090518
 25069337,"Walkabout Bar (Reading)","Reading","Reading",,51.454266,-0.97813
 25069664,"Google HQ","London","6 Pancras Square, London N1C 4AG ",,51.533226,-0.126109
+25070108,"St Ethelbergas","Greater London","EC2N 4AG",,51.515694,-0.08184
 25071116,"CodeNode","EC2M 2RB","10 South Place, London",,51.518551,-0.086114
 25071294,"Eight Club","London","Change Alley",,51.513126,-0.086926
 25078965,"Anise Bar","London","9 Devonshire Square, London EC2M 4YL",,51.516933,-0.078523
 25081148,"OutSystems","London","3rd Floor, Lighterman House, 26-36 Wharfdale Road, London, N1 9RY",,51.533646,-0.120259
 25081161,"Third Republic HQ","London","134-146 Curtain Rd, Shoreditch, EC2A 3AR",,51.526539,-0.08019
-25083616,"Runway East","London","58-64 City Road EC1Y 2AL",,51.524246,-0.087676
 25090924,"Simplify Digital","London","5th Floor, Hammersmith Bridge Road, W6 9EJ",,51.491611,-0.226983
 25093603,"Pivotal","London","2nd Floor, The Warehouse (The Bower), 211 Old Street, EC1V 9NR",,51.525936,-0.08873
 25093811,"Google Campus London ","London","4-5 Bonhill St, Shoreditch, London EC2A 4BX, UK",,51.5226,-0.085515
 25101891,"Barista Premium","Taipei City","106台北市大安區忠孝東路四段250號",,0,0
 25117677,"WeAreFriday","London","Harella House, 90-98 Goswell Road, London EC1V 7DF",,51.523994,-0.098602
 25125898,"Online Workshop","London","Link will be provided to those who sign up @ Eventbrite",,0,0
+25131122,"WeWork Waterhouse square","London EC1N 2SW","138 Holborn",,51.518078,-0.11011
 25134826,"The Alan Turing Institute","London","British Library 96 Euston Road, NW1 2DB",,51.529972,-0.127676
 25138137,"Ramada Birmingham Sutton Coldfield","Birmingham","Penns Ln, Sutton Coldfield , B76 1LH",,52.535908,-1.806483
 25140146,"Microsoft London ","London","Microsoft, 2 Kingdom Street, Paddington, London W2 6BD",,51.5196,-0.181761
 25140535,"WeWork","London","9 Devonshire Square 3rd Floor London EC2M 4YF",,51.516933,-0.078526
+25160810,"FORA","London","71 Central Street Clerkenwell London EC1V 8AB",,51.526634,-0.096794
 25166992,"MAL B04, Birkbeck University of London","London WC1E 7HX","Malet St",,51.520996,-0.127844
 25174534,"Pivotal Labs","London EC1V 9NR","211 Old St",,51.525936,-0.08873
+25193804,"ASOS Head Office Camden","London","Greater London House, Hamstead Road, NW17FB",,51.533894,-0.139656
 25194203,"Online Workshop - MUST REGISTER AT EVENTBRITE!! A GPU cloud instance will be provided.","London","Online",,51.52071,-0.122048
 25198565,"Mint Leaf Restaurant & Bar (Japur room)","London","Suffolk Pl, SW1Y 4HX",,51.508343,-0.131187
 25199107,"www.lostmy.name Offices","London"," 30-36 Pritchard's Road, London, E2 9AP",,51.533886,-0.062375
@@ -661,8 +699,58 @@ id,name,city,address_1,address_2,lat,lon
 25203500,"7 Holland Rd","London","NW10 5AH",,51.534828,-0.231006
 25207858,"Morgan McKinley","London","61 Aldwych, London, WC2B 4AE",,51.513767,-0.11731
 25216667,"Barclays","London","1 Churchill Pl, Canary Wharf",,51.505173,-0.014344
-25216832,"Darwin Building B40 LT","London","University College London",,51.524559,-0.13404
+25222677,"Campus London  ","London"," 4-5 Bonhill St, Shoreditch London EC2A 4BX ",,51.522663,-0.085634
 25224051,"Macquarie Bank","London","28 Ropemaker St London EC2Y 9HD United Kingdom",,51.520203,-0.089348
+25243426,"Structures Lab, G04","London","Chadwick Building, UCL, Gower Street, WC1E 6BT",,51.524429,-0.132783
+25243462,"Hotels.com / Expedia (Main Building)","London","407 St John Street",,51.531433,-0.1066
+25248435,"SapientRazorfish","London","Eden House, 8 Spital Square, London",,51.52079,-0.077822
+25251278,"The Knowledge Centre at The British Library","NW1 2DB, London","British Library 96 Euston Road, NW1 2DB, London",,51.529972,-0.127676
+25253308,"Ace Hotel","London","100 Shoreditch High St, London E1 6JQ",,51.525417,-0.077285
+25254576,"Core Bar","London","Aldermary House, 10-15 Queen St, EC4N 1TX, UK",,51.512959,-0.092805
+25256190,"Alphabeta Building","London","14-18 Finsbury Square, EC2A 1AH",,51.52183,-0.086319
+25256190,"Alphabeta Building","London","14-18 Finsbury Square, EC2A 1AH",,51.521832,-0.086319
+25257901,"Huckletree","London","18 Finsbury Square, London, EC2A 1AH",,51.5215,-0.086174
+25263928,"Harrie Massie LT ","London","25 Gordon Street ",,51.525654,-0.133414
+25272888,"Microsoft Accelerator London","London","4 Crown Place, London, EC2A 4BT",,51.520145,-0.083469
+25288734,"1 Fore Street","London","EC2Y 9DT",,51.518204,-0.089618
+25290449,"Oracle","London EC2M 2RB","The Helicon, One South Place",,51.519539,-0.087069
+25300611,"WeWork Waterhouse Square","EC1N 2SW","Building 3, 138 Holborn, London",,51.518715,-0.109912
+25302696,"Functional Works","London","36 NEW INN YARD, LONDON, EC2A 3EY",,51.524467,-0.078178
+25319160,"Bank Of New York Mellon","London","160 Queen victoria st, EC4V 4LA",,51.512428,-0.102249
+25332746,"Bain & co","London","40 Strand ,WC2N 5RW",,0,0
+25341837,"New Broad Street House","London","35 New Broad Street",,51.517101,-0.083747
+25351912,"Central London","London","Central London",,51.507603,-0.127816
+25354364,"Octopus Energy","London","20-24 Broadwick St, Soho, London W1F 8HT",,51.513813,-0.135534
+25361026,"Sainsbury's","London","33 Holborn","EC1N 2HT",51.517307,-0.108527
+25377220,"The City Pride","London","28 Farringdon Lane",,51.523071,-0.106934
+25384910,"High Holborn House (4th floor)","WC1V 6RL","52 - 54 High Holborn",,51.518307,-0.115033
+25386483,"Neo4j UK","London","8th Floor, Friars Bridge Court, 41-45 Blackfriars Rd, SE1 8NZ",,51.505379,-0.104995
+25386506,"Bella Center","Copenhagen","Bella Center",,55.63784,12.578753
+25391041,"Yoti, Fountain House","London EC3M 5DJ"," 130 Fenchurch St",,51.511929,-0.081655
+25393210,"DKLM Law","EC1V 9PE","City House, 3 Cranwood Street, London",,51.527035,-0.086426
+25420085,"Work.Life","London","20 Jerusalem Passage, EC1V 4JP, Clerkenwell",,51.523106,-0.103715
+25426481,"Studio 112 Curtain House","London","134-146 Curtain Road, London EC2A 3AR",,51.526619,-0.080041
+25429098,"Excelian","EC1Y 8RN","44 Feathersone Street, London ",,51.524693,-0.08914
+25435302,"HackAtom channel","London"," https://cosmos.rocket.chat/channel/hackatom",,0,0
+25435682,"The Hospital Club","London","24 Endell Street London WC2H 9HQ",,51.514851,-0.124488
+25448762,"Pioneer Point","London","5 Winston Way, IG12ZF",,51.557182,0.070705
+25449055,"The ACE Hotel","London","100 Shoreditch High St, London E1 6JQ",,51.525417,-0.077285
+25462950,"AWin","E1W 1YN","2 Thomas More Square, London",,51.508083,-0.068149
+25469688,"Millennium Gloucester Hotel London Kensington ","London","4-18 Harrington Gardens, Kensington, SW7 4LH",,51.49334,-0.183343
+25477710,"The Charter Building","UB8 1JG","Charter Place,, UXbridge",,51.545357,-0.479612
+25485350,"Transport for London – Palestra (Room CR1 and CR2)","SE1 8NJ","197 Blackfriars Road, London",,51.503937,-0.103726
+25488164,"Skills Matter","London","CodeNode, 10 South Place, London, EC2M 7EB",,51.518642,-0.086012
+25500441,"Deliveroo Offices, Cannon Street Station","London","1 Cousin Lane, EC4R 3TE",,51.510109,-0.091093
+25505342,"insightsoftware.com","W5 5DB","International House, 7 High StreetEaling, London",,51.512486,-0.304439
+25514687,"George Street Canteen","St Albans AL3 4ER","9a George Street",,51.751442,-0.342181
+25535809,"Department for Work and Pensions | Floor 6 Caxton House Tothill Street London SW1H 9NA","London","SW1H 9NA",,51.500172,-0.13132
+25551187,"Blooms","London","19-23 Featherstone Street, EC1Y 8SL",,51.52447,-0.088497
+25567555,"Online","New York City","https://www.youtube.com/watch?v=sF_36fX5jFo",,0,0
+25589006,"Pivotal","London","2nd floor, The Warehouse, 211 Old Street EC1V 9NR",,51.526386,-0.089071
+25595101,"Resolver","SE1 1EU","56 Ayres St, London",,51.503559,-0.094891
+25595122,"etc Venues","EC2M 3YD","155 Bishopsgate, London",,51.518757,-0.080172
+25598322,"Labs Atrium","NW1 8AH","North Stables Market, Chalk Farm Road, London",,51.541912,-0.147756
+25601149,"TBC - Somewhere in Farringdon","London","London",,51.507351,-0.127758
 3134461,"Queen Mary University","London, E1 4NS","Room 1.13 in the Francis Bancroft Building",,51.522949,-0.040855
 332342,"Theodore Bullfrog","London","28 John Adam Street","WC2N 6HL",51.509033,-0.123241
 3354222,"London Hackspace","London","E2 8HD",,51.530537,-0.076169
@@ -681,7 +769,6 @@ id,name,city,address_1,address_2,lat,lon
 4327622,"The Centre for Creative Collaboration","London","16 Acton Street, WC1X 9NG",,51.52874,-0.116528
 4337372,"Webinar - Online","London","London",,51.500153,-0.126236
 4343292,"Apple Retail Store","London","235 Regent Street, W1B 2EL",,51.514339,-0.141787
-4452442,"Room G16, Alexandra Fleming Building, Imperial College (University of London), ","London","Imperial College Road, South Kensington, London, SW7 2AZ.",,51.498055,-0.175726
 4465402,"Doggett's Coat And Badge","London","1 Blackfriars Bridge",,51.509724,-0.104323
 4477842,"THECUBE, Studio 5, 155 Commercial Street","London","E1 6BJ",,51.521149,-0.075657
 4596962,"The Innovation Warehouse","London","1 East Poultry Avenue",,51.518719,-0.10263
@@ -698,6 +785,7 @@ id,name,city,address_1,address_2,lat,lon
 545413,"The Horse and Groom","London","128 Great Portland St",,51.519987,-0.14267
 5579032,"Eight Moorgate","London","London EC2A 2BX ",,51.521568,-0.08413
 5588392,"Skills Matter","London","116-120 Goswell Road London, EC1V 7DP",,51.524506,-0.099152
+5627552,"Crown Tavern","London","43 Clerkenwell Green, EC1R 0EG",,51.523151,-0.105294
 5631802,"Innovation Warehouse","EC1A 9PT","1 East Poultry Avenue, 1st Floor","1 East Poultry Avenue",51.51872,-0.102631
 5775322,"Media Science","London","53 Frith St, Soho, London, W1D 4SN",,51.513718,-0.13202
 599764,"JWUG ","London","PLEASE SEE END OF MEETING DESCRIPTION FOR LOCATION DETAILS",,51.500153,-0.126236
@@ -723,6 +811,7 @@ id,name,city,address_1,address_2,lat,lon
 690383,"Conway Hall","London","25 Red Lion Square ","WC1R 4RL",51.51952,-0.118572
 6974102,"UCL, Darwin Building, University College London, Gower Street ","London","University College London, Gower Street, London WC1E",,51.524536,-0.134037
 6996362,"Regus ","London","1 Northumberland Avenue, Trafalgar Square, London, WC2N 5BW",,51.507103,-0.125636
+6998532,"IET London: ","London","Savoy Place 2 Savoy Place London, WC2R 0BL",,51.510033,-0.119301
 710657,"Princess Louise Pub","Holborn","208 High Holborn",,51.517424,-0.121685
 7116402,"Jewel St Pauls","London","130 Wood Street, EC2V 6DL London",,51.514511,-0.094657
 7131842,"Moz Space","London","101 St. Martins Lane Suite 300",,51.510262,-0.12705
@@ -747,6 +836,7 @@ id,name,city,address_1,address_2,lat,lon
 772127,"The Green","London","29 Clerkenwell Green",,51.522611,-0.106347
 780879,"Old Crown Pub","London","33 New Oxford St","WC1A 1BH",51.517099,-0.125057
 7830522,"Qubit","London, W1F 8HT","20 Broadwick Street",,51.513691,-0.1354
+791611,"The Minories","London","64-73 Minories","EC3N 1JL",51.510628,-0.074515
 8023572,"Opengamma","London","185 Park Street, London, SE1 9BL",,51.507004,-0.097743
 805913,"Skills Matter","London EC1V7DP","The Skills Matter eXchange","116-120 Goswell Road",51.524823,-0.099109
 813778,"Hoop and Grapes","City of London","80 Farringdon Street ","EC4A 4BL ",51.516402,-0.104873
@@ -769,6 +859,7 @@ id,name,city,address_1,address_2,lat,lon
 865785,"UCL Chadwick Lecture Theatre","London","Gower St",,51.522644,-0.132834
 870171,"London Java Community","London","PLEASE SEE END OF MEETING DESCRIPTION FOR LOCATION DETAILS",,51.500153,-0.126236
 8764022,"Campus, powered by Google","London","4-5 Bonhill Street",,51.522721,-0.085348
+880718,"Royal Exchange Building in the City","City of London","Cornhill",,51.513354,-0.086607
 887281,"Cellar bar at the Brook Green Hotel","London","170 Shepherds Bush Road","Hammersmith",51.497172,-0.223093
 9042842,"The Tokenhouse, 4 Moorgate","London","EC2R 6DA",,51.515186,-0.089226
 9096272,"Holborn Whippet Pub","London","25-29 Sicilian Avenue, Holborn, London, WC1A 2QH",,51.518375,-0.121336
@@ -781,6 +872,7 @@ id,name,city,address_1,address_2,lat,lon
 9303642,"UCL, Medical Sciences AV Hill Lecture Theatre, Medical Sciences Building","London","Malet Place, off Torrington Place, WC1E 6BT",,51.522484,-0.132641
 9361762,"Bloomberg","London","39-45 Finsbury Square",,51.520458,-0.086959
 941618,"The Porterhouse","London","21-22 Maiden Lane, Covent Garden, WC2E 7NA","WC2E 7NA",51.510472,-0.123808
+9420972,"St Albans","St Albans","St Albans",,51.75153,-0.333892
 9481792,"Tay Do Cafe","London, E2 8AG","65 Kingsland Road",,51.529736,-0.077611
 953145,"Westminster Pier","London","Victoria Embankment","sw1a0aa",51.507064,-0.121839
 9565212,"Bloomberg","London","50 Finsbury Square, EC2A 1HD",,51.520401,-0.087082
@@ -791,6 +883,7 @@ id,name,city,address_1,address_2,lat,lon
 9870852,"The Open Data Institute","London","3rd Floor","65 Clifton Street",51.50643,-0.12719
 9870862,"The Open Data Institute","London","3rd Floor, 65 Clifton St, London",,51.522163,-0.083438
 995995,"Kings College","London","Strand Road ",,51.511066,-0.119756
+1000679,"Belushi's London Bridge ","London","161 - 165 Borough High Street",,51.502862,-0.091992
 10008462,"Songkick","London","Third Floor, 12-18 Hoxton Street, N1 6NG",,51.513435,-0.109462
 10028072,"Club Workspace","London","Clerkenwell Workshops,27-31 Clerkenwell Close. EC1R 0AT",,51.524334,-0.10651
 1002824,"The Kensington Close Hotel","London","Wrights Lane"," Kensington, W8 5SP",51.500033,-0.192926
@@ -826,6 +919,7 @@ id,name,city,address_1,address_2,lat,lon
 10630452,"3rd Floor Space, Google Campus, ","London","4-5 Bonhill Street, London, EC2A 4BX",,51.522694,-0.085303
 10634122,"Tingewick Hall, John Radcliffe Hospital","Oxford","Headington, OX3 9DU",,51.76387,-1.219806
 10667672,"Royal Festival Hall South Bank Centre","London","Royal Festival Hall South Bank Centre  Level 4 - Green Side Belvedere Road SE1 8XX",,51.505775,-0.116837
+10738952,"Make Positive Ltd","London","30 Great Guildford Street, London. SE1 0HS",,51.504673,-0.097648
 10791882,"Grand Connaught Rooms","London","61-65 Great Queen Street, Holborn, WC2B 5DA ",,51.515686,-0.120627
 1080177,"Krakow User Group Meeting Venue","Kraków","Al. 3 Maja 9","Room 126.",50.060234,19.919951
 1080178,"Kreditor headquarters","Stockholm","St Eriksgatan 117",,59.347094,18.03991
@@ -845,6 +939,7 @@ id,name,city,address_1,address_2,lat,lon
 1136882,"Southbank Centre ","London SE1 8XX","Southbank Centre Square","Belvedere Road",51.507739,-0.099049
 11430282,"Tech Cube","Edinburgh","1 Summerhall Place, EH9",,55.939285,-3.182142
 1148722,"Caesar Room, Imperial Hotel","London ","Russell Square","WC1B 5BB",51.521905,-0.124066
+1155105,"Hilton London Tower Bridge","London","Tooley Street","SE1 2BY",51.505268,-0.082262
 1156315,"The Walrus and Carpenter","London","45 Monument Street, EC3R 8BU ",,51.509449,-0.084481
 1158515,"The New Moon","City of London","88 Gracechurch Street","EC3V 0DN",51.51289,-0.084413
 11629722,"Google Campus 3rd Floor","London EC2A 4BX","4-5 Bonhill Street",,51.522709,-0.085336
@@ -877,6 +972,7 @@ id,name,city,address_1,address_2,lat,lon
 1232158,"Centre for Creative Collaboration","London","16 Acton Street","16 Acton Street, London WC1X 9NG",51.528741,-0.116529
 12364772," Mary Ward House Conference and Exhibition Centre","London","Bloomsbury",,51.521015,-0.130518
 1236675,"SkillsMatter","London EC1V 7DP","116-120 Goswell Road","116-120 Goswell Road",51.52653,-0.100107
+1245809,"The Hilton Tower Bridge","London","5 More London Place","SE1 2BY",51.500152,-0.126236
 12503012,"London Hackspace","London","447 Hackney Road, E2 9DY",,51.532082,-0.060795
 12579232,"Bloomberg SPACE","EC2A 1HD London","50 Finsbury Square ",,51.520401,-0.087082
 12597162,"Mountbatten Building 59","Southampton","University of Southampton, SO17",,50.936871,-1.396931
@@ -892,6 +988,7 @@ id,name,city,address_1,address_2,lat,lon
 12907852,"The Makers Academy","London","Floor 4, Epworth House, 25 City Rd. London, EC1Y 1AA ",,51.523125,-0.08702
 1292646,"Royal Geographic Society","London","Next to Hyde Park ",,51.512837,-0.161449
 12974312,"Pinewood Studios","Slough","Pinewood Road, Iver, Buckinghamshire, SL0 0NH",,51.545315,-0.531002
+12974532,"Royal Overseas League","London","Over-Seas House Park Place, St James’s Street London SW1A 1LR",,51.506317,-0.140709
 1298005,"HP offices","London","88 Wood street","EC2V 7QT",51.517296,-0.093673
 1302327,"2e2 Training Ltd","London","Gillingham House","38-44 Gillingham Street",51.493862,-0.140953
 13032532,"Expedia","London","Angel Building, 407 St John St, London, England EC1V",,51.526794,-0.098381
@@ -912,6 +1009,7 @@ id,name,city,address_1,address_2,lat,lon
 13680592,"Royal Society of Chemistry","London W1J 0BA","Burlington House, Picadilly",,51.508671,-0.139601
 1370795,"Dexter House","London","No 2 Royal Mint Court ","Tower Hill",51.510359,-0.071157
 13716712,"42 Princelet Street","London","Shoreditch, E1 5LP",,51.522873,-0.077742
+1373233,"ExCeL London","London","One Western Gateway","Royal Victoria Dock",51.508064,0.021828
 1373233,"ExCeL London","London","One Western Gateway","Royal Victoria Dock",51.508066,0.021828
 1374219,"This is an online promotion","This is an online promotion","This is an online promotion",,0,0
 13757312,"Arcola Theatre","London","24 Ashwin Street  Dalston, E8 3DL    ",,51.546875,-0.075023
@@ -928,6 +1026,7 @@ id,name,city,address_1,address_2,lat,lon
 13954812,"UCL - Christopher Ingold XLG1 LT","WC1H 0AJ","Christopher Ingold Building, 20 Gordon Street, London",,51.524376,-0.131734
 13955372,"Level39, One Canada Square,","London","Canary Warf, London",,51.504955,-0.01945
 13956192,"Campus London","London","4-5 Bonhill Street, EC2A 4BX",,51.52269,-0.08535
+13959762,"ZSL London Zoo","London","Regent's Park,  London,   NW1 4RY ",,51.531994,-0.154298
 13969032,"19 Eastbourne Terrace, W2 6LG ","London","Entrance off Platform 1, Paddington Station  ",,51.518188,-0.17828
 13989752,"The Whisky Bond","Glasgow","Dawson Road",,55.876835,-4.256888
 14017382,"Department of Computer Science","Warwick","University Of Warwick",,52.381615,-1.564279
@@ -988,6 +1087,7 @@ id,name,city,address_1,address_2,lat,lon
 15981332,"Garden Room and Conservatory, Level 3, Barbican Centre","London","Silk Street, EC2Y 8DS",,51.51996,-0.092998
 15987872,"Buckingham Room, Hilton Metropole","London","225 Edgware Rd, London W2 1JU",,51.519142,-0.169493
 16014052,"Hotel Novotel London West","London","1 Shortlands, W6 8DR",,51.492001,-0.219566
+16019802,"The British Library","London","The British Library, 96 Euston Road","NW1 2DB",51.52925,-0.126753
 1603678,"National Audit Office","London","157-197 Buckingham Palace Road",,51.492218,-0.148023
 1607618,"Forward","London","Floor 1, Centro 3, 19 Mandela Street, Camden NW1 0DU",,51.538654,-0.137305
 1607643,"IT University","Copenhagen","Rued Langgaards Vej 7 2300 Copenhagen, Denmark 7218 5000",,55.659889,12.591188
@@ -1023,8 +1123,8 @@ id,name,city,address_1,address_2,lat,lon
 17445082,"Grange Tower Bridge Hotel","London E1 8GP ","45 Prescot Street ",,51.511654,-0.071703
 17492492,"Create Space London, 11th Floor Wembley Point","Wembley","1 Harrow rd",,51.54518,-0.272973
 17492492,"Create Space London, 11th Floor Wembley Point","Wembley","1 Harrow rd",,51.545181,-0.272973
+1752361,"Innovation Warehouse","London","1st Floor, 1 East Poultry Avenue","EC1A 9PT",51.519,-0.102775
 1752361,"Innovation Warehouse","London","1st Floor, 1 East Poultry Avenue","EC1A 9PT",51.519054,-0.102713
-1752361,"Innovation Warehouse","London","1st Floor, 1 East Poultry Avenue","EC1A 9PT",51.519106,-0.101962
 17636092,"Telerik Offices","London","14 Austin Friars",,51.515663,-0.085618
 1764941,"Innovation Warehouse","EC1A 9PT","1 East Poultry, 1st Floor",,51.513508,-0.090439
 17720442,"Space Expo","Noordwijk","Keplerlaan 3, 2201 AZ Noordwijk Zh, Netherlands",,52.215271,4.42089
@@ -1058,8 +1158,7 @@ id,name,city,address_1,address_2,lat,lon
 18717142,"Craft Beer Co","London","82 Leather Lane Clerkenwell London EC1N ",,51.52123,-0.10986
 18755392,"Hotels.com","London","Angel Building, 407 St John St","EC1V",51.53138,-0.106974
 18778792,"Department of Computer Science, University of York","York","Deramore Lane, University of York, Heslington, York, YO10 5GH",,53.948662,-1.028911
-18816862,"Dennis Publishing ","London","30 Cleveland Street ",,51.519791,-0.137837
-18863282,"Dennis Publishing ","London","30 Cleveland Street",,51.519791,-0.137837
+18834732,"UCL Institute of Child Health","London","30 Guilford Street, WC1N 1EH",,51.523323,-0.119989
 18951172,"12a Club","Cambridge","12a Market Hill, CB2 3NJ",,52.205441,0.119665
 18960762,"Central Working Whitechapel","London","68-89 Mile End Road, E1 4TT",,51.520901,-0.052804
 19057182,"Oxo Two","London SE1 9PH","Level Two Oxo Tower Wharf",,51.508373,-0.108228
@@ -1079,13 +1178,16 @@ id,name,city,address_1,address_2,lat,lon
 19748942,"Paddy Power plc, ","Dublin","Power Tower, Belfield Office Park, Beech Hill Road, Clonskeagh, Dublin 4, Ireland",,0,0
 19768252,"Pivotal","London","4th Floor Bentima House, 168-172 Old Street, EC1V 9BP",,51.525036,-0.090498
 19798562,"Microsoft Accelerator, Central Working (Whitechapel)","London","69-89 Mile End Road, London, E1 4TT",,51.520901,-0.052804
+19945602,"The Royal Statistical Society","London","The Royal Statistical Society, 12 Errol Street, London, EC1Y 8LX",,51.522533,-0.090934
 19978922,"The Innovation Loft","London","69-89 Mile End Road, E1 4TT",,51.520901,-0.052804
+19991212,"Ravensbourne College of Design and Communication","London","6 Penrose Way, Greenwich Peninsula, London, SE10 0EW",,51.501579,0.005519
 20080402,"Ministry of Justice","London","102 Petty France",,51.499359,-0.136434
 20093962,"Floating Desk","Gent","Visserij 260 (tegenover huisnummer 151)",,51.047371,3.73813
 20100222,"Skills Matter Dublin","Dublin","For Address Details call +44 207 183 9040",,0,0
 20142822,"ASOS Plc","London","Greater London House, Hampstead Road. London. NW1 7FB",,51.533401,-0.14602
 20156272,"Business and Technology Centre","Stevenage","Bessemer Dr, SG1 2DX",,51.90163,-0.215861
 20156712,"Christopher Ingold Building","London","XLG2 Auditorium, Christopher Ingold Building, 20 Gordon Street, WC1H 0AJ.",,51.52543,-0.132202
+20250752,"Friends Of The Earth UK HQ","SW9 0HP","1st Floor, The Printworks, 139 Clapham Road, London",,51.476143,-0.11777
 20268332,"School of Communication Arts","London","Brixton Hill, SW2 1JF",,51.459778,-0.116054
 20304232,"hackerspace HSBXL","Brussels","Rue Moulin 40 / Molenstraat 40,  1210 St-Joost-ten-Noode,  Brussels,  Belgium",,50.855572,4.37038
 20320582,"Idea London","London","69 Wilson St London EC2A 2BB ",,51.521976,-0.084831
@@ -1103,6 +1205,7 @@ id,name,city,address_1,address_2,lat,lon
 20751322,"Create Space","London","1 Harrow Road",,51.544746,-0.274085
 20769572,"Skills Matter","London","116-120 Goswell Road, EC1V 7DP",,51.524509,-0.098982
 21043462,"JLab@Level42","London","One Canada Square, Level 42, Canary Wharf, E14 5AB, London,",,51.504963,-0.019462
+21062862,"01 Zero One","London","Hopkins Street, W1F 0HS",,51.512775,-0.13491
 21074222,"ustwo","London","62 Shoreditch High Street, London, E1 6JJ",,51.524136,-0.076236
 21099512,"IFI","Dublin","Eustace street 6",,53.34462,-6.26498
 21123582,"Shoreditch Village Hall ","London","33 Hoxton Square - London, N1 6PB",,51.527145,-0.081472
@@ -1122,6 +1225,7 @@ id,name,city,address_1,address_2,lat,lon
 21449792,"Fab Lab London","London","1, Fredericks Place London, EC2R 8AE",,51.514275,-0.091237
 21462972,"Rainmaking Loft, International House","London","1 St. Katharines Way, E1W 1UN",,51.507324,-0.07373
 21478452,"Shoreditch Works","London","the best coworking space in tech city, London",,51.5205,-0.09743
+21618582,"House of Vans","London","Arches 228 - 232 Station Approach Road",,51.503269,-0.111617
 21634102,"GoCardless","London","338-346 Goswell Road","EC1V 7LQ",51.53071,-0.103844
 21668552,"JustGiving Head Office ","London","2nd Floor, Blue Fin Building, 110 Southwark Street, London, SE1 0TA",,51.506321,-0.099883
 21793942,"The Screening Room","WC2R 1LA","Somerset House",,51.510742,-0.11695
@@ -1135,6 +1239,7 @@ id,name,city,address_1,address_2,lat,lon
 22260852,"Fish Island Labs","London","60 Dace Road",,51.537613,-0.023622
 22307982,"True Start - Francis House","London","11 Francis Street",,51.496174,-0.136958
 22393462,"Flavors of India","TW3 1RH","11-13 High Street",,51.470402,-0.354716
+22421392,"Old Billingsgate","London","Old Billingsgate",,51.508549,-0.08317
 22529932,"Vibrant Media, 3rd Floor","London","140 Aldersgate Street",,51.519764,-0.09727
 22531792,"Startup Institute Hub","London","4 Crown Place, EC2A 4BT",,51.52076,-0.083124
 22561692,"The Studio","Birmingham","Cannon Street",,52.479832,-1.897973
@@ -1149,6 +1254,7 @@ id,name,city,address_1,address_2,lat,lon
 22859862,"Digits 2 Widgets","London","61-63 Rochester Pl, London NW1 9JU",,51.544052,-0.139097
 22879642,"The Watershed, ","Bristol, BS1 5TX","1 Canon's Rd, ",,51.45163,-2.598225
 22939972,"Excel- London-Royal Victoria Dock","London","Royal Victoria Dock, 1 Western Gateway, London E16 1XL 020 7069 5000",,51.508171,0.027108
+22948082,"Oracle Office","Greater London, EC2M 2RB","1 South Pl",,51.519547,-0.087081
 23016272,"hotel bloom!","Brussels"," Rue Royale 250, 1210 ",,50.855221,4.36646
 23034332,"CAN Mezzanine","London, SE1 0EH","32-36 Loman St",,51.502949,-0.099793
 23036992,"MRM Meteorite","London","76-80 Southwark St,  SE1 0PN.",,51.505245,-0.096773
@@ -1169,6 +1275,7 @@ id,name,city,address_1,address_2,lat,lon
 23505845,"Cambridge Judge Business School","Cambridge","Trumpington Street",,52.20068,0.119415
 23512042,"Queen Mary University, Mile End Campus, Arts Two Lecture Theatre","London","327 Mile End Rd, London E1 4NS",,51.523418,-0.040544
 23513670,"Makers Academy","London","2nd Floor 50-52 Commercial Street E1 6LT",,51.517471,-0.073302
+23517669,"Twitter HQ","London","20 Air Street, W1B 5DL",,51.510612,-0.1369
 23523091,"etc venues","London","155 Bishopsgate",,51.515419,-0.082425
 23523808,"Transform at Engine","London","60 Great Portland St, W1W 7RT",,51.517796,-0.141378
 23524540,"New hacker house in Shoreditch ","London","(Address revealed to those who've RSVP'd)",,51.50642,-0.12721
@@ -1203,7 +1310,9 @@ id,name,city,address_1,address_2,lat,lon
 23680415,"Canvas Cafe ","London","42 Hanbury Street, London E1 5JL",,51.520191,-0.071025
 23681811,"The city","London","3 Lloyd’s Avenue",,51.512119,-0.078076
 23683796,"Digital Catapult","London","101 Euston Road, London, NW1 2RA",,51.5284,-0.127423
+23684166,"Counting House","London","50 Cornhill","ec3v 3pd",51.513435,-0.084988
 23686356,"wagamama","London","45 Bank Street (Jubilee Park/Canary Wharf)",,51.502773,-0.018928
+23690056,"Runway East","London","207 Old Street (Floor 9)",,51.525398,-0.089826
 23697605,"Stackoverflow Careers","Londres","168 - 172 Old Street",,51.525318,-0.090652
 23700534,"Midlands Art Centre","Birmingham","B12 9QH",,52.452774,-1.904057
 23702745,"RADA - Room B25 (4th Floor) ","London","62-64 Gower Street, WC1E 6ED",,51.521748,-0.131544
@@ -1212,6 +1321,7 @@ id,name,city,address_1,address_2,lat,lon
 23723453,"Old Granada Studios","Manchester","Quay Street, Manchester",,53.479221,-2.254402
 23725236,"133-135 Bethnall Green Rd","London","Shoreditch, E2 7DG",,51.525402,-0.071137
 23725317,"Wayra UK","London","Shropshire House, 2-10 Capper Street",,51.522816,-0.134943
+23726909,"30 Euston Square","London","30 Euston Square",,51.650127,-0.412524
 23732014,"Wahaca Canary Wharf","London/Canary Wharf","The Park Pavillion, Canada Square, London E14 5FW",,51.504883,-0.018889
 23733724,"Deloitte Digital","London","49 Clerkenwell Green EC1R 0EB",,51.523319,-0.105071
 23735032,"Microsoft Cardinal Place","London","80-100 Victoria Street, SW1E 5JL",,51.497265,-0.140081
@@ -1312,6 +1422,7 @@ id,name,city,address_1,address_2,lat,lon
 24139887,"Online","London","https://attendee.gotowebinar.com/register/3978312713778831362",,0,0
 24141608,"NUMA Sentier","Paris","39 Rue du Caire, 75002 Paris",,48.86763,2.34954
 24147417,"PA Consulting","London","123 Buckingham Palace Road, SW1W 9SR",,51.493603,-0.146671
+24148646,"ETC.VENUES 155 BISHOPSGATE","London","CONFERENCE ROOM, 155 Bishopsgate, Liverpool St, London, EC2M 3YD",,51.517578,-0.083036
 24148749,"Zalando Dublin","Dublin 4","Second Floor, The Warehouse, 35 Barrow Street",,0,0
 24152820,"Skills Matter | Code Node","London","10 South Place EC2M 2RB",,51.518551,-0.086114
 24155180,"Salesforce.com UK","London","Salesforce Tower, 110 BISHOPSGATE, EC2",,51.507351,-0.127758
@@ -1362,6 +1473,7 @@ id,name,city,address_1,address_2,lat,lon
 24214872,"CodeNode - 10 South Place","EC2M 7EB","London",,51.518562,-0.086245
 24216434,"The Octagon","Hull","Walker Street, HU3 2RA",,53.73856,-0.354491
 24228539,"WeWork","London","1 Fore Street, EC2Y 9DT",,51.518105,-0.090487
+24230712,"KPMG","London","15 Canada Square  E14 5GL London",,51.505238,-0.016579
 24239904,"ECMWF Shinfield Park ","RG2 9AX","Reading ",,51.419636,-0.950767
 24239992,"110 Bishopsgate, Floor 23  ","London","EC2N 4AY",,51.516281,-0.080964
 24247200,"The Fox","London","28 Paul Street, Shoreditch, EC2A 4LB, London",,51.523903,-0.083815
@@ -1382,10 +1494,12 @@ id,name,city,address_1,address_2,lat,lon
 24306010,"WorldRemit","SW1E 6PA","2nd Floor, 62 Buckingham Gate, London",,51.497723,-0.136051
 24310801,"Hamilton House - University of Greenwich","London","15 Park Vista, Greenwich SE10 9LZ",,51.481907,-0.000583
 24315607,"Balls Brothers Carey Lane","London","5-6 Carey Ln, London EC2V 8AE",,51.515465,-0.096231
+24318069,"InterContinental London - The O2","London SE10 0TW","1 Waterview Dr",,51.502434,-0.00025
 24319896,"Sainsbury's Headquarters","London"," 33 Holborn, EC1N 2HT",,51.517307,-0.108527
 24324106,"UCL G29, Anatomy Building, JZ Young Lecture Theatre","London","Gower Street, WC1E 6BT",,51.522449,-0.132647
 24327923,"CodeNode, ","London","10 South Place, London, EC2M 7EB",,51.518551,-0.086114
 24330457,"WeWork Studio","London"," 2 Sheraton Street, Soho, W1F 8BH",,51.514957,-0.134479
+24331235,"etc Venues St Pauls","London","200 Aldersgate, EC1A 4HD",,51.517323,-0.096838
 24332190,"Nakama","London","1 Fitzroy Square, London W1T 5HF",,51.523182,-0.139171
 24332378,"Medical Sciences 31 A V Hill LT, Medical Sciences Building,","London","UCL, Malet Place, WC1E 6BT ",,51.524773,-0.133427
 24342602,"The Craft Beer Company","London","82 Leather Lane, Clerkenwell, London, EC1N 7TR",,51.521271,-0.109661
@@ -1405,6 +1519,7 @@ id,name,city,address_1,address_2,lat,lon
 24391912,"Makers Academy","London","50 Commercial St, London E1 6LT",,51.517342,-0.073281
 24396542,"St. Paul's","London","200 Aldersgate Conference Centre St. Paul's, London EC1A 4HD",,51.517517,-0.097762
 24397270,"Angel Building","London","407 St John Street, Clerkenwell, London EC1V 4AD",,51.531151,-0.106024
+24406006,"Boyle, Darwin & Fleming rooms, IBM Client Centre, 76/78 Upper Ground, South Bank","London","SE1 9PZ",,51.507462,-0.11262
 24412528,"NEW LIVE STREAM LINK","London","http://bit.ly/watchpanelforparity",,0,0
 24414858,"Hotels.com (NOTE DIFFERENT BUILDING)","London","Address: Block 1, Angel Square, London EC1V 1NS, United Kingdom",,51.507351,-0.127758
 24418745,"The Pinnacle, Transport Systems Catapult","Milton Keynes","170 Midsummer Boulevard ",,52.036427,-0.767443
@@ -1467,8 +1582,11 @@ id,name,city,address_1,address_2,lat,lon
 24605768," Lecture Theatre 1.02 Malet Place Engineering Building, Enter through Roberts Building, Malet Place, Off Torrington Place","London","WC1E 7JE",,51.522697,-0.132539
 24609759,"Pivotal","London","2nd floor, The Warehouse, 207 Old Street, EC1V 9NR",,51.526226,-0.088893
 24609759,"Pivotal","London","2nd floor, The Warehouse, 207 Old Street, EC1V 9NR",,51.526459,-0.089065
+24616871,"Protein","London","31 New Inn Yard, EC2A 3EY",,51.52467,-0.078242
 24618196,"Coventry Transport Museum","Coventry","Millennium Place","Hales Street",52.410744,-1.510289
+24618236,"WeWork Paddington","London","2 Eastbourne Terrace, London W2 6LG",,51.517544,-0.18045
 24618311,"MVF Global","London","Perren St, London NW5 3ED",,51.54718,-0.146319
+24618369,"The Studio","Manchester","51 Lever Street",,53.482857,-2.233735
 24618676,"Hydrogen Group","London","30 Eastcheap, London, EC3M 1HD",,51.51009,-0.08313
 24631262,"Masabi","London","37 Bevenden St, London N1 6BL",,51.529617,-0.085862
 24633347,"Red Lion Pub ","London","1 Eldon Street, EC2M 7LS",,51.51881,-0.086052
@@ -1479,6 +1597,7 @@ id,name,city,address_1,address_2,lat,lon
 24666537,"Design Offices München Arnulfpark","80636 Munich ","Luise-Ullrich-Straße 20",,48.143764,11.537694
 24668260,"Tesco Digital Offices","London","85 Clerkenwell Road",,51.522022,-0.110251
 24670445,"Nexmo","London","44 Featherstone Street EC1Y 8RN  ( Old Street underground station )",,51.524555,-0.089092
+24673274,"ILEC Conference Centre / Ibis Earls Court","London, SW6 1UD","47 Lillie Road",,51.485828,-0.199274
 24674339,"See eventbite","London","http://bit.ly/2a57nTl",,0,0
 24681797,"BAM Mobile","London","Innovation Warehouse, 1 East Poultry Avenue, EC1A 9PT",,51.519085,-0.102783
 24684590,"Webcast","London","Online",,0,0
@@ -1491,6 +1610,7 @@ id,name,city,address_1,address_2,lat,lon
 24722643,"etc.venues Prospero House","London","241 Borough High St, Southwark, SE1 1GA London",,51.50042,-0.094119
 24724281,"Sainsburys Headquarter","London","33 Holborn, EC1N 2HT",,51.517307,-0.108527
 24725572,"Interchange Triangle","London","Stables Market, Chalk Farm Rd",,51.54229,-0.148351
+24727794,"Central Working Paddington","London"," 2 Kingdom St",,51.5196,-0.181761
 24728116,"General Assembly London - Relay Building","London","1 Commercial Street, E1 7PT",,51.51535,-0.072503
 24729109,"King's Cross St. Pancras","London","N1C 4QP",,51.531429,-0.126133
 24729997,"Health Foundry","London","Main Space, Canterbury House, 1 Royal Street, SE1 7LL",,51.498924,-0.115717
@@ -1519,6 +1639,7 @@ id,name,city,address_1,address_2,lat,lon
 24798741,"Citadines Holborn","London","94-99 High Holborn, London WC1V 6LF",,51.518036,-0.118629
 24804320,"Mellanox, We Work Moorgate","London","1 Fore St, London EC2Y 9DT",,51.518082,-0.091166
 24816369,"PwC Google Innovation Labs","Belfast","Waterfront Plaza, 8 Laganbank Road",,54.596565,-5.916591
+24823621,"etc venues 155 Bishopsgate","London","Liverpool Street 155 Bishopsgate,",,51.518612,-0.080434
 24825796,"uSwitch","London","The Cooperage, 5 Copper Row, London, SE1 2LH ",,51.503521,-0.075319
 24825800,"University College London, Cruciform LT1, Cruciform Building, Gower Street, ","London","WC1E 6BT ",,51.524773,-0.133427
 24825836,"Online","London","https://attendee.gotowebinar.com/register/6522437494117561604",,0,0
@@ -1531,6 +1652,7 @@ id,name,city,address_1,address_2,lat,lon
 24856610,"Fitch Learning","London","The Corn Exchange, 55 Mark Lane",,51.510334,-0.080071
 24858808,"Auto Trader Group","London","1 Tony Wilson Place  Manchester, UK M15 4FN",,51.507351,-0.127758
 24865298,"Launch22","Liverpool","12 Tithebarn Street",,53.408604,-2.991126
+24865397,"General Assembly London","London","Relay Building, 1st Floor, 114 Whitechapel High Street, London, E1 7PT",,51.514893,-0.072669
 24865624,"Rainmaking Loft London ","London","1 Saint Katharine's Way, E1W 1UN",,51.507637,-0.073703
 24867311,"Arup London, Emmerson & Shears Room","London","8 Fitzroy Street, W1T 4BJ",,51.52161,-0.137727
 24870804,"i2 Office","London, EC2M 3XD","99 Bishopsgate",,51.515873,-0.082567
@@ -1543,15 +1665,20 @@ id,name,city,address_1,address_2,lat,lon
 24900133,"uSwitch","London","5 Copper Row, London, SE1 2LH, London",,51.503323,-0.075185
 24900133,"uSwitch","London","5 Copper Row, London, SE1 2LH, London",,51.50334,-0.07518
 24900133,"uSwitch","London","5 Copper Row, London, SE1 2LH, London",,51.50352,-0.075319
+24910569,"Hilton Tower Bridge, London, UK","London","London",,51.507351,-0.127758
 24915380,"Institute of Education, Nunn Hall","WC1H 0AL","20 Bedford Way",,51.52322,-0.12819
 24915721,"Online Competition only","London","Via your favourite browser or mobile app",,51.507351,-0.127758
 24917894,"Here East","London","Queen Elizabeth Olympic Park, E20 3BS",,51.543266,-0.012477
 24917894,"Here East","London","Queen Elizabeth Olympic Park, E20 3BS",,51.5469,-0.022498
+24926881,"155 Bishopsgate ","London","Liverpool Street",,51.517578,-0.083036
 24933756,"etc.venues Fenchurch Street","London","Fenchurch Place ",,51.511578,-0.079313
 24946141,"See Eventbrite","London","https://fatjldnjan17.eventbrite.com",,0,0
 24951758,"WeWork","London","1 Fore Street, EC2Y 5EJ",,51.518162,-0.09044
+24952932,"Cocoon Networks","London","4 Christopher St, EC2A 2BS",,51.521271,-0.084154
 24966648,"Room 313 University of the Arts London","London","272 High Holborn, WC1V 7EY",,51.517857,-0.116604
+24967277,"Digilab, Barking Learning Center","London, IG11 7NB","2 Town Square, Barking",,51.53389,0.074573
 24968507,"The Smokery","London","2-6 Greenhill’s Rents EC1M 6BW",,51.519817,-0.102646
+24970900,"The Wesley Euston Hotel","London","81-103 Euston Street, Kings Cross, NW1 2EZ",,51.526535,-0.136168
 24970972,"Pusher Office","London","28 Scrutton St, London EC2A 4RP, UK",,51.523228,-0.082713
 24974717,"The Brigade","London","Fire Station, Tooley Street",,0,0
 24980265,"America Square Cavendish Venues","London","1 America Square London",,51.511288,-0.076755
@@ -1560,6 +1687,8 @@ id,name,city,address_1,address_2,lat,lon
 24987034,"Puppet","London","13th Floor, 2 Leman Street, E1 8FA ",,51.514774,-0.071722
 24988343,"WeWorks Spitalfields","London","1 Primrose St, London EC2A 2EX, London",,51.520531,-0.079661
 24988380,"Cookhouse Gallery","London SW1P 4JU","Chelsea College of Arts, 16 John Islip St",,0,0
+24991037,"The Cavendish London","SW1Y 6JF","81 Jeremy's Street , London",,51.507748,-0.137873
+24996426,"Tableau","London","110 Southwark St, London SE1 0SU",,51.505688,-0.099881
 24996952,"The Shed","Manchester","M1 5GE",,53.472073,-2.241427
 24997457,"#openspace","Berlin","Bülowstr. 80, 10783  ",,52.497581,13.363756
 24998252,"Facebook","London","338 Euston Road",,51.524597,-0.141534
@@ -1568,9 +1697,11 @@ id,name,city,address_1,address_2,lat,lon
 25008968,"Google Saint Giles Office","London WC2H 8AG","1-13 St Giles High St",,51.516033,-0.127109
 25011592,"IHS Markit","London","25 Ropemaker Street, EC2Y 9LY",,51.52,-0.089148
 25022323,"The Oak Tree, Desklodge Bristol","Bristol","1 Temple Way, BS2 0BY",,51.454735,-2.582712
+25024497,"Valtech  ","London","46 Colebrooke Row, N1 8AF ",,51.534992,-0.10171
 25028681,"Realities Centre","London","4 Christopher Street EC2A 2BS",,51.521271,-0.084154
 25034412,"Peloton Leadership Network","London","Henry Wood House, 2 Riding House Street",,51.518082,-0.142372
 25043046,"See Eventbrite ","London ","https://fatjldnfeb.eventbrite.com",,0,0
+25044175,"moorgate station","London","moorgate station",,51.518467,-0.088388
 25046129,"Park Plaza Westminister","London","200 Westminster Bridge Road, SE1 7UT, London",,51.500957,-0.116686
 25046180,"InterContinental London - The O2","London","Waterview Drive London, United Kingdom - SE10 0TW",,51.502201,6.1e-05
 25049366,"Metta","Central","21/F California Tower - 30-32 D'Aguilar St",,22.280872,114.155518
@@ -1589,10 +1720,9 @@ id,name,city,address_1,address_2,lat,lon
 25117588,"Work Life Verizon Clerkenwell","London","8 Jerusalem Passage, EC1V 4JP",,51.523216,-0.103382
 25127918,"Carnaby St @ The Blue Posts","London","2nd Floor @ The Blue Posts, 18 Kingly St, Soho, London W1B 5PX",,51.51255,-0.139106
 25134826,"The Alan Turing Institute","London","British Library 96 Euston Road, NW1 2DB",,51.529972,-0.127676
-25134845,"Mindspace","Tel Aviv-Yafo, 6579402","Ahad Ha'Am St 54",,32.064713,34.774357
 25140125,"IDEAL","London","69 Wilson St, London EC2A 2BB, UK",,51.521877,-0.08494
+25140665,"Wayra ","London","20 Air Street",,51.510597,-0.136495
 25147128,"Wellcome Trust Genome Campus","Cambridgeshire","Hinxton, CB10 1RQ",,52.079468,0.184692
-25150100,"Hilton London on Park Lane","London","22 Park Lane",,51.50555,-0.15017
 25150743,"Lattice80","068898"," 08-01, 80 Robinson Road,",,1.280275,103.849411
 25155600,"betahaus","Berlin","Prinzessinnenstraße 19-20, 10969  ",,52.502541,13.412198
 25160610,"Park Plaza Waterloo","London"," 6 Hercules Road SE1 7DP",,51.498238,-0.113384
@@ -1600,11 +1730,118 @@ id,name,city,address_1,address_2,lat,lon
 25165985,"The Hospital Club, ","London","Endell Street",,51.514729,-0.124828
 25169339,"Royal Geographical Society","London","1 Kensington Gore ",,51.501541,-0.174991
 25180420,"Rise London","London","41 Luke St, London EC2A",,51.52409,-0.082616
+25185918,"Runway East Shoreditch (City Road)","London","58-64 City Road, EC1Y 2AL, London",,51.524246,-0.087676
+25187344,"Hotel Ibis London Earl's Court","London","Hotel Ibis London Earl's Court, 47 Lillie Rd, SW6 1UD",,51.485931,-0.199537
+25193801,"ASOS Head Office Camden","London","Greater London House, Hamstead Road, London NW17FB",,51.533894,-0.139656
 25197285,"City University of London","EC1V 0HB","Northampton Square, London",,51.52779,-0.102322
 25203831,"Wallacespace Spitalfields","London","15 Artillery Lane",,51.518589,-0.07828
 25215337,"Queen Mary Law Building - Room 210 ","London","Queen Mary University, Mile End Campus, London E1 4NS",,51.524067,-0.040374
 25217531,"costa","London","5 Finsbury Ave, London EC2M 2PG",,51.518879,-0.085459
+25222677,"Campus London  ","London"," 4-5 Bonhill St, Shoreditch London EC2A 4BX ",,51.522663,-0.085634
+25228669,"Live Webinar","London","https://my.demio.com/ref/hAThKpH0NSi8wDDe",,0,0
+25237300,"28-30 Grosvenor Gardens","London","SW1W 0TT",,51.497044,-0.146748
+25243529,"Westminster Pier Victoria Embankment","London","SW1A 2JH",,51.501705,-0.12326
+25244549,"The Live Room, Twickenham Stadium, ","London","200 Whitton Road, Twickenham, Middlesex, TW2 7BA",,51.455132,-0.339859
+25247738,"Cloud & DevOps World Expo @ ExCel ","London","Royal Victoria Dock, 1 Western Gateway, London E16 1XL",,51.508461,0.029846
+25250134,"The  City Centre","London","80 Basinghall Street, London EC2V 5AG",,51.515141,-0.091044
+25250206,"Imperial College London","London","Lecture Theatre 311, Huxley Building, 180 Queens Gate, SW7 2RH ",,51.498905,-0.178993
+25250355,"General Assembly, The Relay Building","London","114 Whitechapel High Street London, E1 7PT",,51.515129,-0.072198
+25257901,"Huckletree","London","18 Finsbury Square, London, EC2A 1AH",,51.5215,-0.086174
 2526131,"Ravensbourne College","London","6 Penrose Way Greenwich Peninsula SE10 0EW",,51.500153,-0.126236
+25262624,"Dribble Office","London EC1N 8JT. ","69 Hatton Garden, Garden House",,51.52079,-0.108766
+25264317,"Please Sign up here for location ","London","http://bit.ly/FATJLondonJune",,0,0
+25270038,"IAB","London","14 Macklin Street, Covent Garden, London, WC2B 5NF",,51.515743,-0.122413
+25270851,"Infinity Hotel & Conference Center","85716 Unterschleibheim","Andreas-Danzer-Weg1",,48.284973,11.561152
+25272637,"Online/Worldwide","London","Zoom Webinar",,0,0
+25272838,"Cafe@5, Microsoft","London","Microsoft, 2 Kingdom Street, Paddington, London W2 6BD",,51.5196,-0.181761
+25277584,"ASOS","London","Greater London House, Hampstead Rd, Kings Cross, London NW1 7FB",,51.533894,-0.139656
+25280003,"RedHat, Peninsular House","London","30-36 Monument St, EC3R 8NB",,51.509609,-0.08528
+25288930,"The Brewery","London","52 Chiswell Street, London, EC1Y 4SD",,51.520817,-0.091532
+25290496,"The Localist ","London","38-42 St John Street, EC1M 4DL",,51.520294,-0.101355
+25290730,"Imperial College Business School","London","South Kensington Campus Exhibition Road, SW7 2AZ",,51.498798,-0.174877
+25291269,"Aviva Digital Garage","London","3-35 Hoxton Square, N1 6NN",,51.527668,-0.08069
+25299684,"County Hall, Riverside Building, Belvedere Road","London","London SE1 7PB",,51.502819,-0.119252
+25300099,"Drivetribe, Unit 1.0.4, The Office Group, Eastside","London","Kings Cross, N1C 4AX",,51.530781,-0.122765
+25307684,"The Franklin Building","EC1V 7DP"," 124 Goswell Road London ",,51.524818,-0.099063
+25309283,"At the Bar Park Plaza Victoria London","London","239 Vauxhall Bridge Road ","SW1V 1EQ",51.494255,-0.141476
+25318977,"Boardroom 1, 4th Floor","Leeds","Bridgewater Place, 1 Water Lane",,53.791634,-1.54773
+25320728,"University of West Scotland","London","London Campus,  235 Southwark Bridge Rd,  SE1 6NP ",,51.498371,-0.099873
+25325105,"Strong Room","London","120-124 Curtain Rd London -  EC2A 3SQ",,51.525963,-0.08015
+25329203,"Castlewood House, 77-91 New Oxford Street","WC1A 1DG","London",,51.516548,-0.127969
+25329917,"Acxiom","London","17 Hatfields",,51.506378,-0.10671
+25334303,"Winton's head office","London","Grove House, 27 Hammersmith Grove, London, W6 0NE",,51.494968,-0.226832
+25334304,"Winton's head office","London","Grove House, 27 Hammersmith Grove, London, W6 0NE",,51.494968,-0.226832
+25334305,"Imperial College London","London","Lecture Room 311 Huxley Building, 180 Queen's Gate, SW7 2AZ.",,51.498905,-0.178993
+25334306,"Winton's head office","London","Grove House, 27 Hammersmith Grove, London, W6 0NE",,51.494968,-0.226832
+25334307,"Winton's head office","London","Grove House, 27 Hammersmith Grove, London, W6 0NE",,51.494968,-0.226832
+25334308,"Imperial College London","London","Lecture Room 311 Huxley Building, 180 Queen's Gate, SW7 2AZ.",,51.498905,-0.178993
+25341988,"The Bishop","London","2 Bishop’s Hall (off Thames Street)",,51.410313,-0.308142
+25348823,"Salesforce, 29th Floor, Heron Tower","London","110 Bishopsgate, EC2A 4AY",,51.516174,-0.08094
+25364989,"Shop Direct","London","111 Buckingham Palace Road, London, SW1W 0DT",,51.494652,-0.145258
+25375247,"Terra Gallery & Event Venue","San Francisco","511 Harrison Street",,37.785702,-122.393188
+25387001,"AND Digital","WC2E 8QH","First Floor, 18 Henrietta Street, London",,0,0
+25387561,"Vaimo","London","38 Threadneedle Street",,51.514469,-0.084083
+25399220,"Co-op Digital, 6th Floor, Federation House, ","Manchester, M4 2AH","Federation Street",,53.486286,-2.240091
+25407350,"County Hall Riverside Building","London","Westminster Bridge Road,London SE1 7PB",,51.499561,-0.113822
+25414842,"https://www.alldaydevops.com//","London","Online",,51.52599,-0.314808
+25428772,"Apttus","London","25 Old Broad Street, EC2N 1HQ",,51.515152,-0.08385
+25433751,"10 Jamestown Rd","London","NW1 7BY",,51.540184,-0.147448
+25435614,"Pusher Office","London","28 Scrutton St, EC2A 4RP",,51.523228,-0.082713
+25437340,"SHACK15 - The Data Science Hub","E1 6JJ","67 - 71 Shoreditch High Street, Shoreditch, London",,51.524559,-0.077008
+25440993,"The Hague Security Delta","The Hague","Wilhelmina van Pruisenweg 104",,52.078846,4.340686
+25444568,"The Celtic Manor Resort","Newport","Coldra Woods, The Usk Valley, Newport, NP18 1HQ, South Wales",,51.602207,-2.931387
+25446874,"The Old Market 11a Upper Market Street","Hove","BN3 1AS",,50.825001,-0.157115
+25461549,"Building 4, 4 Old Street Yard","London","32 Featherstone Street  EC1Y 8AE",,51.524761,-0.088146
+25468542,"Dennis","London","31-32 Alfred Place, WC1E 7DP",,51.519924,-0.132403
+25473288,"RNLI College, Poole (and possibly virtually)","Poole","West Quay Rd",,50.715744,-1.990015
+25475917,"Erlang Solutions","London","Suite 2.6, The Loom, Gower's Walk, E1 8PY",,51.512695,-0.06745
+25476025,"Erlang Solutions ","London","Suite 2.6, The Loom, Gower's Walk, E1 8PY, London",,51.512695,-0.06745
+25482147,"The Guildhall","London","Art Gallery Entrance, Gresham Street, London, EC2V 7HH",,51.515591,-0.091596
+25483178,"MEC Media Agency","London"," Sea Containers House, 18 Upper Ground, London SE1 9ET",,51.508377,-0.106725
+25484160,"Draw Group","London","Unit 3, 2 Weston St",,51.502411,-0.085712
+25490502,"Fintek Software Limited","London","Studio 112, 134-146 Curtain Road, London, EC2A 3AR ",,51.52663,-0.080078
+25492527,"University of Northumbria London Campus","London","110 Middlesex St",,51.517845,-0.077887
+25493239,"Google","SW1W","Belgravia, London",,51.492573,-0.15114
+25498280,"Signup on eventbrite for location  ","London","http://bit.ly/FATJLondonSeptember",,0,0
+25499394,"Farr Institute (UCL)","London","222 Euston road, NW1 2DA",,51.525887,-0.135582
+25500406,"TMRW Hub & Byte Cafe ","London","75-77 High St, Croydon CR0 1QQ",,51.371296,-0.100148
+25500441,"Deliveroo Offices, Cannon Street Station","London","1 Cousin Lane, EC4R 3TE",,51.51011,-0.091093
+25500466,"The Engine Room","London, EC2A 1AF","Runway East Moorgate, 10 Finsbury Square",,51.521214,-0.087166
+25502658,"Blenheim Room - Palace Suite - Hilton London Metropole","London","Hilton London Metropole - W2 1JU",,51.519417,-0.16965
+25502717,"Irish Aviation Authority","Dublin","11-12 D'Olier Street",,53.3466,-6.258377
+25513924,"The Chartered Insurance Institute","London","20 Aldermanbury",,51.516689,-0.09236
+25524059,"The Brewery","London","52 Chiswell St, London EC1Y 4SD",,51.520817,-0.091532
+25526086,"Signup on eventbrite for location","London","http://bit.ly/FATJLondonOctober",,0,0
+25528119,"Grange City Hotel","London","Tower Bridge",,51.505596,-0.075338
+25528120,"Grange City Hotel","London","Tower Bridge",,51.505596,-0.075338
+25528202,"Deliveroo (The River Building), 1 Cousin Lane","London","EC4R 3TE",,51.509651,-0.091749
+25531069,"NASDAQ","London","25 Basinghall Street",,0,0
+25533247,"TBC","London","110 bishopsgate",,51.516224,-0.080956
+25533426,"Bella Center","Copenhagen","Center Blvd. 5, 2300",,55.639671,12.578321
+25535430,"HomeAway","London","Portland House","Bressenden Place SW1E 5BH  (near Victoria Station)",51.497425,-0.141494
+25540225,"etc.venues, 200 Aldersgate","London","St Paul’s",,51.513844,-0.098351
+25540226,"etc.venues, 200 Aldersgate","London","St Paul’s",,51.513844,-0.098351
+25541899,"TBA","London","Boylston St.",,0,0
+25545265,"Hambro Perks","London, SW1P 1PL","8 Greencoat Place",,51.495865,-0.13602
+25545425,"Future Labs, 2nd Floor","Leeds, LS2 7LY","1 Eastgate",,53.799053,-1.539296
+25545466,"White Cloth Gallery","Leeds, LS1 4HT","24 Aire St",,53.795547,-1.550346
+25545745,"Finastra","Paris","42 rue Washington, 75008",,48.874523,2.305142
+25548569,"Bank of America Merrill Lynch","London","2 King Edward St",,51.516075,-0.099993
+25548970,"30 Aylesbury St","London","Clerkenwell EC1R",,51.526787,-0.107201
+25563350,"The Paragon","Bristol ","Counterslip",,51.453224,-2.588258
+25566858,"Cardiff City Hall (Room L)","Cardiff","Cathays Park, CF10 3ND",,51.485149,-3.178644
+25568490,"Bristol Engine Shed @ Temple Meads ","Bristol","BS1 6QH",,0,0
+25569856,"Chadwick Court","London","15 Hatfields, London SE1 8DJ",,51.50671,-0.106985
+25573019,"END Clothing office","London"," 2, Old Street Yard",,0,0
+25574883,"Thoughbot","London","Griffin Court, 15 Long Lane 3rd floor London EC1A 9PN",,51.519775,-0.098998
+25583990,"Global OnLine","London","ibm.com/dsforall",,0,0
+25584985,"VNC","Cambridge","104 Hills Road",,52.193993,0.131118
+25588302,"Zuhlke Engineering","London","80 Great Eastern St, London,  EC2A 3JL",,51.525875,-0.082701
+25590321,"Olympia – West Hall","London","Hammersmith Road, Kensington, London W14 8UX",,51.493649,-0.215795
+25590751,"London Heathrow Marriott Hotel","Harlington","Bath Rd, Harlington, Hayes UB3 5AN",,51.481228,-0.435091
+25593592,"WeHub","London","Wohl Building, 2B Redbourne Avenue, London N3 2BS",,51.602608,-0.190803
+25602155,"Sign up on Eventbrite for location","London","http://bit.ly/FATJNovember",,0,0
+25602385,"Festicket Utopia Village","London","7 Chalcot Rd London NW1 8LH",,0,0
 2674661,"The Mermaid Conference & Events Centre","London","Puddle Dock Blackfriars, EC4V 3DB",,51.511593,-0.102261
 3046741,"Roberts Building UCL","London","Torrington Place and A400",,51.522236,-0.13317
 3228392,"ARSENAL EMIRATES STADIUM","London","N5 1BU",,51.55793,-0.102236
@@ -1673,6 +1910,7 @@ id,name,city,address_1,address_2,lat,lon
 6960412,"Münchenbryggeriet","Stockholm","Torkel Knutssonsgatan 2 Stockholm T-bana: Mariatorget",,59.320747,18.056202
 6967312,"OpenCredo","London","42 Southwark Street",,51.504898,-0.093604
 6974102,"UCL, Darwin Building, University College London, Gower Street ","London","University College London, Gower Street, London WC1E",,51.524536,-0.134037
+7169472,"Business Design Centre","London","52 Upper Street, Islington, London N1 0QH",,51.535286,-0.105164
 7207792,"Fujitsu","W1U 3BW","22 Baker St",,51.517708,-0.155345
 737596,"Natural History Museum","London","Cromwell Rd",,51.494998,-0.183198
 7382212,"The Skills Matter eXchange","London","116-120 Goswell Road London, EC1V 7DP",,51.524506,-0.099152
@@ -1687,6 +1925,7 @@ id,name,city,address_1,address_2,lat,lon
 7772022,"Central Working","London","11-13 Bayley Street Bedford Square WC1B 3HD",,51.519314,-0.130426
 7772472,"Tattershall Castle","London","Victoria Embankment Whitehall London SW1A 2HR ",,51.506088,-0.122374
 7849812,"Ye Olde Cock Tavern , Holborn, London, EC4Y 1AA","London","v",,51.508129,-0.128005
+788489,"The Abbey Centre","Westminster","34 Great Smith St, ",,51.497345,-0.129464
 7911132,"Bskyb, 1 Braham Street, near Aldgate East Tube Station","London"," SKY NETWORK SERVICE, MAERSK HOUSE    1 BRAHAM STREET    London, London E1 8EP",,51.514278,-0.071724
 7931512,"Shaping Cloud HQ","Manchester","Unit 1.1, 51 Bengal Street, M4 6LN",,53.484272,-2.226346
 793683,"London’s Business Design Centre","Islington","Islington ",,51.534961,-0.103742
@@ -1703,6 +1942,7 @@ id,name,city,address_1,address_2,lat,lon
 830365,"Twickenham Stadium","Twickenham","Rugby Road",,51.454802,-0.340238
 835790,"Counting House Pub","London","50 Cornhill Rd","EC3V 3PD",51.513407,-0.085022
 835790,"Counting House Pub","London","50 Cornhill Rd","EC3V 3PD",51.51341,-0.085022
+837441,"Somerset House","London","Strand","WC2R 1LA",51.507423,-0.128352
 8382672,"Ace Hotel","New York","20W 29TH STREET NEW YORK CITY, NY 10001",,53.962292,-1.0819
 839148,"The Heeltap Pub","London SE1 1NX","White Hart Yard","Borough High Street",51.50428,-0.08907
 844780,"Old Sessions House (Skills Matter)","London","  22 Clerkenwell Green",,51.522491,-0.105554
@@ -1717,6 +1957,7 @@ id,name,city,address_1,address_2,lat,lon
 8593492,"Milk Bar, inside Grace ","London","42-44 Great Windmill Street, W1D 7NB",,51.511059,-0.134132
 8598392,"Google London Campus","London","4-5 BONHILL STREET LONDON EC2A 4BX",,51.522724,-0.084817
 861311,"Brighton Dome","Brighton","Church Street",,50.824764,-0.141598
+8663492,"200 Aldersgate ","London","200 Aldersgate, St. Paul’s, London EC1A 4HD",,51.517517,-0.097762
 867750,"The Building Centre","London","Store Street","WC1E 7BT",51.519696,-0.131908
 868959,"Knights Templar (Wetherspoons)","London","95 Chancery Lane","WC2A 1DT",51.515456,-0.112059
 871068,"The Roebuck Pub","Hounslow","122 Chiswick High Road","Chiswick",51.491052,-0.281623
@@ -1757,6 +1998,7 @@ id,name,city,address_1,address_2,lat,lon
 10450042,"Arete Research","London","27 St John's Lane",,51.52169,-0.102302
 10494552,"81 Leonard Street Events","London, EC2A 4QS","81 Leonard Street",,51.524712,-0.083073
 1057276,"The Crown Tavern","London","43 Clerkenwell Green","EC1R 0EB",51.522906,-0.105205
+1059212,"RSA","London","8 John Adam Street",,51.509035,-0.123241
 10630452,"3rd Floor Space, Google Campus, ","London","4-5 Bonhill Street, London, EC2A 4BX",,51.522694,-0.085303
 10650782,"Modern Jago (gallery space above)","London","Club Row, Arnold Circus, E2 7ES",,51.526333,-0.074826
 1067281,"Hilton London Metropole Hotel","Paddington","225 Edgeware Road","London W2 1JU",51.519077,-0.168782
@@ -1829,6 +2071,7 @@ id,name,city,address_1,address_2,lat,lon
 15004892,"RBS","London","250 Bishopsgate",,51.519371,-0.077956
 15074632,"Rainmaking Loft"," London, E1W 1TW","International House 1 St Katharine’s Way",,51.50724,-0.074055
 15083952,"The Breakfast Club","London","12-16 Artillery Lane, Spitalfields",,51.520306,-0.07741
+15118212,"Ticketmaster","London, N1 9HF","4 Pentonville Road",,51.531849,-0.108151
 15200122,"Home of the Royal College of General Practitioners","London","30 Euston Square",,51.527443,-0.130868
 15220702,"King","London","Central Saint Giles, 1 St Giles High Street, WC2H 8AG",,51.51564,-0.127833
 15348582,"University of Westminster - Cavendish ","London","115 New Cavendish St, London W1W 6UW",,51.520756,-0.13989
@@ -1836,7 +2079,6 @@ id,name,city,address_1,address_2,lat,lon
 15457252,"BAE Systems Detica","London","Blue Fin Building, 110 Southwark Street, London, SE1 0SU",,51.506313,-0.099871
 15522402,"Mind Candy HQ","London","15 Bonhill Street, EC2A 4DN",,51.523033,-0.085178
 15628052,"The Crown and Shuttle Pub","London","226 Shoreditch High Street London, Greater London E1 6JE",,51.526409,-0.078068
-15635132,"Temple walkabout ","London","Temple Place London WC2R 2PH",,51.511024,-0.114999
 15673222,"makeshift.io","London","12 Mallow Street, London EC1Y 8RQ",,51.524769,-0.088613
 1569305,"London South Bank University","London","90 - 100 London Road, Elephant and Castle, SE1 6LN",,51.496994,-0.102633
 1570565,"BMA House","London","Tavistock Square, London, WC1H 9JP",,51.52499,-0.129736
@@ -1870,7 +2112,7 @@ id,name,city,address_1,address_2,lat,lon
 17331572,"Ozone Coffee","London","11 Leonard St",,0,0
 17397392,"HQs of Facebook, Twitter, Google, LinkedIn and HubSpot ","Dublin","Grand Canal Square",,0,0
 17445082,"Grange Tower Bridge Hotel","London E1 8GP ","45 Prescot Street ",,51.511654,-0.071703
-1752361,"Innovation Warehouse","London","1st Floor, 1 East Poultry Avenue","EC1A 9PT",51.519106,-0.101962
+1752361,"Innovation Warehouse","London","1st Floor, 1 East Poultry Avenue","EC1A 9PT",51.519,-0.102775
 17636092,"Telerik Offices","London","14 Austin Friars",,51.515663,-0.085618
 17720422,"University of Nottingham","NG7 2NR","Kings Meadow Campus, Lenton Ln, Nottingham ",,52.93494,-1.170946
 17831902,"Skills Matter","London","116-120 Goswell Road",,51.524506,-0.098982
@@ -1926,6 +2168,7 @@ id,name,city,address_1,address_2,lat,lon
 20616922,"Land Registry HQ","Croydon","Trafalgar House, 1 Bedford Park, CR0 2AQ",,51.37878,-0.098635
 20641152,"60 Cannon Street","EC4N 6NP","London ",,51.51189,-0.092388
 20641162,"60 Cannon Street","EC4N 6NP","London ",,51.51189,-0.092388
+20685632,"Google Campus","London","4 -5 Bonhill Street",,51.522724,-0.086026
 20788962,"Canonical Group Limited  5th Floor, Blue Fin Building","London","110 Southwark Street",,51.505764,-0.100136
 20881022,"ITV","London","200 Gray's Inn Road, London, WC1X 8XZ, UK, London",,51.523449,-0.114148
 20966752,"The Lincoln Arms","Dorking","Station Approach",,51.240318,-0.32461
@@ -1938,6 +2181,7 @@ id,name,city,address_1,address_2,lat,lon
 21501252,"University of Ulster","London EC1R 4TF","St James House, 10 Rosebery Avenue, Holborn",,51.52254,-0.111461
 21640892,"Online Webinar","Online","Online",,51.462582,-0.074072
 21677512,"M62 Visual Communications","Liverpool","402, Century Buildings Brunswick Business Park Liverpool, England L3 4BL",,53.385033,-2.979726
+21879302,"Financial Times","London","One Southwark Bridge",,51.500114,-0.09945
 22045772,"Rainmaking Loft London ","London","International House  1 St Katharine's Way  London E1W 1UN",,51.507324,-0.07373
 22046382,"Equal Experts","London","30 Brock Street, NW1 3FG",,51.533401,-0.14602
 22048832,"The Village Hall","London, N1 6NN","Shoreditch Works, 33 Hoxton Square",,51.527618,-0.080601
@@ -2036,13 +2280,16 @@ id,name,city,address_1,address_2,lat,lon
 23762248,"GoToWebinar","Ilford","Live Online",,54.554642,-5.852129
 23772223,"Google Campus London","London","4-5 Bonhill Street, London EC2A 4BX",,51.522579,-0.085512
 23783283,"Address will posted and emailed","Ilford","Online",,54.560886,-2.212512
+23788720,"Rum & Sugar","London","at Museum of Docklands, Hertsmere Road, West India Quay DLR",,51.50758,-0.021338
 23788997,"Saint James's Hatcham, Goldsmiths University, ","London","SE14 6AD",,51.474258,-0.038001
 23801613,"Address will be emailed and posted","Ilford","Online",,54.560886,-2.212512
 23804275,"The App Business","N1 9BE","The Spitfire Building, 71 Collier Street",,51.531986,-0.118985
+23804347,"Chelsea College of Art & Design, Lecture Theatre","London","16 John Islip Street, SW1P 4JU",,51.492401,-0.127775
 23808791,"Central Station Pub","London N1 9SD"," 37 Wharfdale Road, Kings Cross ",,51.533432,-0.120468
 23809826,"RockStar Hubs (ground floor) ","London EC3R 7DD","3 Minster Court (corner entry), Mincing Lane",,51.51033,-0.081082
 23812670,"Address will be emailed and posted","Ilford","Online",,54.560886,-2.212512
 23815217,"Bilderberg Garden Hotel","Amsterdam","Dijsselhofplantsoen 7, 1077 BJ",,52.351181,4.874
+23815374,"Campus London, a Google space","Greater London","4-5 Bonhill Street London EC2A 4BX",,51.522579,-0.085512
 23816031,"Deloitte Digital","London","Buckley Building, 49 Clerkenwell Green, EC1R 0EB",,51.523319,-0.105071
 23820323,"London Capital Club","London","15 Abchurch Lane, EC4N 7BW",,51.511814,-0.088226
 23825440,"MSE Meeting Rooms","London","103A Oxford Street W1D 2HG",,51.515884,-0.134768
@@ -2075,7 +2322,6 @@ id,name,city,address_1,address_2,lat,lon
 23974779,"Golden House","W1F 9NN","30 Great Pulteney Street",,51.512131,-0.136391
 23982156,"Code Node","London","10 South Place EC2M 2RB",,51.519547,-0.087081
 23994715,"Edwins Winebar","London","18 Phipps Street London EC2A 4NU",,51.524017,-0.081516
-24005115,"mso","Dartford","The Old Granary, Malt House Farm, Green Street Green Road",,0,0
 24010969,"Webinar - Use Link In Description To Register","London","Worldwide Web",,53.6083,-0.168923
 24011405,"The Escape School, 3rd Floor, 1 Frederick's Place, ","London","Old Jewry, Bank London EC2R 8AE",,51.514275,-0.091236
 24011444,"St. Regis Hotel","Houston","1919 Briar Oaks Ln, 77027",,29.747433,-95.450401
@@ -2123,6 +2369,7 @@ id,name,city,address_1,address_2,lat,lon
 24149792,"Accelerator | Business Incubation London","London","35 Kingsland Rd, London E2 8AA",,51.527771,-0.078007
 24151407,"NHow Hotel","Berlin","Stralauer Allee 3",,52.501106,13.450851
 24152395,"Americano Restaurant @ Hotel Vitale","San Francisco","8 Mission St",,37.793495,-122.393333
+24152820,"Skills Matter | Code Node","London","10 South Place EC2M 2RB",,51.518551,-0.086114
 24162541,"etc.venues St Paul's 200 Aldersgate Street","EC1A GB","London",,51.51825,-0.102025
 24164278,"WeWork","London","Medius House, 2 Sheraton St, W1F 8BH",,51.515045,-0.134541
 24164343,"Winton Capital","London","27 Hammersmith Grove, W6 0NE",,51.495018,-0.226458
@@ -2131,8 +2378,10 @@ id,name,city,address_1,address_2,lat,lon
 24176182,"St Johns Church of Hoxton (Main Church)","London","Pitfield Street, N1 6NP",,51.53101,-0.082917
 24177026,"Artirix Office","London","2nd Floor, Venture House, Glasshouse Street",,51.510464,-0.137367
 24186084,"Thoughtworks  ","London","78 Wardour St, W1F",,51.513214,-0.133658
+24186400,"St Johns Church Pitfield street London N1 6NP","London","Pitfield Street",,51.53101,-0.082917
 24187347,"YOOX NET-A-PORTER GROUP","London","1 The Village Offices, Westfield London Shopping Centre, Ariel Way",,51.507961,-0.219307
 24188232,"Code Node","London","10 South Place, London, EC2M 7EB",,51.518551,-0.086114
+24190442,"Carwow Offices","London","Carwow  6th Floor  New Penderel House  283-288 High Holborn  London  WC1V 7HP",,51.518089,-0.115502
 24192546,"Zapnito","London","18-20 Scrutton Street",,51.523212,-0.083461
 24193056,"Runway East","London","10 Finsbury Square",,51.52124,-0.087505
 24199566,"onefinestay","EC1V 4PA","300 St John Street, London",,51.528229,-0.104595
@@ -2144,6 +2393,7 @@ id,name,city,address_1,address_2,lat,lon
 24236879,"Look Mum, No Hands!","EC1V 9HX.","49 Old Street, London",,51.524166,-0.096889
 24238652,"ORTUS learning and events centre 82 – 96 Grove Lane London SE5 8SN","London","82 – 96 Grove Lane London SE5 8SN",,51.469551,-0.087836
 24243795,"Palantir, 3rd Floor","London","27 Soho Square, W1D 3QR",,51.514812,-0.131652
+24250663,"The Royal Society for Arts","London","8 John Adam Street",,51.50943,-0.122759
 24251031,"WORKLIFE Camden","London","13 Hawley Crescent, NW1 8NP",,51.540955,-0.142647
 24259557,"Building 53, Seminar Room, Cranfield University","Bedford MK43 0AL","College Rd, Cranfield, ",,52.074192,-0.630024
 24259603,"Conversocial (floor 6)","London","7-11 Cavendish Place, W1G 0QD",,51.517109,-0.143505
@@ -2152,6 +2402,7 @@ id,name,city,address_1,address_2,lat,lon
 24274600,"Unit L, The Biscuit Factory ","London","100 Clements Road, Southwark, SE16 4DG",,51.494553,-0.062197
 24277063,"Pret A Manger","London","7-8 St Martin's Place, London WC2N 4JH",,51.509346,-0.126702
 24279884,"Rise London (previously London Escalator)","London","69-89 Mile End Road, E1 4TT",,51.520878,-0.052311
+24282232,"Coin laundry","London","70 Exmouth Market London EC1R 4QP",,51.526386,-0.10817
 24290402,"http://dtd.analyticsweek.com/","Online","http://dtd.analyticsweek.com/",,0,0
 24303362,"Albert House","London","256-260 Old Street, EC1V 9DD",,51.525951,-0.085365
 24305735,"JustGiving Floor 2 Blue Fin Building ","London","110 Southwark Street London SE1 0LA",,51.505978,-0.100084
@@ -2200,12 +2451,15 @@ id,name,city,address_1,address_2,lat,lon
 24494766,"UCL Roberts G06, Roberts Building,","London","Malet Place, WC1E 7JE",,51.523563,-0.132634
 24498857,"The Queens Head ","London"," 64 Theobalds Rd, London WC1X 8SF",,51.520741,-0.116977
 24500542,"S-1.22 Strand Building, Strand campus, King’s College London","London","WC2R 2LS",,0,0
+24508374,"3rd Floor of Campus London, a Google Space ","London","4-5 Bonhill Street, London, EC2A 4BX",,51.522598,-0.085515
+24522262,"London Zoo","London","Regent's Park, London, NW1 4RY",,51.532692,-0.141995
 24523731,"Empiric","London","First Floor, 1 Old Jewry, London EC2R 8DN",,51.513824,-0.090765
 24525247,"Just IT","London","St. Clare House, 30-33 Minories, London EC3N 1DD",,51.512344,-0.075278
 24529311,"Great Hall (K0.64), King's Building","London","King's College London, Strand Campus",,0,0
 24529311,"Great Hall (K0.64), King's Building","London","King's College London, Strand Campus",,51.51145,-0.116
 24531113,"Huddle","E1 8FA","2 Leman Street, 2nd Floor Aldgate Tower",,51.514919,-0.071885
 24535673,"Grad Gallery","London","3-4A Little Portland Street",,51.517433,-0.140677
+24536615,"University College London","London","Gower St, London WC1E 6BT",,51.522461,-0.132608
 24538402,"The Shard","London SE1 9SG","32 London Bridge St, 18th Floor",,51.504417,-0.0863
 24542681,"1.11, Franklin-Wilkins Building, Waterloo Campus ","London","Stamford Street, SE1 9NH ",,51.506222,-0.11007
 24546034,"thoughtbot","London","Griffin Court, 15 Long Lane",,51.500954,-0.090845
@@ -2236,6 +2490,7 @@ id,name,city,address_1,address_2,lat,lon
 24683597,"Le Wagon London","E1 6BT","14-22 Elder Street",,51.521324,-0.076677
 24686969,"Cha Chaan Teng","London","36-38 Kingsway, Holborn, WC2B 6EY",,51.515942,-0.118838
 24689983,"Hoxton Shoreditch Lobby","London","81 Great Eastern St, London EC2A 3HU",,51.525509,-0.082926
+24703252,"Hotel Novotel West","London","1 Shortlands, W6 8DR",,51.492271,-0.220205
 24717489,"Cloud 23, Hilton Manchester Deansgate","Manchester","Beetham Tower, M3 4LQ",,53.475391,-2.250561
 24727367,"Sky Network Services offices","London","1 Brick Lane, London E1 6PU",,51.517502,-0.070907
 24732473,"1 America Square","EC3N 2LB","17 Crosswall, London,  ",,51.511559,-0.075839
@@ -2249,15 +2504,18 @@ id,name,city,address_1,address_2,lat,lon
 24791347,"ONLINE","London","ONLINE",,51.507351,-0.127758
 24798894,"Mozilla","London SE1 0HS","Metal Box Factory, Suite 441, 30 Great Guildford Street",,51.504711,-0.096978
 24802918,"toucanbox","London","10th Floor Landmark House Hammersmith Bridge Road W6 9EJ",,51.490948,-0.228483
+24803130,"Claremont  Project","London","24-27 White Lion Street, London  N1 9PD",,51.53278,-0.107965
 24803827,"BMLL Technologies Ltd","London","36 Broadway (SW1 0BH)",,0,0
 24812195,"etc.venues ","London","155 Bishopsgate",,51.518612,-0.080434
 24818584,"Centre For Entrepreneurs","London","11 Charles Street London, W1J 5DW",,51.508175,-0.146805
+24828661,"Old Street Records","EC1V 9NQ","350-354 Old Street",,51.526817,-0.080921
 24830082,"Dimension Data","London","Fleet Place House, 2 Fleet Pl, London EC4M 7RT, UK",,0,0
 24835047,"Skills Matter (CodeNode)","London","10 South Place, London, EC2M 7EB",,51.518757,-0.086244
 24836690,"TechHub London","London","20 Ropemaker Street, EC2Y 9AR",,51.519657,-0.088427
 24837285,"30 Old Broad Street ","EC2N 1HT","London",,51.515686,-0.084016
 24838941,"Google London Victoria","London","76 Buckingham Palace Road",,51.494976,-0.146657
 24839280,"WeWork Moorgate, Meeting room 2-I,  ","London","1 Fore Street,  London EC2Y 9DT",,51.51808,-0.091166
+24850184,"Alphabeta building","London","14-18 Finsbury Square, London EC2A 1BR",,51.521854,-0.086316
 24854620,"Hays Life Sciences Recruitment - London","London","107 Cheapside, EC2V 6BT",,51.514309,-0.093562
 24854620,"Hays Life Sciences Recruitment - London","London","107 Cheapside, EC2V 6BT",,51.51431,-0.093562
 24863313,"St Martin-in-the-Fields","WC2N 4JJ","Trafalgar Square, London",,51.508125,-0.127147
@@ -2276,15 +2534,18 @@ id,name,city,address_1,address_2,lat,lon
 24951758,"WeWork","London","1 Fore Street, EC2Y 5EJ",,51.517895,-0.090023
 24951758,"WeWork","London","1 Fore Street, EC2Y 5EJ",,51.51816,-0.09044
 24951758,"WeWork","London","1 Fore Street, EC2Y 5EJ",,51.518162,-0.09044
+24956118,"CodeNode","London","10 South Place","EC2M 7EB",51.51855,-0.086114
 24986711,"YOOX NET-A-PORTER GROUP","London","1 The Village Offices, Westfield London Shopping Centre Ariel Way W12 7GF London",,0,0
 24987034,"Puppet","London","13th Floor, 2 Leman Street, E1 8FA ",,51.514774,-0.071722
 24994719,"The Desk","London","114-116 Curtain Road, EC2A 3AH",,51.525726,-0.07997
 24994720,"The Desk","London","114-116 Curtain Road, EC2A 3AH",,51.525726,-0.07997
 25002289,"Live Webinar","London","http://bit.ly/2iHw6yy",,0,0
 25006625,"AlphaSights","London","1 Queenhithe, EC4V 3DX",,51.510975,-0.094802
+25007339,"Open Data Institute ","London","Floor 3, 65 Clifton St, London EC2A 4JE, UK",,51.522163,-0.083438
 25009681,"International Congress Center Munich","Munich","Messe München GmbH, Messegelände, 81823",,0,0
 25028272,"Online","London","https://zoom.us/webinar/register/260caec5ea6c97da34538d7d4481ef37",,0,0
 25028275,"Online","London","https://zoom.us/webinar/register/22e71958d56bd1317510d14dfea9e911",,0,0
+25030619,"Babylon Health","London","First Floor, 60 Sloane Avenue, London SW3 3DD, United Kingdom",,51.492908,-0.166887
 25036569,"Empiric offices","London","First Floor, 1 Old Jewry, London EC2R 8DN ",,51.513824,-0.090765
 25037306,"Online","London","By private invitation",,0,0
 25038959,"Arcadia","London"," Colegrave House, 68-70 Berners St, W1T 3NL, London ",,51.516243,-0.136357
@@ -2307,12 +2568,14 @@ id,name,city,address_1,address_2,lat,lon
 25094001,"Expedia","London","Block 1, Angel Square, London, EC1V 1NS",,51.532417,-0.105612
 25104197,"Facebook Offices  ","NW13FG","Brock Street, Kings Cross, London",,51.525581,-0.139457
 25105531,"MarkLogic EMEA HQ","London, EC2R 7HF","41 Lothbury",,51.514908,-0.087897
-25107465,"City University","London","Room AG07b, College Building Northampton Square Clerkenwell, London EC1V 0HB",,51.527283,-0.103712
+25107465,"City University","London","College Building Northampton Square Clerkenwell, London EC1V 0HB",,51.527283,-0.103712
 25108612,"Online","London","https://zoom.us/webinar/register/068feff1ce1de9fccde7dc3c8da9331e",,0,0
 25114417,"The Jugged Hare - Dining Room","London","172 Vauxhall Bridge Road Victoria London SW1V 1DX",,51.493042,-0.13824
+25116393,"R/GA","London","99 Clifton Street",,51.522854,-0.083363
 25120241,"Online","London","https://zoom.us/webinar/register/0455ae81377bba53c5b9141539e44ee6",,0,0
 25124835,"Live Webinar","London","http://bit.ly/2o4YZag",,0,0
 25125602,"Online","London","https://zoom.us/webinar/register/89edfdf52471b7c134538d7d4481ef37",,0,0
+25131122,"WeWork Waterhouse square","London EC1N 2SW","138 Holborn",,51.518078,-0.11011
 25137494,"Pivotal Software","London","211 Old St, London EC1V 9NR",,51.525936,-0.08873
 25138982,"Online","London","https://zoom.us/webinar/register/6579f9a1a136ad2c34538d7d4481ef37",,0,0
 25154103,"Slug & Lettuce County Hall","London","5 Chicheley Street, North Block (1-63) County Hall, SE1 7PJ",,51.502613,-0.116724
@@ -2325,6 +2588,46 @@ id,name,city,address_1,address_2,lat,lon
 25196327,"TBD","Tel Aviv","TBD",,0,0
 25198347,"Online link check below","Online ","Youtube",,51.532967,-0.126034
 25216726,"Pond Hill","Rochester ME3 7QS","Cliffe",,51.462494,0.498162
+25229080,"Finch's Pub","London","12a Finsbury Square, London EC2A 1AN",,51.521732,-0.087366
+25230303,"Airspace London","London","Airspace 29/31 Oxford street London W1D 2DR",,51.516167,-0.131655
+25230651,"Monzo","EC1Y 1BE","230 City Road",,51.528488,-0.093078
+25232629,"Movidiam","London","Aldgate Tower, 2 Leman Street, London E1 8FA",,51.514862,-0.072221
+25234886,"King's College London, Nash Lecture Theatre","WC2R 2LS","Strand Campus",,51.511486,-0.115997
+25256278,"Oddschecker","London","100, Cambridge Grove Hammersmith ",,51.495914,-0.230688
+25256586,"Alteryx HQ","London","2nd Floor, 186 City Road, London, EC1V 2NT",,51.527725,-0.090457
+25288046,"TransferWire LTD","London E1 6JJ","6th Floor, The Tea Building, 56 Shoreditch High Street",,51.524158,-0.076006
+25288046,"TransferWire LTD","London E1 6JJ","6th Floor, The Tea Building, 56 Shoreditch High Street",,51.52416,-0.076006
+25290836,"CloudMargin","London","4-8 Whites Grounds",,51.5,-0.08
+25300611,"WeWork Waterhouse Square","EC1N 2SW","Building 3, 138 Holborn, London",,51.518715,-0.109912
+25320889,"The Studio ","Glasgow","67 Hope Street, G2 6AE",,55.859844,-4.259409
+25321989,"Criteo london","London","10 Bloomsbury Way, London WC1A 2SH",,51.517654,-0.124165
+25323368,"One fine stay","London","300 St John Street",,51.528343,-0.104509
+25362982,"Shopdirect","London","111 Buckingham Palace Road, London, SW1W 0DT",,51.494652,-0.145258
+25374685,"Rightmove plc","W1D 3QU","6th Floor, 33 Soho Square, London",,51.514706,-0.132659
+25379876,"Google","London","Belgrave House 76 Buckingham Palace Rd, Belgravia",,51.494961,-0.146652
+25389124,"Alphabeta Building","London","18 Finsbury Square, EC2A 1AH",,51.52158,-0.086081
+25393279,"Live streaming place in London TBA","London","Event happens live in Singapore",,0,0
+25431724,"Depop","London","Zetland House, 5-25 Scrutton Street, EC2A 4HJ",,51.523384,-0.083845
+25438997,"6 Southall Avenue, ","Brighton","BN2 4BB",,50.844128,-0.116432
+25444503,"The Celtic Manor Resort","Newport","Coldra Woods, The Usk Valley, Newport, NP18 1HQ, South Wales, wales",,51.602207,-2.931387
+25456577,"Wolfgangs Beer Haus","London","2-3 Creed Lane EC4V 5BR London",,51.513325,-0.101208
+25470660,"Transfer Wise","London","6th Floor, The Tea Building, 56 Shoreditch High St",,51.524158,-0.076006
+25475456,"Mintel","London","4 Playhouse Yard LONDON EC4V 5EX",,51.512962,-0.102535
+25477710,"The Charter Building","UB8 1JG","Charter Place,, UXbridge",,51.545357,-0.479612
+25486197,"Techspace Shoreditch","London","25 Luke St, London EC2A 4AR, UK",,51.523994,-0.082597
+25491199,"Summit ","London","12 Golden Square, Soho, London W1F 9JE",,51.511478,-0.136563
+25492575,"Neo4j UK  · London","London","8th Floor, Friars Bridge Court, 41-45 Blackfriars Rd, SE1 8NZ",,51.505379,-0.104995
+25507105,"Rise London","London","41 Luke St, London EC2A 4DP",,51.523994,-0.083847
+25517254,"WeWork Waterhouse Square - Unit 3","London, EC1N 2SW","138 Holborn,",,51.518715,-0.109912
+25526132,"Le Wagon London","London","138 Kingsland Road",,51.532711,-0.076956
+25541179,"UCL The Bartlett School of Architecture, Room G.12","London","22 Gordon Street",,0,0
+25572450,"Skills Matter at Node Code","London","10 South Place, London · EC2M 2RB",,51.518642,-0.086012
+25581634,"Zigfrid von Underbelly, ","London","11 HOXTON SQUARE LONDON N1 6NU",,0,0
+25585015,"Oaklands Court","Heathfield TN21 0HD","Horam",,50.935436,0.248458
+25588588,"Oracle Office, 5th floor - Knightsbridge room","London","1 South Pl, Greater London, EC2M 2RB",,51.519154,-0.087365
+25602234,"Google","London","1-13 St Giles High St, London WC2H 8AG",,0,0
+25602620,"Touch Surgery","London","230 City Road, EC1V 2QY",,51.528488,-0.093078
+25602729,"RocketSpace Events","N1 8EQ","The Yard of Duncan Street. London",,51.533535,-0.103956
 2574091,"Willy's Wine Bar","London EC3M 5JF","107 Fenchurch Street",,51.51252,-0.079103
 3335042,"Harrison Pub","London","WC1H 8JF",,51.527424,-0.12092
 3441202,"Pimlico Academy","London","Lupus Street, SW1V 3AT",,51.487934,-0.139915
@@ -2337,6 +2640,7 @@ id,name,city,address_1,address_2,lat,lon
 4199012,"Oracle City Office ","EC2M 2RB","One South Place, London",,51.519234,-0.087501
 420213,"The Albannach","London","66 Trafalgar Square, WC2N 5DS",,51.507461,-0.128659
 4376162,"Public Works","London, E2 9DG","1-5 Vyner Street",,51.534519,-0.055723
+4463952,"Browns Covent Garden","London","82-84 St Martins Lane Covent Garden London, WC2N 4AG",,51.510593,-0.126976
 4571802,"TentCity University at Occupy London (St.Paul's)","London","St. Paul's Cathedral",,51.513706,-0.099528
 4700952,"IET London: Savoy Place","City of London","2 Savoy Place",,51.509811,-0.119241
 4731132,"Bank of Ideas","London","29 Sun Street - Tube: Liverpool St. or Moorgate",,51.516998,-0.088638
@@ -2350,7 +2654,6 @@ id,name,city,address_1,address_2,lat,lon
 5446062,"UCL Chandler House","London","2 WAKEFIELD STREET, WC1N 1PF",,51.52615,-0.122735
 5588392,"Skills Matter","London","116-120 Goswell Road London, EC1V 7DP",,51.524506,-0.099152
 5698342,"IPC Media Building (Bluefin)","SE1 0SU","110 Southwark Street",,51.505924,-0.100221
-5816892,"TBC (We're looking for space sponsors!)","London","Central London",,51.531788,-0.011394
 5915942,"O2 Workshop","London","229 Tottenham Court Road, W1T 7QG",,51.519119,-0.132462
 5945812,"Pachube HQ","London","3 Scrutton St.",,51.52338,-0.084103
 5957342,"Crayon London","London","Bewlay House, 2 Swallow Place, London, W1B 2AE",,51.515018,-0.142617
